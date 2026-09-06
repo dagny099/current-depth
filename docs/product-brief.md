@@ -1,6 +1,6 @@
 # Reading Digest — Product Brief
 
-**Version** 1.4 · 6 Sep 2026
+**Version** 1.5 · 6 Sep 2026
 **Owner** Barbara (single user; this is a personal system, not a product)
 **Status** Pre-architecture. Handoff-ready for product clarification; nothing built. The brief contains confirmed decisions, proposed decisions, assumptions, and unresolved questions.
 
@@ -151,7 +151,7 @@ Reproduced from the working session, unchanged in meaning:
 |---|---|---|
 | Cadence | Weekly batch | Added by hand, no schedule |
 | Lifetime | Items expire ~10 days, silently | No expiry |
-| Size | Whatever arrived — **contested, see question 9** | Hard cap (7 or so) |
+| Size | Hard cap: 5 per delivery (D-18) | Hard cap: 7 (D-08) |
 | Actions | Keep, less like this | Notes, done |
 | Keep does | Promotes into Lane B | n/a |
 
@@ -165,7 +165,8 @@ Current working behavior:
 
 - Arrives on a weekly cadence. Barbara does not fetch it. A destination she must remember to visit is a destination she will stop visiting.
 - Items expire approximately ten days after arrival, silently, with no action from her. The ten days give roughly one week of overlap so nothing vanishes between one delivery and the next.
-- Size is uncontrolled: whatever arrived, arrived. **Contested by F-04 as of v1.3.** This was written when arrival volume was unknown. At 150–250 candidate items per week, an uncontrolled Lane A is a wall of text, which is the disease this system exists to treat. Left as written rather than silently amended; question 9 puts it to Barbara.
+- Size is hard-capped at 5 items per delivery (D-18). This replaces the original "whatever arrived, arrived," which was written before arrival volume was known and which F-04 falsified: at 180–280 candidate items per week, an uncontrolled Lane A is a wall, and a wall is the disease this system exists to treat.
+- What is not surfaced is recorded (D-19), because a cap of 5 discards most of what arrives.
 - Exactly two actions exist. **Keep** means "this one matters," and promotes the item into Lane B (D-07). **Less like this** records a negative relevance signal against the item's source, feeding the interest profile she can inspect and edit (D-10), and takes the item off the surface.
 - There is no mark-read and no archive. Expiry is the default removal mechanism, and the only one that requires nothing from her.
 - No related or suggested material appears here, ever.
@@ -201,22 +202,30 @@ This table is authoritative for whether a decision is settled.
 | D-05 | Related content stays in scope. | **Confirmed** (she asked for it, naming TED talks as the example) |
 | D-06 | Related content is confined to Lane B and never appears on Lane A. | **Confirmed** |
 | D-07 | The Lane A keep gesture promotes the item into Lane B. | **Confirmed** |
-| D-08 | Lane B is capped. Adding past the cap requires removing. | **Proposed-Please help think through this** |
+| D-08 | Lane B is capped at **7**. Adding past the cap requires removing. | **Confirmed** 6 Sep 2026 |
 | D-09 | Lane A arrives rather than waiting to be visited. | **Confirmed** |
 | D-10 | Whatever decides relevance must be inspectable and editable by her: she can see what the system believes she cares about, see why an item surfaced, and change both. | **Confirmed** |
-| D-11 | Any prioritization layer must beat a chronological baseline on a hand-labeled set, with the threshold written down in advance, or be removed. Removing it counts as a good outcome. | **Proposed-Please help think through this** |
+| D-11 | Any prioritization layer must beat a chronological baseline on a hand-labeled set, with the threshold written down in advance, or be removed. Removing it counts as a good outcome. | **Confirmed** 6 Sep 2026 |
 | D-12 | Content pitched at beginners in retrieval, evaluation and knowledge graphs is treated as noise. | **Confirmed** |
 | D-13 | Requirements and problem statement are maintained separately from any solutioning. | **Confirmed** |
 | D-14 | Lane A has exactly two actions: keep, and "less like this" — a negative relevance signal against the source that also takes the item off the surface. No mark-read, no archive. | **Confirmed** |
 | D-15 | Success criterion: the median time from keep to done on Lane B is 14 days or less. Judged only once at least three items have been marked done. | **Confirmed** |
 | D-16 | Metrics may only be derived from gestures that exist for Barbara's own reasons. No gesture exists solely to produce a measurement. | **Confirmed** |
 | D-17 | Encouragement is a retrospective, additive record of completed Lane B items. Never a streak, counter, badge, or deadline, and never on Lane A. | **Confirmed** |
+| D-18 | One Lane A delivery is hard-capped at **5 items**, a fixed size rather than a relevance threshold or a per-source quota. | **Confirmed** 6 Sep 2026 |
+| D-19 | What is never surfaced is recorded, alongside what expires unkept. Both are evidence, not features. | **Confirmed** 6 Sep 2026 |
 
 D-11 exists because a ranked list always looks intelligent, and Barbara works in evaluation design. The deletability of the prioritization layer is a product decision, not a technical one, and it should survive into whatever gets built.
 
 D-15 is a latency measure rather than a count because promotion is the *save* gesture: under the failure mode described in F-03, a promotion count rises as the system stops working. Latency degrades in the correct direction, cannot be inflated by keeping more or keeping less, is readable after two or three items rather than after a month, and creates no recurring deadline — which matters because D-02 makes absence free, and a weekly pass/fail would quietly take that back.
 
 D-16 is the durable guard. It is what should stop a later session from helpfully adding a "mark as read" control in order to make some number easier to compute. The test it encodes: a metric derived from a gesture Barbara would make anyway is safe; a metric requiring a gesture she would only make to feed the metric is the disease.
+
+D-18's number is derived, not chosen by taste. D-15 requires a median keep-to-done of 14 days or less into a shelf of 7 (D-08). To finish roughly two items inside 14 days, Barbara can afford to keep one or two per delivery. A delivery of 5 at a realistic keep rate of 20–40% produces exactly that; a delivery of 20 produces four to eight keeps, overflows the shelf, and makes D-15 unreachable by construction. The cap is what makes the ratified success criterion achievable.
+
+Fixed size, rather than a relevance threshold, is also what keeps D-11 testable: "did the ranker pick the right 5?" can be hand-labelled against a chronological top 5, whereas a variable-size threshold compares sets of different sizes. And a constant size is what keeps absence free under D-02 — a heavy week must not produce a pile.
+
+D-19 exists because D-18 discards roughly 97% of arriving items unseen. That makes the prioritisation layer load-bearing from the first delivery, which is precisely the "prioritisation is theater" risk in Section 9. Recording what was dropped is what lets D-11 be tested against the discarded material rather than only against what was shown.
 
 Three secondary diagnostics accompany D-15. They are **not** success criteria and must not be promoted into them:
 
@@ -272,14 +281,14 @@ Ordered by how much they block.
 2. **What outcome would she notice?** **Resolved in v1.2 — see D-15, D-16, D-17.** Question text kept so the record of what was open survives. The answer landed on a latency criterion (median keep to done, 14 days) rather than a count, because a count of promotions rises in the failure mode; on a rule governing which gestures may be measured at all; and on encouragement being a growing record of finished items rather than a streak.
 3. **Does enterprise data management belong in scope?** **Resolved 6 Sep 2026: yes.** Barbara confirmed it after the corrected source list showed she is in fact subscribed — DATAVERSITY, ODSC, the Knowledge Graph Conference, and the LinkedIn metadata/ontology stream. The original sub-question, job-driven or interest-driven, was not asked and remains open, but it no longer blocks: the sources exist either way. What A-05 adds is that this field needs different handling from the ML sources, because its editorial content is buried inside promotional mail.
 4. **How does Lane A arrive?** D-09 says it arrives rather than being fetched. The mechanism was not settled. Candidates discussed: a message to herself, a bookmarked destination, or a message linking to a destination. The argument for a message is that it borrows a habit she already has instead of asking her to form one.
-5. **What is the Lane B cap, exactly?** "Seven or so" was as far as it got. The cap existing is the decision; the number is not settled.
+5. **What is the Lane B cap, exactly?** **Resolved 6 Sep 2026: seven.** Ratified together with D-08, on the strength of the D-18 arithmetic, which uses 7.
 6. **Does expiry survive contact with her habits?** A-01 is argued from category history rather than from her behavior. If she has a counterexample from her own life, that outranks anything cited here.
 7. **What is the gesture called?** "Favorite" and "keep" were both used for the same action.
 8. **How far does related content extend?** TED talks were the stated example. Whether it covers papers, conference talks, or other media was never scoped.
 
 Added in v1.3, from the discovery pass:
 
-9. **How big is one Lane A delivery?** The most consequential new question. Section 3.2 says size is uncontrolled. At 150–250 candidate items per week that produces a wall, and a wall is not skimmable. Either Lane A gets a hard size limit like Lane B, or the prioritisation layer becomes load-bearing rather than optional, or both. This decision interacts with A-02: a smaller cadence means a smaller batch.
+9. **How big is one Lane A delivery?** **Resolved 6 Sep 2026: five, hard-capped — see D-18 and D-19.** The answer turned out to be both of the options this question offered: a hard size limit *and* a load-bearing prioritisation layer, because a cap of 5 against 180–280 arriving items cannot avoid making the ranker load-bearing. Cadence remains open under A-02; the cap is per delivery whatever the cadence turns out to be.
 10. **Which addresses count as sources?** F-05 found at least three delivery addresses in one mailbox, with the same publication arriving twice. Deduplication is required. Whether all three addresses are in scope is Barbara's call.
 11. **Is "field-adjacent" defined by her subscriptions or by her intent?** **Narrowed in v1.4.** With F-06 retracted, her subscriptions and Section 1's three named fields agree far better than v1.3 claimed — all three fields are represented. What remains is the non-field stream sharing the same labels (military analysis, cooking, games, fiction, public health) and the promotional share of the vendor sources. D-12 already treats beginner content as noise; this asks the prior question of what counts as signal. Barbara has named DeepLearning.AI as a high-quality reference point, which is a usable anchor for that judgment.
 12. **What is a Source, when the sender address is not the publication?** All LinkedIn newsletters — the metadata/ontology stream, The AI Agent Report, The AI Table Review, MIT CSAIL — arrive from the single address `newsletters-noreply@linkedin.com`. Sender-based source identity fails here. Raised by the v1.4 pass; not yet discussed.
@@ -328,11 +337,13 @@ Carried forward because they should inform product decisions, not just engineeri
 
 Not architecture. In order:
 
-Questions 1, 2 and 3 are closed. The order is now:
+**As of v1.5 every decision in the ledger is Confirmed. Nineteen of nineteen.** Questions 1, 2, 3, 5 and 9 are closed. The decision ledger is no longer the bottleneck.
 
-1. Resolve question 9, Lane A batch size, together with A-02, cadence. They cannot sensibly be decided apart, and Barbara's rejection of a month-long evaluation window in the v1.2 discussion is evidence bearing on cadence. This is the largest open product decision.
-2. Put the remaining `Proposed` decisions to Barbara for explicit confirmation or rejection. **Two of seventeen decisions are currently unratified: D-08 and D-11.** D-11 matters more now than it did: A-07 holds, so a prioritisation layer will be built, and D-11 is the only thing standing between it and theater.
-3. Resolve question 11, what counts as signal. Narrower than it was — the fields and the subscriptions now agree — but the non-field stream and the promotional share of the vendor sources still need a rule. A-05 says enterprise data management needs handling that separates editorial from promotion.
-4. Resolve questions 10 and 12 together, deduplication and source identity. Both are about what a Source is: six delivery addresses with duplicate delivery, and one sender address carrying four distinct publications.
+The sequenced plan lives in `docs/plans/2026-09-06-product-clarification-plan.md`. In outline:
 
-Only then does architecture become a sensible next step.
+1. **Run a manual pilot before building anything.** It tests A-01, A-02, A-08, A-09 and D-15 at zero build cost, and it is the only direct mitigation for the sharpest risk in Section 9 — that building the system replaces reading.
+2. Close the remaining cheap product questions: 4, 7, 8, 10, 11, 12, and A-02 with A-03.
+3. Build the D-11 evaluation set. Now ratified, D-11 requires a hand-labelled corpus and a written-in-advance threshold *before* any ranker exists. This is the critical path, and it needs mailbox access, so capture the corpus while the connector is still switched.
+4. Then the cross-harness review the README describes, from a frozen brief.
+
+Only then does architecture become a sensible next step, and only on Barbara's explicit say-so.

@@ -1,6 +1,6 @@
 # Reading Digest — Product Brief
 
-**Version** 1.2 · 6 Sep 2026
+**Version** 1.3 · 6 Sep 2026
 **Owner** Barbara (single user; this is a personal system, not a product)
 **Status** Pre-architecture. Handoff-ready for product clarification; nothing built. The brief contains confirmed decisions, proposed decisions, assumptions, and unresolved questions.
 
@@ -60,16 +60,50 @@ Confidence note: sources agree on direction, but no save-to-read ratio statistic
 
 ### 1.4 What was actually measured
 
-One mailbox was inventoried (`barbs@geocue.me`, 5 Sep 2026). Findings, scoped honestly:
+Two mailboxes have now been inventoried: `barbs@geocue.me` (5 Sep 2026) and the real one, `dagny099@gmail.com` (6 Sep 2026). Findings, scoped honestly:
 
 | ID | Finding | Status |
 |---|---|---|
 | F-01 | That account carries essentially no DS/ML editorial newsletters. Fourteen named publications searched across inbox, archive, spam and trash; one hit, a false positive. | **True but superseded.** It was the wrong mailbox. |
 | F-02 | 933 unread of 1,054 (88%). Zero user labels, zero filters. ~6.7 messages/day. One commercial sender alone sent 18 messages in 30 days, exceeding every field-adjacent sender combined. | **Holds.** Corroborates the described deterrent effect. Does not establish causation. |
 | F-03 | Unread accumulation is the documented dominant failure mode of read-it-later tools. | **Holds**, moderate confidence (see 1.3). |
-| F-04 | Arrival rate and composition at `dagny099@gmail.com` — the account that actually carries the subscriptions — are unknown. | **Open.** Blocking. |
+| F-04 | Arrival rate and composition at `dagny099@gmail.com`. **Resolved 6 Sep 2026** by a read-only discovery pass. Field-adjacent editorial arrives at roughly **40–50 messages per week**, carrying an estimated **150–250 candidate items per week**. Total mailbox arrival is far higher: 192,111 inbox messages, 174,073 unread (90.6%), and a one-day sample implies well over 100 threads per day. | **Closed.** Volume is high. |
+| F-05 | The mailbox serves at least three addresses — `dagny099@gmail.com`, `barbs@balex.com`, `hidalgod@gmail.com` — and some publications deliver to two of them. Observed: the same `thebatch@deeplearning.ai` issue arriving twice, once per address. | **Holds.** Creates a deduplication requirement. |
+| F-06 | The subscriptions do not match the fields named in Section 1. Observed field-adjacent sources are AI/LLM/agents and software-product engineering. **No enterprise data management sources were found** — no warehouse, catalog, governance, or data-quality publications. | **Holds.** Bears on A-05 and question 3. |
+| F-07 | This mailbox is heavily organised — roughly 40 user labels, with working filters (`SubStack` 4,390 messages, `DL.ai` 667, `B@B` 23,532). It is the opposite of the unorganised mailbox measured in F-02, yet the unread rate is worse: the `SubStack` label alone is 4,317 unread of 4,390 (98.3%). | **Holds.** Filing happens; reading does not. |
 
-F-04 is the single most consequential gap in this brief. Volume determines whether prioritisation is worth building at all.
+F-04 is closed, and it closed in the direction that keeps the design honest: there is more than enough arriving to justify a prioritisation layer, so A-07 holds and D-10 / D-11 become live rather than hypothetical.
+
+F-07 is the more uncomfortable finding. The original story was that clutter deters reading. This mailbox is not uncluttered, but it *is* curated — the newsletters are already filtered into their own labels, away from the inbox — and they still go unread at 98%. Sorting the reading out of the obligation container has, in effect, already been tried here. That does not refute the premise in 1.1, but it does mean relocation alone is not sufficient, and any plan resting on relocation as the primary mechanism should say why this system differs.
+
+### 1.5 Observed sources (discovery pass, 6 Sep 2026)
+
+The D-04 deliverable. This is what she is actually subscribed to, not a proposed source list. Inclusion here is an observation, not a decision.
+
+**Field-adjacent, editorial:**
+
+| Source | Sender | Rough cadence |
+|---|---|---|
+| AINews / Latent Space | `swyx+ainews@substack.com`, `swyx@substack.com` | Near-daily digest plus essays |
+| The Batch | `thebatch@deeplearning.ai` | Weekly |
+| Data Points | `datapoints@deeplearning.ai` | 2–3 per week |
+| Understanding AI | `understandingai@substack.com` | 3–4 per week |
+| Ken Huang | `kenhuangus@substack.com` | Near-daily |
+| Nate's Newsletter | `natesnewsletter@substack.com` | 3–4 per week |
+| The Pragmatic Engineer | `pragmaticengineer@substack.com`, `+the-pulse` | 2 per week |
+| Lenny's Newsletter | `lenny@substack.com` | 2–3 per week |
+| Claude Code for Non-Coders | `claudecodefornoncoders@substack.com` | 2 per week |
+| Decision | `decision@substack.com` | Weekly |
+| Marily Nika / AI PM Academy | `marily@substack.com`, `marily-nika@courses.maven.com` | Weekly, part course marketing |
+| HackerNoon | `accounts@hackernoon.com` | Near-daily |
+| Academia.edu | `updates@academia-mail.com` | Near-daily |
+| Maven | `maven@list.maven.com` | Intermittent, course marketing |
+
+**Vendor / course marketing rather than editorial:** `hello@deeplearning.ai`, `maven@list.maven.com`, and the Maven course senders. Low signal by the standard D-12 sets.
+
+**Sharing the same labels but outside the named fields:** `ryanmcbeth` (military analysis, the single highest-volume sender observed), `whattocook` and `elliekrieger` (cooking), `stephentotilo` (games), `yourlocalepidemiologist` (public health), `georgesaunders` (fiction). These are not noise in the D-12 sense — they appear to be things she chose — but they are not the stated fields either. Question 11.
+
+**Absent entirely:** enterprise data management. No warehouse, catalog, governance, lineage, or data-quality publication was found. See F-06.
 
 ---
 
@@ -101,7 +135,7 @@ Reproduced from the working session, unchanged in meaning:
 |---|---|---|
 | Cadence | Weekly batch | Added by hand, no schedule |
 | Lifetime | Items expire ~10 days, silently | No expiry |
-| Size | Whatever arrived | Hard cap (7 or so) |
+| Size | Whatever arrived — **contested, see question 9** | Hard cap (7 or so) |
 | Actions | Keep, less like this | Notes, done |
 | Keep does | Promotes into Lane B | n/a |
 
@@ -115,7 +149,7 @@ Current working behavior:
 
 - Arrives on a weekly cadence. Barbara does not fetch it. A destination she must remember to visit is a destination she will stop visiting.
 - Items expire approximately ten days after arrival, silently, with no action from her. The ten days give roughly one week of overlap so nothing vanishes between one delivery and the next.
-- Size is uncontrolled: whatever arrived, arrived.
+- Size is uncontrolled: whatever arrived, arrived. **Contested by F-04 as of v1.3.** This was written when arrival volume was unknown. At 150–250 candidate items per week, an uncontrolled Lane A is a wall of text, which is the disease this system exists to treat. Left as written rather than silently amended; question 9 puts it to Barbara.
 - Exactly two actions exist. **Keep** means "this one matters," and promotes the item into Lane B (D-07). **Less like this** records a negative relevance signal against the item's source, feeding the interest profile she can inspect and edit (D-10), and takes the item off the surface.
 - There is no mark-read and no archive. Expiry is the default removal mechanism, and the only one that requires nothing from her.
 - No related or suggested material appears here, ever.
@@ -202,13 +236,15 @@ Each is a place where the design rests on inference. None has been validated aga
 | A-02 | Weekly is the right Lane A cadence . | Never discussed. PLEASE HELP ME THINK THROUGH THIS. | Ask. Cheap to change before anything exists. |
 | A-03 | Ten days is the right expiry window. | Derived from A-02, to give one week of overlap. | Falls with A-02. |
 | A-04 | She is past introductory material in retrieval, evaluation and knowledge graphs. | Her stated background. | High confidence. |
-| A-05 | Enterprise data management sources are vendor-dominated with a low signal rate and need different handling from the ML sources. | Claim made during analysis. Not checked against her actual subscriptions. | Resolves during the F-04 discovery pass. |
-| A-06 | The measured clutter in the other mailbox represents the deterrent effect she described. | Corroboration only. Causation not established. | Would require observing her behavior, not her mailbox. Probably not worth testing. |
-| A-07 | There is enough arriving to justify a prioritization layer. | Unknown. F-04 is open. | The discovery pass, then one week of observed volume. |
+| A-05 | ~~Enterprise data management sources are vendor-dominated with a low signal rate and need different handling from the ML sources.~~ **Retired 6 Sep 2026 — the question was wrong.** The discovery pass found no enterprise data management sources at all (F-06), so there is nothing to characterise as vendor-dominated. | Claim made during analysis; the pass tested it and found no population. | Superseded by question 3, which now asks whether she wants the field covered at all. |
+| A-06 | The measured clutter in the other mailbox represents the deterrent effect she described. | Corroboration only. Causation not established. **Weakened 6 Sep 2026:** F-07 shows the real mailbox is heavily organised and filtered, and its newsletters still go 98% unread. Clutter cannot be the whole mechanism. | Would require observing her behavior, not her mailbox. Probably not worth testing. |
+| A-07 | There is enough arriving to justify a prioritization layer. **Confirmed 6 Sep 2026** by the discovery pass: 40–50 field-adjacent messages per week, 150–250 candidate items. | F-04, now closed. | Already tested. Holds. |
 | A-08 | She will mark `done` on Lane B reliably enough for D-15's latency to mean anything. | Inference, not observation. Plenty of people finish the article and never tap the button. | After one month, compare the done count against her own recollection of what she actually finished. A large gap invalidates D-15 rather than her reading. |
 | A-09 | Taking items off Lane A via "less like this" will not turn Lane A into a surface she clears. | Judgment. She chose hiding over signal-only in v1.2 with the clearing risk stated. | Hide-to-keep ratio per delivery cycle. If hides run well ahead of keeps, Lane A has become a list to clear, and the correct response is a narrower digest, not a better hide control. |
 
-A-07 is the one that could collapse a large part of this design. If arrival volume turns out to be low, chronological order is already correct and the prioritisation layer should never be built.
+A-07 was the one that could have collapsed a large part of this design. It did not: volume is high, so chronological order is not sufficient and the prioritisation layer is justified. D-11's deletability test still applies — the layer must earn its place — but it is now worth building and testing rather than skipping.
+
+The risk has inverted. The open problem is no longer "is there enough to rank?" but "there is far too much," which is what question 9 now asks.
 
 ---
 
@@ -216,14 +252,20 @@ A-07 is the one that could collapse a large part of this design. If arrival volu
 
 Ordered by how much they block.
 
-1. **What is actually arriving?** Rate and composition at `dagny099@gmail.com`. Blocks everything downstream. Access is the constraint: the mailbox was not reachable from the working session, and the fallback is Barbara listing her subscriptions by hand.
+1. **What is actually arriving?** **Resolved 6 Sep 2026 — see F-04 through F-07.** Question text kept so the record survives.
 2. **What outcome would she notice?** **Resolved in v1.2 — see D-15, D-16, D-17.** Question text kept so the record of what was open survives. The answer landed on a latency criterion (median keep to done, 14 days) rather than a count, because a count of promotions rises in the failure mode; on a rule governing which gestures may be measured at all; and on encouragement being a growing record of finished items rather than a streak.
-3. **Is enterprise data management job-driven or interest-driven?** Different source ecosystems, different skepticism, different subscription list. Changes what gets followed, not just how it is ranked.
+3. **Does enterprise data management belong in scope at all?** **Reframed by F-06.** The original question assumed she followed the field and asked why. She does not follow it: the pass found zero enterprise data management sources. So the real question is whether Section 1's three named fields describe what she wants to read or what she wishes she read. If the latter, the system has to seed sources she is not subscribed to, which is a different and larger job than filtering what arrives.
 4. **How does Lane A arrive?** D-09 says it arrives rather than being fetched. The mechanism was not settled. Candidates discussed: a message to herself, a bookmarked destination, or a message linking to a destination. The argument for a message is that it borrows a habit she already has instead of asking her to form one.
 5. **What is the Lane B cap, exactly?** "Seven or so" was as far as it got. The cap existing is the decision; the number is not settled.
 6. **Does expiry survive contact with her habits?** A-01 is argued from category history rather than from her behavior. If she has a counterexample from her own life, that outranks anything cited here.
 7. **What is the gesture called?** "Favorite" and "keep" were both used for the same action.
 8. **How far does related content extend?** TED talks were the stated example. Whether it covers papers, conference talks, or other media was never scoped.
+
+Added in v1.3, from the discovery pass:
+
+9. **How big is one Lane A delivery?** The most consequential new question. Section 3.2 says size is uncontrolled. At 150–250 candidate items per week that produces a wall, and a wall is not skimmable. Either Lane A gets a hard size limit like Lane B, or the prioritisation layer becomes load-bearing rather than optional, or both. This decision interacts with A-02: a smaller cadence means a smaller batch.
+10. **Which addresses count as sources?** F-05 found at least three delivery addresses in one mailbox, with the same publication arriving twice. Deduplication is required. Whether all three addresses are in scope is Barbara's call.
+11. **Is "field-adjacent" defined by her subscriptions or by her intent?** F-06 found her actual reading interests cluster in AI/LLM/agents and software-product engineering, with a substantial non-field stream (military analysis, cooking, games, epidemiology) mixed into the same labels. D-12 already treats beginner content as noise; this asks the prior question of what counts as signal.
 
 ---
 
@@ -235,7 +277,7 @@ Some concepts below depend on `Proposed` decisions or assumptions. Their appeara
 
 | Concept | What it represents | Status / dependency |
 |---|---|---|
-| **Source** | A publication Barbara may choose to follow. | Conceptually useful; exact source set is blocked by F-04. |
+| **Source** | A publication Barbara may choose to follow. | Observed candidate set now recorded in Section 1.5. Which of them are in scope depends on question 11. A Source may deliver to more than one address (F-05). |
 | **Item** | One piece of content from a Source. | Conceptually useful. |
 | **Lane A Placement** | An Item present in the current-awareness surface. | Lane A expiry itself is confirmed by D-02; exact cadence / timing remain assumption-dependent (A-02, A-03). |
 | **Keep / Favorite gesture** | The single gesture discussed for signaling that an Item matters. | Name unresolved. Promotion into Lane B depends on proposed D-07. |
@@ -269,9 +311,12 @@ Carried forward because they should inform product decisions, not just engineeri
 
 Not architecture. In order:
 
-1. Resolve unresolved question 1: what is actually arriving at `dagny099@gmail.com`? Nothing downstream is decidable without it. State the arrival rate in two units — messages per week, and candidate items per week — because they differ by roughly an order of magnitude and A-07 depends on which one is meant.
-2. Resolve unresolved question 3 with Barbara directly. Cheap, and it changes scope. Question 2 is closed as of v1.2.
-3. Put the remaining `Proposed` decisions to Barbara for explicit confirmation or rejection. **Two of seventeen decisions are currently unratified: D-08 and D-11.**
-4. Take A-02, the cadence assumption. Barbara's rejection of a month-long evaluation window in the v1.2 discussion is evidence bearing on it.
+Questions 1 and 2 are closed. The order is now:
+
+1. Resolve question 9, Lane A batch size. It is the largest open product decision and the one the discovery pass created. Everything about what Lane A feels like depends on it.
+2. Resolve question 11, then question 3. Both define what counts as signal, and both change the source list rather than merely reordering it.
+3. Put the remaining `Proposed` decisions to Barbara for explicit confirmation or rejection. **Two of seventeen decisions are currently unratified: D-08 and D-11.** D-11 matters more now than it did: A-07 holds, so a prioritisation layer will be built, and D-11 is the only thing standing between it and theater.
+4. Take A-02, the cadence assumption, together with question 9. Barbara's rejection of a month-long evaluation window in the v1.2 discussion is evidence bearing on it, and cadence and batch size cannot sensibly be decided apart.
+5. Resolve question 10, deduplication scope. Small, but it changes what a Source is.
 
 Only then does architecture become a sensible next step.

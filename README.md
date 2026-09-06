@@ -34,7 +34,9 @@ The longer-term aim is to learn when to use particular models, harnesses, skills
 
 **Pre-architecture. Nothing is implemented.**
 
-The immediate work is still product clarification and evidence gathering. Some items in the product brief are:
+The immediate work is still product clarification and evidence gathering. As of brief v1.3 the two questions that were blocking are closed — what is actually arriving, and what outcome would count as success — and the largest open question is how big one delivery should be. Section 10 of the brief carries the current order of work.
+
+Some items in the product brief are:
 
 - **Confirmed**
 - **Proposed**

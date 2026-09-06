@@ -1,20 +1,22 @@
 # Reading Digest — Product Brief
 
-**Version** 1.0 · 5 Sep 2026
+**Version** 1.1 · 5 Sep 2026
 **Owner** Barbara (single user; this is a personal system, not a product)
-**Status** Pre-architecture. Requirements settled enough to hand off; nothing built.
+**Status** Pre-architecture. Handoff-ready for product clarification; nothing built. The brief contains confirmed decisions, proposed decisions, assumptions, and unresolved questions.
 
 ---
 
 ## 0. How to read this brief
 
-You have no access to the conversation that produced this. Everything you need is here.
+You have no access to the conversation that produced this. This brief is intended to be self-contained for the next product-clarification work.
 
 Two conventions matter:
 
 **Every decision below is tagged with its firmness.** `Confirmed` means Barbara explicitly chose it. `Proposed` means it was put to her, went uncontested, and is written into the requirements, but she never affirmatively ratified it. Treat `Proposed` items as revisable on contact with her; do not treat them as settled just because they appear here.
 
-**Assumptions are separated from decisions on purpose.** Several load-bearing parts of this design rest on inference rather than on Barbara's stated behavior. Those are listed in §6 with their basis. If you find yourself building something that depends on an assumption, surface it rather than hardening it.
+**Assumptions are separated from decisions on purpose.** Several load-bearing parts of this design rest on inference rather than on Barbara's stated behavior. Those are listed in Section 6 with their basis. If you find yourself building something that depends on an assumption, surface it rather than hardening it.
+
+**Status labels control.** Narrative prose, experience sketches, tables, and candidate entities may describe the current working design, but they do not upgrade firmness. When there is any tension, the decision ledger in Section 4 and the assumptions in Section 6 are authoritative for status.
 
 ### Out of scope for the next work
 
@@ -24,7 +26,7 @@ Explicitly requested by Barbara, and binding on you:
 - Do not implement anything.
 - Do not fill gaps with new product ideas. Where this brief says a question is unresolved, it is unresolved, and inventing an answer destroys the record of what was actually decided.
 
-Companion documents (same project, published separately): a requirements document with numbered requirements `R-01`–`R-10`, goals `G-01`–`G-03`, constraints `C-01`–`C-03`, and evidence findings `F-01`–`F-04`; and a staged build plan. This brief supersedes neither and duplicates what you need.
+Earlier working documents exist outside this repository, but they are **not required** for this handoff. Do not treat their absence as missing project state. This brief contains the product information needed for the next work; if an external document is later added to the repo, treat it as supplemental unless explicitly designated authoritative.
 
 ---
 
@@ -73,6 +75,8 @@ F-04 is the single most consequential gap in this brief. Volume determines wheth
 
 ## 2. The experience we're aiming for
 
+**Working experience sketch — not a decision ledger.** This section intentionally includes behaviors that are still `Proposed` or assumption-dependent. Use Section 4 and Section 6 to determine what is actually settled.
+
 Written from Barbara's side of the screen.
 
 Once a week, something arrives carrying a handful of things worth knowing about in her fields. She reads it or she does not. If she does not, nothing happens: no counter climbs, no badge appears, nothing waits for her. The items age out on their own within days and leave no residue. Ignoring it for three weeks costs nothing and leaves the system in a good state.
@@ -86,6 +90,8 @@ Nothing in this experience involves dismissing, archiving, marking read, or clea
 ---
 
 ## 3. Lane A and Lane B
+
+**Working model — not all details are confirmed.** This section preserves the current design concept in one place. If a detail here is `Proposed`, assumed, or unresolved elsewhere, that status still governs.
 
 ### 3.1 The table
 
@@ -103,7 +109,7 @@ Terminology note: "favorite" and "keep" refer to the same single gesture. Pick o
 
 ### 3.2 Lane A — Current awareness
 
-Operating rules:
+Current working behavior:
 
 - Arrives on a weekly cadence. Barbara does not fetch it. A destination she must remember to visit is a destination she will stop visiting.
 - Items expire approximately ten days after arrival, silently, with no action from her. The ten days give roughly one week of overlap so nothing vanishes between one delivery and the next.
@@ -111,11 +117,11 @@ Operating rules:
 - Exactly one action exists, and it means "this one matters."
 - There is no dismiss, no mark-read, no archive. Removal is what happens when she does nothing.
 - No related or suggested material appears here, ever.
-- What expires unkept is recorded. That record is the evidence base for testing assumption A-01 (§6).
+- What expires unkept is recorded. That record is the evidence base for testing assumption A-01.
 
 ### 3.3 Lane B — Deliberate study
 
-Operating rules:
+Current working behavior:
 
 - Populated only by the Lane A gesture, or by hand.
 - No cadence. Nothing arrives here on a schedule.
@@ -126,11 +132,13 @@ Operating rules:
 
 ### 3.4 The relationship between lanes
 
-One-directional. Lane A feeds Lane B through the single gesture. Nothing flows back. Lane A's job is to be forgettable; Lane B's job is to be persistent; and the gesture is the only bridge.
+**Working design; depends on D-07.** Lane A feeds Lane B through the single gesture. Nothing flows back. Lane A's job is to be forgettable; Lane B's job is to be persistent; and the gesture is the only bridge.
 
 ---
 
-## 4. Decisions already made
+## 4. Decision ledger
+
+This table is authoritative for whether a decision is settled.
 
 | # | Decision | Firmness |
 |---|---|---|
@@ -178,7 +186,7 @@ Each is a place where the design rests on inference. None has been validated aga
 | A-02 | Weekly is the right Lane A cadence. | Never discussed. Assumed. | Ask. Cheap to change before anything exists. |
 | A-03 | Ten days is the right expiry window. | Derived from A-02, to give one week of overlap. | Falls with A-02. |
 | A-04 | She is past introductory material in retrieval, evaluation and knowledge graphs. | Her stated background. | High confidence. |
-| A-05 | Enterprise data management sources are vendor-dominated with a low signal rate and need different handling from the ML sources. | Claim made during analysis. Not checked against her actual subscriptions. | Resolves during the §1.4 F-04 discovery pass. |
+| A-05 | Enterprise data management sources are vendor-dominated with a low signal rate and need different handling from the ML sources. | Claim made during analysis. Not checked against her actual subscriptions. | Resolves during the F-04 discovery pass. |
 | A-06 | The measured clutter in the other mailbox represents the deterrent effect she described. | Corroboration only. Causation not established. | Would require observing her behavior, not her mailbox. Probably not worth testing. |
 | A-07 | There is enough arriving to justify a prioritisation layer. | Unknown. F-04 is open. | The discovery pass, then one week of observed volume. |
 
@@ -191,7 +199,7 @@ A-07 is the one that could collapse a large part of this design. If arrival volu
 Ordered by how much they block.
 
 1. **What is actually arriving?** Rate and composition at `dagny099@gmail.com`. Blocks everything downstream. Access is the constraint: the mailbox was not reachable from the working session, and the fallback is Barbara listing her subscriptions by hand.
-2. **What outcome would she notice?** Goal G-01 is "read more" and has no measurable form. Two articles a week finished? One thing a month that changes how she works? Without a criterion there is no way to distinguish a working system from a pleasant-looking one. This is the weakest part of the requirements.
+2. **What outcome would she notice?** The current goal — "read more" — has no measurable form. Two articles a week finished? One thing a month that changes how she works? Without a criterion there is no way to distinguish a working system from a pleasant-looking one. This is the weakest part of the requirements.
 3. **Is enterprise data management job-driven or interest-driven?** Different source ecosystems, different skepticism, different subscription list. Changes what gets followed, not just how it is ranked.
 4. **How does Lane A arrive?** D-09 says it arrives rather than being fetched. The mechanism was not settled. Candidates discussed: a message to herself, a bookmarked destination, or a message linking to a destination. The argument for a message is that it borrows a habit she already has instead of asking her to form one.
 5. **What is the Lane B cap, exactly?** "Seven or so" was as far as it got. The cap existing is the decision; the number is not settled.
@@ -201,26 +209,28 @@ Ordered by how much they block.
 
 ---
 
-## 8. Likely data and entities
+## 8. Candidate concepts and entities
 
-Conceptual domain model. No storage, no schema, no field types — those are architecture and are out of scope for now.
+This is a **vocabulary sketch, not a settled domain model**. It exists to make product discussion concrete without choosing storage, schema, field types, or architecture.
 
-| Entity | What it represents | Notes |
+Some concepts below depend on `Proposed` decisions or assumptions. Their appearance here does **not** make those decisions confirmed.
+
+| Concept | What it represents | Status / dependency |
 |---|---|---|
-| **Source** | A publication Barbara chose to follow. | Her keep-or-drop on each source is hers to make. No amount of downstream cleverness recovers from a bad source set. |
-| **Item** | One piece of content from a Source. | The atom of both lanes. |
-| **Lane A Placement** | An Item present in the current stream, carrying an arrival time and an expiry time. | Expiry is a property of the placement, not of the Item. |
-| **Keep** | The single gesture. The event that promotes an Item from Lane A to Lane B. | Worth modeling as an event rather than a flag: it is also the strongest available signal of what she actually values. |
-| **Shelf Entry** | An Item on Lane B, with notes and a done state. | No expiry. Subject to the cap. |
-| **Interest Profile** | The statement of what she cares about, readable and editable by her. | D-10 requires that she can see and change this. It is a first-class object, not a hidden configuration. |
-| **Relevance Judgment** | A score plus a human-readable reason, attached to an Item. | The reason is the interface through which she corrects the profile. Without it the filter drifts until she stops trusting it. |
-| **Expiry Record** | What left Lane A unkept. | Retained deliberately as the evidence base for A-01. |
-| **Related Suggestion** | A piece of material offered against a Shelf Entry. | Lane B only. Never attached to a Lane A Placement. |
+| **Source** | A publication Barbara may choose to follow. | Conceptually useful; exact source set is blocked by F-04. |
+| **Item** | One piece of content from a Source. | Conceptually useful. |
+| **Lane A Placement** | An Item present in the current-awareness surface. | Lane A expiry itself is confirmed by D-02; exact cadence / timing remain assumption-dependent (A-02, A-03). |
+| **Keep / Favorite gesture** | The single gesture discussed for signaling that an Item matters. | Name unresolved. Promotion into Lane B depends on proposed D-07. |
+| **Lane B Entry** | An Item in the deliberate-study surface, potentially with notes / done state. | Exact entry behavior, persistence details, and cap depend on proposed decisions including D-08. |
+| **Interest Profile** | A readable / editable statement of what Barbara cares about. | Depends on proposed D-10 and may be unnecessary if A-07 fails. |
+| **Relevance Judgment** | A relevance result plus a human-readable reason. | Depends on proposed D-10 / D-11 and on enough volume existing to justify prioritisation (A-07). |
+| **Expiry Record** | A record of what left Lane A without being kept. | Candidate evidence mechanism for testing A-01; not independently confirmed as a requirement. |
+| **Related Suggestion** | Additional material associated with an item selected for deeper study. | Related content is confirmed in scope by D-05; confinement to Lane B depends on proposed D-06. |
 
-Two relationships carry design weight:
+Two relationships are currently part of the working design but remain conditional:
 
-- **Keep is the only path from Lane A to Lane B.** One-directional.
-- **Related Suggestion attaches only to Shelf Entry.** If it can attach to a Lane A Placement, D-06 has been violated.
+- **Lane A → Lane B promotion** depends on D-07 being confirmed.
+- **Related suggestions only in Lane B** depends on D-06 being confirmed.
 
 ---
 
@@ -230,7 +240,7 @@ Carried forward because they should inform product decisions, not just engineeri
 
 - **It becomes a fourth place not to read.** Three surfaces already go unread. This is the default outcome for a project like this. The expiry design and the arrives-not-fetched decision are the mitigations.
 - **The prioritisation layer is theater.** Plausible reasons attached to arbitrary ordering are indistinguishable from real relevance by inspection. D-11 exists for this.
-- **Building it replaces reading.** The sharpest risk and specific to Barbara, who enjoys building. The project can succeed completely and still fail G-01. Any plan that puts a long build before a first working delivery is making this risk worse.
+- **Building it replaces reading.** The sharpest risk and specific to Barbara, who enjoys building. The project can succeed technically and still fail the actual goal of reading more. Any plan that puts a long build before a first working delivery is making this risk worse.
 
 ---
 
@@ -238,8 +248,8 @@ Carried forward because they should inform product decisions, not just engineeri
 
 Not architecture. In order:
 
-1. Get the answer to §7 question 1. Nothing downstream is decidable without it.
-2. Get answers to §7 questions 2 and 3 from Barbara directly. Both are cheap and both change scope.
-3. Convert the `Proposed` decisions in §4 into `Confirmed` or `Rejected` by putting them to her. Six of thirteen decisions are currently unratified.
+1. Resolve unresolved question 1: what is actually arriving at `dagny099@gmail.com`? Nothing downstream is decidable without it.
+2. Resolve unresolved questions 2 and 3 with Barbara directly. Both are cheap and both change scope.
+3. Put the `Proposed` decisions in the decision ledger to Barbara for explicit confirmation or rejection. **Seven of thirteen decisions are currently unratified.**
 
 Only then does architecture become a sensible next step.

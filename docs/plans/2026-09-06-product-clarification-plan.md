@@ -1,9 +1,9 @@
 # Product clarification plan
 
 **Created** 6 Sep 2026
-**Input** `docs/product-brief.md` v1.5
-**Status** Proposed. Not reviewed. Not adjudicated.
-**Scope** Product clarification and evidence gathering only. This plan does not design architecture and must not be read as authorising it.
+**Input** `docs/product-brief.md` v1.6
+**Status** Revised 6 Sep 2026 after Barbara realigned the session's goal. Not reviewed. Not adjudicated.
+**Scope** Get a usable deliverable into her hands, settle the logic and the design behind it, and leave it in a state another session or harness can make pretty. Architecture stays out of scope — no storage design, no pipeline, no vendor selection.
 
 ---
 
@@ -13,26 +13,32 @@ Every decision in the ledger is now `Confirmed` — nineteen of nineteen. That i
 
 Five of the eight original unresolved questions are closed. The remaining open items are cheap, with one exception: D-11 is now ratified, which means a hand-labelled evaluation set has to exist before a prioritisation layer does. That is the longest lead-time item in the project and nothing else depends on it, so it should start early and run in parallel.
 
-The sharpest risk in the brief is unchanged and unaddressed: Section 9's *"building it replaces reading."* Every step below is ordered to attack that risk first.
+The sharpest risk in the brief is Section 9's *"building it replaces reading."* Barbara's own instinct — ship something usable immediately, keep the build small — is a better answer to it than a research programme was, which is why this plan was reordered around a working deliverable rather than a study.
+
+**Barbara's stated goal for this session, in her words:** *"I want to get to something I can use as soon as possible, and I want to hammer out the logic and a decent design here, so that in another session or harness, I can make it pretty."* Everything below serves that.
 
 ---
 
-## Phase 0 — Manual pilot (start now, runs 3 weeks)
+## Phase 0 — Weekly delivery, produced for her (running)
 
-**Do this before anything else, and do not wait for the other phases.**
+> **Rewritten 6 Sep 2026.** The original Phase 0 had Barbara hand-picking the five items herself. That was wrong: it made her do the exact job the system exists to do, and she said so. **Claude picks; she reads.** Same evidence, none of the labour — and a better test, because it exercises the selection as well as the container.
+>
+> It also dissolves the phase. There is no separate manual pilot: the deliverable *is* the pilot, and the measurement is built into it. `prototype/current-depth.html` records keep and done timestamps, so D-15 accrues from ordinary use.
 
-Barbara hand-picks 5 items each delivery from her existing mail, writes them into a plain text file or note, and lives with the design as specified: keep promotes to a second list capped at 7; "less like this" removes and is noted; nothing is marked read; items not kept are struck out after the expiry window.
+Each week Claude produces a delivery: five items chosen from her subscribed sources under D-18, with the dropped material disclosed under D-19. Barbara reads it, keeps what matters, finishes what she keeps. Nothing else is asked of her.
 
 Why this comes first:
 
-- It is the **only direct mitigation** for the Section 9 risk. A working paper version means the project has already delivered reading before a line of code exists.
+- It is the **only direct mitigation** for the Section 9 risk. Something usable exists now, so the project has delivered reading before any system was built.
 - It tests **A-01** (does expiry suit her, or does she keep wishing she still had something), **A-02 / A-03** (is the cadence and window right — living with it answers this better than choosing in the abstract), **A-08** (will she actually mark done), **A-09** (does hiding turn Lane A into a surface she clears) and **D-15** (is a 14-day median keep-to-done realistic).
 - It exercises **D-18's cap of 5** against reality. If 5 feels starved or bloated, that is far cheaper to learn now.
 - It produces the first real **Completion Record** (D-17), which is the encouragement artifact.
 
-What to record, minimally: for each item, when it was surfaced, whether it was kept, when it was marked done. That is enough for D-15 and the diagnostics. What was dropped unseen matters too (D-19) but Phase 2 handles that properly.
+The page records this by itself: surfaced, kept, done, and each "less like this" signal. That is enough for D-15 and for all three diagnostics. D-19's dropped material is disclosed in the delivery rather than hidden.
 
-**Exit condition:** three delivery cycles completed, or Barbara abandons it — which is itself the most valuable finding this project could produce and must be recorded rather than quietly retried.
+**Exit condition:** three delivery cycles completed, or Barbara stops opening them — which is itself the most valuable finding this project could produce and must be recorded rather than quietly retried.
+
+**Open question for delivery 002 onward:** how the delivery reaches her. Right now it is a page she opens. D-09 says Lane A should arrive rather than wait to be visited, which is unresolved question 4. Until that is settled the deliveries do not truly arrive, and the mitigation D-09 exists to provide is not in force.
 
 ---
 
@@ -58,11 +64,13 @@ D-11 is ratified, and it is exacting: any prioritisation layer must beat a chron
 
 Steps:
 
-1. **Capture a corpus while the connector is still switched.** One to two weeks of real arrivals from the `B@B` label, the DATAVERSITY senders, and the field-adjacent `SubStack` senders. This is time-sensitive only in the sense that reverting the connector means switching back to do it.
+1. ~~Capture a corpus.~~ **Done 6 Sep 2026** — `docs/evals/held-out-2026-08-24.md`, 32 field-adjacent candidates from the week of 24–31 Aug, deliberately a week Delivery 001 was *not* built from.
 2. **Label it by hand.** For each item: would this have been worth surfacing? Barbara labels; nobody else can.
 3. **Define the chronological baseline.** The most recent 5 items at delivery time. Trivial to compute, and it is the thing to beat.
 4. **Write the threshold down before looking at any ranker output.** For example: the ranked 5 must contain at least N of the labelled keep-worthy items, versus the baseline's M. The number is Barbara's call; the discipline of fixing it in advance is D-11's whole point.
-5. **Record it in `docs/evals/`.** That directory holds one empty tracked `README.md` today. This is what fills it.
+5. **Record results in `docs/evals/`.** The corpus and protocol are already there; the labels and the comparison go alongside them.
+
+This is a delete-or-keep test, **not** a training loop. Nothing learns from these labels. If a ranker cannot beat reverse-chronological, D-11 says remove the ranker.
 
 Removing the prioritisation layer counts as a good outcome. The eval is not there to justify building a ranker; it is there to find out whether one is warranted.
 

@@ -1,8 +1,8 @@
 # Reading Digest — Product Brief
 
-**Version** 1.5 · 6 Sep 2026
+**Version** 1.6 · 6 Sep 2026
 **Owner** Barbara (single user; this is a personal system, not a product)
-**Status** Pre-architecture. Handoff-ready for product clarification; nothing built. The brief contains confirmed decisions, proposed decisions, assumptions, and unresolved questions.
+**Status** Pre-architecture, but no longer nothing-built: Delivery 001 is running at `prototype/current-depth.html`. Every decision in the ledger is Confirmed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation.
 
 ---
 
@@ -20,11 +20,17 @@ Two conventions matter:
 
 ### Out of scope for the next work
 
-Explicitly requested by Barbara, and binding on you:
+> **Superseded in part, 6 Sep 2026.** Barbara has explicitly moved the project out of pure product clarification. Her words: *"I want to get to something I can use as soon as possible, and I want to hammer out the logic and a decent design here, so that in another session or harness, I can make it pretty."*
+>
+> **Building a working deliverable is now in scope.** The first one exists: `prototype/current-depth.html` — Delivery 001, five real items, the keep gesture, the seven-slot shelf and the D-15 clock. It is a hand-made artifact, not an architecture: no storage design, pipeline or vendor has been chosen or implied by it.
+>
+> Two restrictions still bind: **no architecture**, which remains a separate and unauthorised phase, and **no inventing answers** to unresolved questions.
 
-- Do not design the technical architecture. No storage design, no pipeline topology, no tool or vendor selection.
-- Do not implement anything.
-- Do not fill gaps with new product ideas. Where this brief says a question is unresolved, it is unresolved, and inventing an answer destroys the record of what was actually decided.
+Originally requested by Barbara, retained for the record:
+
+- Do not design the technical architecture. No storage design, no pipeline topology, no tool or vendor selection. **Still binding.**
+- ~~Do not implement anything.~~ **Retired 6 Sep 2026.**
+- Do not fill gaps with new product ideas. Where this brief says a question is unresolved, it is unresolved, and inventing an answer destroys the record of what was actually decided. **Still binding.**
 
 Earlier working documents exist outside this repository, but they are **not required** for this handoff. Do not treat their absence as missing project state. This brief contains the product information needed for the next work; if an external document is later added to the repo, treat it as supplemental unless explicitly designated authoritative.
 
@@ -99,6 +105,8 @@ The D-04 deliverable. This is what she is actually subscribed to, not a proposed
 | HackerNoon | `accounts@hackernoon.com` | Near-daily |
 | Academia.edu | `updates@academia-mail.com` | Near-daily |
 | Maven | `maven@list.maven.com` | Intermittent, course marketing |
+| **Juan Sequeda** (data.world) | `juansequeda@substack.com` | ~2 per week | **Added v1.6.** Knowledge graphs, ontologies, data products, data governance. Delivers to `barbs@balex.com` under `B@B`. The most on-field enterprise-data-management source found so far |
+| **Beyond Euclid** | `beyondeuclid@substack.com` | Weekly | **Added v1.6.** Mathematics and science curation |
 
 **Added in v1.4, after the F-06 retraction.** These arrive at `barbs@balex.com` or `bhs@csail.mit.edu`, mostly under the `B@B` label, which is why the first pass missed them:
 

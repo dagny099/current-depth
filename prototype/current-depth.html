@@ -1,0 +1,935 @@
+<title>Current Depth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+:root {
+  --ground: #eef1f0;
+  --surface: #fafbfa;
+  --surface-sunk: #e6eae8;
+  --ink: #141a19;
+  --ink-soft: #47524e;
+  --ink-faint: #78837e;
+  --rule: #d3dad7;
+  --rule-strong: #b9c3bf;
+  --accent: #2f7d6e;
+  --accent-ink: #1d564b;
+  --accent-on: #ffffff;
+  --accent-wash: #dcebe7;
+  --warn: #8a6a2f;
+  --shadow: 0 1px 2px rgba(20, 26, 25, .06);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #101413;
+    --surface: #171d1b;
+    --surface-sunk: #121716;
+    --ink: #e6ece9;
+    --ink-soft: #a3aeaa;
+    --ink-faint: #77827e;
+    --rule: #29322f;
+    --rule-strong: #3a4541;
+    --accent: #56ab99;
+    --accent-ink: #8fd0c1;
+    --accent-on: #0d1211;
+    --accent-wash: #1a2a27;
+    --warn: #c2a066;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #101413;
+  --surface: #171d1b;
+  --surface-sunk: #121716;
+  --ink: #e6ece9;
+  --ink-soft: #a3aeaa;
+  --ink-faint: #77827e;
+  --rule: #29322f;
+  --rule-strong: #3a4541;
+  --accent: #56ab99;
+  --accent-ink: #8fd0c1;
+  --accent-on: #0d1211;
+  --accent-wash: #1a2a27;
+  --warn: #c2a066;
+  --shadow: 0 1px 2px rgba(0, 0, 0, .3);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 32px 24px 96px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ---------- masthead ---------- */
+
+.masthead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px 32px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--rule-strong);
+}
+.masthead h1 {
+  margin: 0;
+  font-family: Newsreader, Georgia, serif;
+  font-size: 34px;
+  font-weight: 500;
+  letter-spacing: -.015em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+.masthead .sub {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  max-width: 54ch;
+}
+.stamp {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--ink-faint);
+  text-align: right;
+  line-height: 1.7;
+  font-variant-numeric: tabular-nums;
+}
+.stamp b { color: var(--ink-soft); font-weight: 500; }
+
+/* ---------- measurement strip ---------- */
+
+.gauges {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.gauge {
+  padding: 12px 16px;
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.gauge:last-child { border-right: 0; }
+.gauge .k {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  color: var(--ink-faint);
+  font-weight: 500;
+}
+.gauge .v {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 21px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.gauge .n { font-size: 11.5px; color: var(--ink-faint); }
+.gauge.target .v { color: var(--accent-ink); }
+
+/* ---------- lanes ---------- */
+
+.lanes {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .lanes { grid-template-columns: minmax(0, 1fr); gap: 44px; }
+}
+
+.lane-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--rule-strong);
+}
+.lane-head h2 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--ink-soft);
+}
+.lane-head .count {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+.lane-note {
+  margin: 0 0 18px;
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  line-height: 1.55;
+}
+
+/* ---------- lane A items ---------- */
+
+.stack { display: flex; flex-direction: column; }
+
+.item {
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  gap: 0 14px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.item:first-child { padding-top: 4px; }
+.item .rank {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--ink-faint);
+  padding-top: 5px;
+  font-variant-numeric: tabular-nums;
+}
+.item .src {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--ink-faint);
+  font-weight: 500;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+}
+.item .src .dot { color: var(--rule-strong); }
+.item .src .kept-tag { color: var(--accent-ink); }
+.item h3 {
+  margin: 5px 0 0;
+  font-family: Newsreader, Georgia, serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.28;
+  letter-spacing: -.005em;
+  text-wrap: balance;
+}
+.item .why {
+  margin: 8px 0 0;
+  color: var(--ink-soft);
+  font-size: 13.5px;
+  line-height: 1.55;
+  max-width: 62ch;
+}
+.item .why b { color: var(--ink); font-weight: 500; }
+.item .row {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.item.gone { opacity: .42; }
+.item.gone h3 { text-decoration: line-through; text-decoration-thickness: 1px; }
+
+.expiry {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+  margin-left: auto;
+}
+
+/* ---------- controls ---------- */
+
+button {
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 5px 12px;
+  border: 1px solid var(--rule-strong);
+  background: var(--surface);
+  color: var(--ink-soft);
+  transition: background .12s, border-color .12s, color .12s;
+}
+button:hover:not(:disabled) { border-color: var(--ink-faint); color: var(--ink); }
+button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+button:disabled { opacity: .4; cursor: not-allowed; }
+button.keep {
+  border-color: var(--accent);
+  color: var(--accent-ink);
+  background: var(--accent-wash);
+}
+button.keep:hover:not(:disabled) {
+  background: var(--accent);
+  color: var(--accent-on);
+  border-color: var(--accent);
+}
+button.link {
+  border: 0;
+  background: none;
+  padding: 5px 2px;
+  color: var(--ink-faint);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--rule-strong);
+}
+button.link:hover:not(:disabled) { color: var(--ink); }
+a.gmail {
+  font-size: 12.5px;
+  color: var(--ink-faint);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--rule-strong);
+  padding: 5px 2px;
+}
+a.gmail:hover { color: var(--ink); }
+a.gmail:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---------- lane B shelf ---------- */
+
+.shelf { display: flex; flex-direction: column; gap: 6px; }
+.slot {
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--surface);
+  padding: 11px 13px;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 0 10px;
+  box-shadow: var(--shadow);
+}
+.slot.empty {
+  background: none;
+  border-style: dashed;
+  border-color: var(--rule);
+  box-shadow: none;
+  min-height: 46px;
+  align-items: center;
+}
+.slot .n {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--ink-faint);
+  padding-top: 2px;
+  font-variant-numeric: tabular-nums;
+}
+.slot .empty-label {
+  font-size: 12px;
+  color: var(--ink-faint);
+  font-style: italic;
+  font-family: Newsreader, Georgia, serif;
+}
+.slot h4 {
+  margin: 0;
+  font-family: Newsreader, Georgia, serif;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+.slot .meta {
+  margin-top: 3px;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+.slot .row { margin-top: 9px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.shelf-full {
+  margin-top: 10px;
+  font-size: 12.5px;
+  color: var(--warn);
+  line-height: 1.5;
+}
+
+/* ---------- completion record ---------- */
+
+.record { margin-top: 34px; }
+.record ol { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.record li {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+  font-size: 13.5px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid var(--rule);
+}
+.record li:last-child { border-bottom: 0; }
+.record .t { font-family: Newsreader, Georgia, serif; font-size: 15px; line-height: 1.3; }
+.record .d {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  margin-left: auto;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.empty-record {
+  font-family: Newsreader, Georgia, serif;
+  font-style: italic;
+  color: var(--ink-faint);
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---------- dropped disclosure ---------- */
+
+.dropped {
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--surface-sunk);
+  padding: 18px 20px;
+}
+.dropped h2 {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--ink-soft);
+}
+.dropped p.lead {
+  margin: 0 0 14px;
+  font-size: 13px;
+  color: var(--ink-faint);
+  max-width: 70ch;
+  line-height: 1.55;
+}
+.dropped dl {
+  margin: 0;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 7px 18px;
+  font-size: 13px;
+  align-items: baseline;
+}
+.dropped dt {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--ink);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.dropped dd { margin: 0; color: var(--ink-soft); line-height: 1.5; }
+.dropped dd em { color: var(--ink-faint); font-style: normal; }
+
+code {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: .88em;
+  background: var(--surface);
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+/* ---------- footer ---------- */
+
+.foot {
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+  font-size: 12px;
+  color: var(--ink-faint);
+  line-height: 1.6;
+  max-width: 78ch;
+}
+.foot p { margin: 0 0 8px; }
+.foot p:last-child { margin-bottom: 0; }
+.foot strong { color: var(--ink-soft); font-weight: 600; }
+.foot code { background: var(--surface-sunk); }
+
+.banner {
+  border: 1px solid var(--rule-strong);
+  border-radius: 3px;
+  padding: 11px 14px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  background: var(--surface);
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div>
+      <h1>Current Depth</h1>
+      <p class="sub">Five things worth knowing about this week. Ignore it and nothing happens — everything here clears itself.</p>
+    </div>
+    <div class="stamp">
+      DELIVERY <b>001</b><br>
+      <b>6 Sep 2026</b> · window 10 days<br>
+      drawn from <b>~202</b> candidates
+    </div>
+  </header>
+
+  <div class="banner" id="dbBanner" hidden></div>
+
+  <section class="gauges" aria-label="Measurements">
+    <div class="gauge target">
+      <span class="k">Median keep → done</span>
+      <span class="v" id="gLatency">—</span>
+      <span class="n" id="gLatencyNote">target 14 days · needs 3 completions</span>
+    </div>
+    <div class="gauge">
+      <span class="k">Kept</span>
+      <span class="v" id="gKept">0</span>
+      <span class="n">promoted to the shelf</span>
+    </div>
+    <div class="gauge">
+      <span class="k">Finished</span>
+      <span class="v" id="gDone">0</span>
+      <span class="n">all time</span>
+    </div>
+    <div class="gauge">
+      <span class="k">Less like this : kept</span>
+      <span class="v" id="gRatio">0 : 0</span>
+      <span class="n">watch if the left side runs away</span>
+    </div>
+  </section>
+
+  <div class="lanes">
+
+    <section>
+      <div class="lane-head">
+        <h2>Lane A — this week</h2>
+        <span class="count" id="laneACount">5 of 5 live</span>
+      </div>
+      <p class="lane-note">Capped at five. Items clear themselves after ten days whether or not you touch them — there is nothing to mark read and nothing to clear.</p>
+      <div class="stack" id="laneA"></div>
+    </section>
+
+    <section>
+      <div class="lane-head">
+        <h2>Lane B — the shelf</h2>
+        <span class="count" id="laneBCount">0 of 7</span>
+      </div>
+      <p class="lane-note">No expiry, no schedule. Seven slots, and that is the whole mechanism: when it is full, something has to go before something new arrives.</p>
+      <div class="shelf" id="laneB"></div>
+      <p class="shelf-full" id="shelfFull" hidden>The shelf is full. Finish or remove something to make room.</p>
+
+      <div class="record">
+        <div class="lane-head">
+          <h2>Finished</h2>
+          <span class="count" id="recCount">0</span>
+        </div>
+        <p class="empty-record" id="recEmpty">Nothing yet. What you finish stays here instead of disappearing.</p>
+        <ol id="record"></ol>
+      </div>
+    </section>
+
+  </div>
+
+  <section class="dropped">
+    <h2>What this delivery dropped</h2>
+    <p class="lead">Roughly 197 candidate items did not make it. Recorded rather than hidden, so the picking can be argued with later.</p>
+    <dl>
+      <dt>~9 items</dt>
+      <dd><em>GPT-6 Astra and Claude Fable 5.1 launch coverage</em> — the week's dominant story across AINews, Ken Huang and Data Points. Perishable, heavily duplicated, and you will hear it anyway.</dd>
+      <dt>25 items</dt>
+      <dd><em>LinkedIn job alerts, invitations and profile views</em> — all filed under <code>B@B</code> alongside the real newsletters.</dd>
+      <dt>5 items</dt>
+      <dd><em>DATAVERSITY</em> — webinar, conference and CDMP-certification promotion. Zero editorial this week, which is assumption A-05 behaving exactly as written.</dd>
+      <dt>~14 items</dt>
+      <dd><em>Outside the three fields</em> — military analysis (7, the single highest-volume sender you subscribe to), cooking, games, fiction, public health.</dd>
+      <dt>~144 items</dt>
+      <dd><em>Everything else</em> — retail, banking, Nextdoor, Quora, Glassdoor, Indeed and the rest of the general inbox.</dd>
+    </dl>
+  </section>
+
+  <footer class="foot">
+    <p><strong>How these five were chosen.</strong> Picked by Claude from subject lines and preview text across your subscribed sources for 31 Aug – 6 Sep, not from the full article text. Balanced across your three fields rather than letting the week's biggest story take every slot. Duplicates across your six delivery addresses were collapsed — <em>Using Coding Agents</em> arrived twice.</p>
+    <p><strong>Do not treat this as the evaluation set.</strong> Claude picked these, so Claude cannot also grade them. The D-11 test needs a week you have not seen a delivery for, labelled cold.</p>
+    <p>Links open the original in Gmail and assume <code>dagny099@gmail.com</code> is your first signed-in account.</p>
+  </footer>
+
+</div>
+
+<script>
+var ITEMS = [
+  {
+    id: "a1",
+    source: "Ken Huang",
+    date: "2 Sep",
+    title: "The Harness Advantage in Autonomous Red Teaming: Why Frontier LLMs Alone Fail Offensive Security",
+    why: "An empirical eight-model benchmark on <b>agent harness architecture</b>, model over-refusal and token efficiency. This is the exact question your own repository was set up to ask — model versus harness — answered with somebody else's numbers.",
+    thread: "1a0620c7b081a9fe"
+  },
+  {
+    id: "a2",
+    source: "The Batch · DeepLearning.AI",
+    date: "4 Sep",
+    title: "Using Coding Agents, The Most Rapidly-Evolving Core AI Engineering Skill",
+    why: "Your stated quality anchor, and this week's issue lands directly on the skill you are building. Arrived twice, once to each of two addresses; collapsed here.",
+    thread: "1a06dd7fe21cb3a2"
+  },
+  {
+    id: "a3",
+    source: "LinkedIn · metadata & ontology",
+    date: "5 Sep",
+    title: "The Context Game — Knowledge Management and the Great Unbundling",
+    why: "The <b>enterprise data management</b> side, from the stream that nearly got dropped from your source list altogether. Knowledge management set against context engineering.",
+    thread: "1a06efa01d64310d"
+  },
+  {
+    id: "a4",
+    source: "Understanding AI",
+    date: "2 Sep",
+    title: "How Google taught LLMs to control robots and started a robotics boom",
+    why: "Vision-language-action models explained with a minimum of math and jargon. The one item here written to <b>teach</b> rather than report — the likeliest shelf candidate.",
+    thread: "1a062f1e14e5a967"
+  },
+  {
+    id: "a5",
+    source: "Latent Space · swyx",
+    date: "1 Sep",
+    title: "PRs NOT Welcome: How Top AI Open Source Projects Are Managing Thousands of Contributors",
+    why: "Vercel's AI SDK, Astro and tldraw replacing drive-by contributions with teams of agents applying fixes. Practice rather than prediction.",
+    thread: "1a05dc2ec085478e"
+  }
+];
+
+var SURFACED = "2026-09-06";
+var WINDOW_DAYS = 10;
+var CAP = 7;
+var DAY = 86400000;
+
+var state = { laneA: {}, laneB: [], completed: [], signals: [] };
+var db = null;
+var saving = false;
+var mode = "pending";
+var LS_KEY = "current-depth-v1";
+
+function $(id) { return document.getElementById(id); }
+function gmail(t) { return "https://mail.google.com/mail/u/0/#all/" + t; }
+function esc(s) {
+  return String(s).replace(/[<>&]/g, function (c) {
+    return c === "<" ? "&lt;" : c === ">" ? "&gt;" : "&amp;";
+  });
+}
+function days(a, b) { return Math.round((new Date(b) - new Date(a)) / DAY); }
+
+function daysLeft() {
+  var end = new Date(SURFACED).getTime() + WINDOW_DAYS * DAY;
+  return Math.max(0, Math.ceil((end - Date.now()) / DAY));
+}
+
+function statusOf(id) {
+  return (state.laneA[id] && state.laneA[id].status) || "live";
+}
+
+function fmt(iso) {
+  return new Date(iso).toLocaleDateString(undefined, { day: "numeric", month: "short" });
+}
+
+function median(ns) {
+  if (!ns.length) return null;
+  var s = ns.slice().sort(function (a, b) { return a - b; });
+  var m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : Math.round((s[m - 1] + s[m]) / 2);
+}
+
+function renderLaneA() {
+  var host = $("laneA");
+  host.innerHTML = "";
+  var live = 0;
+
+  ITEMS.forEach(function (it, i) {
+    var st = statusOf(it.id);
+    if (st === "live") live++;
+
+    var el = document.createElement("article");
+    el.className = "item" + (st === "live" ? "" : " gone");
+
+    var rank = document.createElement("div");
+    rank.className = "rank";
+    rank.textContent = String(i + 1);
+
+    var body = document.createElement("div");
+
+    var label = "";
+    if (st === "kept") label = '<span class="dot">·</span><span class="kept-tag">on the shelf</span>';
+    if (st === "hidden") label = '<span class="dot">·</span><span>less like this</span>';
+
+    body.innerHTML =
+      '<div class="src">' + esc(it.source) + '<span class="dot">·</span>' + esc(it.date) + label + '</div>' +
+      '<h3>' + esc(it.title) + '</h3>' +
+      '<p class="why">' + it.why + '</p>';
+
+    var row = document.createElement("div");
+    row.className = "row";
+
+    if (st === "live") {
+      var keep = document.createElement("button");
+      keep.className = "keep";
+      keep.textContent = "Keep";
+      keep.onclick = function () { doKeep(it); };
+
+      var hide = document.createElement("button");
+      hide.className = "link";
+      hide.textContent = "Less like this";
+      hide.onclick = function () { doHide(it); };
+
+      if (state.laneB.length >= CAP) {
+        keep.disabled = true;
+        keep.title = "The shelf is full — finish or remove something first";
+      }
+      if (mode === "pending") { keep.disabled = true; hide.disabled = true; }
+      row.appendChild(keep);
+      row.appendChild(hide);
+    }
+
+    var a = document.createElement("a");
+    a.className = "gmail";
+    a.href = gmail(it.thread);
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.textContent = "Open in Gmail";
+    row.appendChild(a);
+
+    if (st === "live") {
+      var ex = document.createElement("span");
+      ex.className = "expiry";
+      var d = daysLeft();
+      ex.textContent = d === 0 ? "clears today" : "clears in " + d + "d";
+      row.appendChild(ex);
+    }
+
+    body.appendChild(row);
+    el.appendChild(rank);
+    el.appendChild(body);
+    host.appendChild(el);
+  });
+
+  $("laneACount").textContent = live + " of " + ITEMS.length + " live";
+}
+
+function renderLaneB() {
+  var host = $("laneB");
+  host.innerHTML = "";
+
+  for (var i = 0; i < CAP; i++) {
+    var entry = state.laneB[i];
+    var slot = document.createElement("div");
+    slot.className = "slot" + (entry ? "" : " empty");
+
+    var n = document.createElement("div");
+    n.className = "n";
+    n.textContent = String(i + 1);
+    slot.appendChild(n);
+
+    var body = document.createElement("div");
+    if (!entry) {
+      body.innerHTML = '<span class="empty-label">open slot</span>';
+    } else {
+      var held = days(entry.keptAt, new Date().toISOString());
+      body.innerHTML =
+        '<h4>' + esc(entry.title) + '</h4>' +
+        '<div class="meta">' + esc(entry.source) + ' · kept ' + fmt(entry.keptAt) +
+        ' · ' + (held === 0 ? "today" : held + "d on the shelf") + '</div>';
+
+      var row = document.createElement("div");
+      row.className = "row";
+
+      var done = document.createElement("button");
+      done.className = "keep";
+      done.textContent = "Done";
+      done.onclick = (function (e) { return function () { doDone(e); }; })(entry);
+
+      var rm = document.createElement("button");
+      rm.className = "link";
+      rm.textContent = "Remove";
+      rm.onclick = (function (e) { return function () { doRemove(e); }; })(entry);
+
+      if (mode === "pending") { done.disabled = true; rm.disabled = true; }
+      row.appendChild(done);
+      row.appendChild(rm);
+
+      if (entry.thread) {
+        var a2 = document.createElement("a");
+        a2.className = "gmail";
+        a2.href = gmail(entry.thread);
+        a2.target = "_blank";
+        a2.rel = "noopener noreferrer";
+        a2.textContent = "Open";
+        row.appendChild(a2);
+      }
+      body.appendChild(row);
+    }
+    slot.appendChild(body);
+    host.appendChild(slot);
+  }
+
+  $("laneBCount").textContent = state.laneB.length + " of " + CAP;
+  $("shelfFull").hidden = state.laneB.length < CAP;
+}
+
+function renderRecord() {
+  var host = $("record");
+  host.innerHTML = "";
+  var done = state.completed;
+  $("recCount").textContent = String(done.length);
+  $("recEmpty").hidden = done.length > 0;
+
+  done.slice().reverse().forEach(function (e) {
+    var li = document.createElement("li");
+    var lat = days(e.keptAt, e.doneAt);
+    li.innerHTML =
+      '<span class="t">' + esc(e.title) + '</span>' +
+      '<span class="d">' + fmt(e.doneAt) + ' · ' + lat + 'd</span>';
+    host.appendChild(li);
+  });
+}
+
+function renderGauges() {
+  var lats = state.completed.map(function (e) { return days(e.keptAt, e.doneAt); });
+  var m = median(lats);
+  var enough = lats.length >= 3;
+
+  $("gLatency").textContent = enough ? m + " days" : "—";
+  if (enough) {
+    $("gLatencyNote").textContent = "target 14 days · " + (m <= 14 ? "holding" : "over");
+  } else {
+    var need = 3 - lats.length;
+    $("gLatencyNote").textContent = "target 14 days · needs " + need + " more completion" + (need === 1 ? "" : "s");
+  }
+
+  var kept = state.laneB.length + state.completed.length;
+  $("gKept").textContent = String(kept);
+  $("gDone").textContent = String(state.completed.length);
+  $("gRatio").textContent = state.signals.length + " : " + kept;
+}
+
+function render() {
+  renderLaneA();
+  renderLaneB();
+  renderRecord();
+  renderGauges();
+}
+
+function banner(msg) {
+  var b = $("dbBanner");
+  b.textContent = msg;
+  b.hidden = false;
+}
+
+function save() {
+  if (mode === "local") {
+    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); }
+    catch (e) { banner("Could not write to this browser's storage, so this change will be lost on reload."); }
+    return;
+  }
+  if (!db || saving) return;
+  saving = true;
+  db.doc("digest/state").set(JSON.parse(JSON.stringify(state))).catch(function (e) {
+    banner("That change could not be saved (" + (e && e.code ? e.code : "unknown") + "). Reload and try again.");
+  }).then(function () { saving = false; }, function () { saving = false; });
+}
+
+function doKeep(it) {
+  if (state.laneB.length >= CAP) return;
+  state.laneA[it.id] = { status: "kept" };
+  state.laneB.push({
+    id: it.id, title: it.title, source: it.source,
+    thread: it.thread, keptAt: new Date().toISOString()
+  });
+  render();
+  save();
+}
+
+function doHide(it) {
+  state.laneA[it.id] = { status: "hidden" };
+  state.signals.push({ source: it.source, at: new Date().toISOString() });
+  render();
+  save();
+}
+
+function doDone(entry) {
+  state.laneB = state.laneB.filter(function (e) { return e.id !== entry.id; });
+  state.completed.push({
+    id: entry.id, title: entry.title, source: entry.source,
+    keptAt: entry.keptAt, doneAt: new Date().toISOString()
+  });
+  render();
+  save();
+}
+
+function doRemove(entry) {
+  state.laneB = state.laneB.filter(function (e) { return e.id !== entry.id; });
+  if (state.laneA[entry.id]) state.laneA[entry.id] = { status: "hidden" };
+  render();
+  save();
+}
+
+render();
+
+var LOCAL_MSG = "Saved in this browser only. Published as an Artifact it syncs across your devices instead.";
+
+function goLocal() {
+  mode = "local";
+  try {
+    var raw = localStorage.getItem(LS_KEY);
+    if (raw) {
+      var d = JSON.parse(raw);
+      state = {
+        laneA: d.laneA || {},
+        laneB: Array.isArray(d.laneB) ? d.laneB : [],
+        completed: Array.isArray(d.completed) ? d.completed : [],
+        signals: Array.isArray(d.signals) ? d.signals : []
+      };
+    }
+  } catch (e) { /* private window, blocked storage: start empty */ }
+  banner(LOCAL_MSG);
+  render();
+}
+
+(function () {
+  var p;
+  try {
+    p = claude.use("db");
+  } catch (e) {
+    goLocal();
+    return;
+  }
+  Promise.resolve(p).then(function (handle) {
+    db = handle;
+    if (!db) { goLocal(); return; }
+    mode = "db";
+    db.doc("digest/state").onSnapshot(function (snap) {
+      if (snap.exists) {
+        var d = snap.data() || {};
+        state = {
+          laneA: d.laneA || {},
+          laneB: Array.isArray(d.laneB) ? d.laneB : [],
+          completed: Array.isArray(d.completed) ? d.completed : [],
+          signals: Array.isArray(d.signals) ? d.signals : []
+        };
+      }
+      render();
+    }, function (err) {
+      banner("Live updates stopped (" + err.code + "). Reload to reconnect.");
+    });
+  }, function () { goLocal(); });
+})();
+</script>

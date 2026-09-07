@@ -170,6 +170,34 @@ body {
 
 .readings { display: flex; flex-direction: column; }
 
+/* Arrival marker: D-09 says Lane A arrives rather than waiting to be visited,
+   so the page says when each batch landed and when it goes. */
+.arrival {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px 16px;
+  margin-top: 26px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid var(--rule);
+  max-width: 64ch;
+}
+.arrival:first-child { margin-top: 14px; }
+.arrival-issue {
+  font-size: 10.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--accent-ink);
+}
+.arrival-when {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 10.5px;
+  color: var(--ink-faint);
+  font-variant-numeric: tabular-nums;
+}
+
 .reading {
   padding: 22px 0;
   border-bottom: 1px solid var(--rule);
@@ -224,9 +252,6 @@ body {
   align-items: center;
   gap: 10px;
 }
-
-.settled { opacity: .45; }
-.settled h3 { text-decoration: line-through; text-decoration-thickness: 1px; }
 
 .cleared {
   margin: 22px 0 0;
@@ -544,26 +569,12 @@ code {
   </div>
 
   <details class="dropped">
-    <summary>What this delivery left out</summary>
-    <div class="dropped-body">
-      <p>Roughly 197 candidate items did not make it. Recorded rather than hidden, so the picking can be argued with later.</p>
-      <dl>
-        <dt>~9 items</dt>
-        <dd><em>GPT-6 Astra and Claude Fable 5.1 launch coverage</em> &mdash; the week's dominant story across AINews, Ken Huang and Data Points. Perishable, heavily duplicated, and you will hear it anyway.</dd>
-        <dt>25 items</dt>
-        <dd><em>LinkedIn job alerts, invitations and profile views</em> &mdash; all filed under <code>B@B</code> alongside the real newsletters.</dd>
-        <dt>5 items</dt>
-        <dd><em>DATAVERSITY</em> &mdash; webinar, conference and CDMP-certification promotion. Zero editorial this week.</dd>
-        <dt>~14 items</dt>
-        <dd><em>Outside the three fields</em> &mdash; military analysis (7, the single highest-volume sender you subscribe to), cooking, games, fiction, public health.</dd>
-        <dt>~144 items</dt>
-        <dd><em>Everything else</em> &mdash; retail, banking, Nextdoor, Quora, Glassdoor, Indeed and the rest of the general inbox.</dd>
-      </dl>
-    </div>
+    <summary id="droppedSummary"></summary>
+    <div class="dropped-body" id="droppedBody"></div>
   </details>
 
   <footer class="colophon">
-    <p><strong>How these were chosen.</strong> Picked by Claude from subject lines and preview text across your subscribed sources for 31 Aug &ndash; 6 Sep, not from full article text. Balanced across your three fields rather than letting the week's biggest story take every slot. Duplicates across your six delivery addresses were collapsed &mdash; <em>Using Coding Agents</em> arrived twice.</p>
+    <p id="chosenNote"></p>
     <p id="linkNote"></p>
     <div class="measures" id="measures"></div>
   </footer>
@@ -571,53 +582,136 @@ code {
 </div>
 
 <script>
-var ITEMS = [
+// Deliveries stay on the page until their own ten-day window runs out, which is
+// what D-02's overlap is for: nothing should vanish between one arrival and the
+// next. Each delivery carries its own surfaced date, so expiry is per item.
+var DELIVERIES = [
   {
-    id: "a1",
-    source: "Ken Huang",
-    date: "2 Sep",
-    title: "The Harness Advantage in Autonomous Red Teaming: Why Frontier LLMs Alone Fail Offensive Security",
-    why: "An empirical eight-model benchmark on <b>agent harness architecture</b>, model over-refusal and token efficiency. This is the exact question your own repository was set up to ask &mdash; model versus harness &mdash; answered with somebody else's numbers.",
-    thread: "1a0620c7b081a9fe"
+    issue: "002",
+    surfaced: "2026-09-07",
+    span: "6 – 7 Sep",
+    drawnFrom: 14,
+    dropped: [
+      ["4 items", "<em>A second Nate's, a second Ken Huang, and both Lenny's issues</em> — one per source, so a prolific week cannot take two slots. The Lenny's podcast is 79 minutes, which is a poor fit for a fourteen-day finish."],
+      ["1 item", "<em>Claude Code for Non-Coders — Christy Cunningham</em> — career and reinvention rather than the three fields."],
+      ["2 items", "<em>Academia.edu paper alerts</em> — machine-generated from your own publication history."],
+      ["1 item", "<em>DATAVERSITY — Data Pipeline Engineering Strategies</em> — webinar promotion, no editorial."],
+      ["1 item", "<em>HackerNoon, 6 Sep — Inside Vi</em> — the second HackerNoon digest in two days."]
+    ],
+    items: [
+      {
+        id: "b1",
+        source: "Juan Sequeda",
+        date: "7 Sep",
+        title: "Intelligence Without Action Is Just Overhead",
+        why: "Your most on-field <b>enterprise data management</b> source, on the failure mode where organisations collect data, run pilots, build dashboards and produce no decisions. Also the clearest thing you will read this month on governance as clarity rather than compliance theatre.",
+        url: "https://juansequeda.substack.com/p/intelligence-without-action-is-just",
+        thread: "1a07cc7e819d15dc",
+        text: "Tim Gasper and I have worked with Patrick McGarry since the early days of data.world. He has spent years watching organizations invest in data and AI and still fail to move. He started listing the challenges he kept seeing across customers. The list became the outline of this book, The Adaptive Organization. In this podcast episode, we covered a lot of ground: federal government, AI accountability, governance, open standards, and a framework that happens to spell CATALOG.\n\nIntelligence vs. action\n\nPatrick is really proud of his quote: “Intelligence without action is just overhead.” It is really an honest no-bs summary of the failure mode: organizations that collect data, run pilots, build dashboards, and produce no decisions.\n\nTech for tech's sake is why pilots fail. You lose sight of what you're trying to do. The outcome goes missing.\n\nThe federal government has a specific version of this problem: the gap between idea and deployed thing is long enough that the technology moves on. By the time the thing is built, the tech has shifted.\n\nOwnership and outcomes\n\nIf nobody owns the outcome, the outcome doesn't happen.\n\nThe question to ask at the start of any initiative: what are the missing outcomes? Not what is the neat tech.\n\nNew blood and tenured people both matter. You need fresh perspectives. And you also need institutional knowledge. Blending these is how organizations adapt.\n\nThe CATALOG Framework\n\nPatrick's framework for building an adaptive organization. Seven dimensions:\n\nC — Culture & Talent. Builds the behavioral foundation, incentives, and capabilities that reward evidence-based decision-making.\n\nA — Analytics & AI. Moves the organization to foresight by integrating into daily decisions.\n\nT — Technology & Architecture. Modernization so the organization can adapt.\n\nA — Alignment. Data and AI initiatives have to connect to organizational priorities and speak the language of strategy.\n\nL — Leadership & Governance. Governance embedded into workflows, not aspirational policy documents.\n\nO — Operations & Delivery. Co-ownership between builders and the users; this is what makes the deployments stick.\n\nG — Growth & Measurement. Metrics that drive adaptation instead of measuring the activity.\n\nGovernance as clarity, not bureaucracy\n\nGovernance doesn't have to be a dirty word or compliance theater. Lightweight governance provides clarity. With clarity, you can move fast with confidence.\n\nShort-term vs. long-term thinking shows up in how organizations design their change programs.\n\nThe trap: people work so hard to avoid governance that they end up working harder than if they'd just done it. If you're going to do it, do it right.\n\nOpen standards, vendor lock-in, and interoperability\n\nA lot of practitioners in the federal space have been burned. They were forced into a vendor, the wind changed direction, and they were forced into another one. That history is shaping how standards are being written now.\n\nThe DOD is starting to ask for graph and RDF standards specifically. Open standards are how you future-proof and preserve flexibility.\n\nPatrick's direct message to solution providers: stop building systems that own your customers' data. Design for interoperability. If you don't, your customers will eventually leave.\n\nStandards can harden the wrong thing. Rigidity in standards becomes harmful over time. The people writing standards need to think about long-term flexibility, not just near-term compliance. Standards that are too prescriptive can box you in when the environment shifts.\n\nFinal thought\n\n“How do I get AI ready?” is the wrong question. The right question: how do I make my organization accountable for AI?\n\nStart with the organization. Give people clear rules. Then empower them to act within those rules. That's what it actually means to operate at the pace of change right now."
+      },
+      {
+        id: "b2",
+        source: "HackerNoon · @mcsee",
+        date: "7 Sep",
+        title: "AI Coding Tip 034 — Stop Hoarding Rules in Your AGENTS.md",
+        why: "“Audit your AGENTS.md and skills on a schedule, or you keep paying context rent on rules the model has outgrown.” You rewrote yours today. Seven minutes, and the one item here that lands on work already in progress.",
+        thread: "1a07c9e3262f23e3"
+      },
+      {
+        id: "b3",
+        source: "Ken Huang",
+        date: "6 Sep",
+        title: "Chapter 2: The KV Cache Frontier — Latent Attention, Prefix Caching and Eviction",
+        why: "Deep <b>machine-learning systems</b> work: why memory rather than compute is now the wall, and the four architectural answers. The arithmetic on concurrency collapse is worth the read on its own — 340 streams down to 10 when contexts grow.",
+        url: "https://kenhuangus.substack.com/p/chapter-2-the-kv-cache-frontier-hybrid",
+        thread: "1a076dcac862b879",
+        text: "Architecting sub-millisecond KV retrieval, 93.3% latent memory compression, cross-layer weight sharing, and deterministic radix eviction for 1M+ token workloads. Chapter 2 of the 10-part series, The Physics & Engineering of Frontier LLM Inference.\n\nExecutive Summary: The 2026 KV Cache Crisis\n\nThe key-value cache represents the single largest dynamic memory consumer during autoregressive generation. To overcome the prohibitive memory footprint of standard Multi-Head Attention (MHA) and Grouped-Query Attention (GQA), modern architectures employ low-rank compression.\n\nIn the 2026 frontier of large language model inference, compute FLOPs are no longer the primary economic or structural barrier to scale. With the deployment of NVIDIA Blackwell B200 systems and custom ASIC accelerators, the operational bottleneck has decisively migrated to High-Bandwidth Memory capacity and memory bus saturation during the autoregressive generation phase.\n\nWhen serving frontier reasoning models, multi-turn coding agents, and 128k-to-1M token context windows, the static memory footprint of model weights is quickly eclipsed by the dynamic, explosive growth of the KV cache.\n\nConsider the stark arithmetic of a standard GQA model like Llama-3-70B (8 KV heads, 80 layers, 128 head dimension) in FP16:\n\nPer-token memory cost: each token requires 2 × 80 layers × 8 KV heads × 128 dim × 2 bytes = 327,680 bytes (327.68 KB) of VRAM.\n\nSingle-session 128k footprint: one active user stream processing a 128,000 token context window consumes 41.94 GB of pure KV cache VRAM.\n\nConcurrency collapse: on an 8× NVIDIA H100 (80GB) node offering 640 GB total VRAM, after allocating 140 GB for weights and workspaces, only ~450 GB remains for KV memory. In a 4k-token dialogue regime the cluster comfortably sustains 340+ concurrent streams. But the moment users submit 128k-token coding repositories or document analysis tasks, maximum batch concurrency violently collapses to just 10 concurrent streams — a 97% degradation in serving density.\n\nTo solve this economic wall, frontier labs have abandoned naive KV allocation in favour of four breakthroughs:\n\nHybrid Compressed Sparse Attention and Multi-Head Latent Attention. Pioneered by DeepSeek-V2 and V4, MLA compresses key and value projections into a shared 512-dimensional low-rank latent vector coupled with a 64-dimensional decoupled rotary position embedding, unlocking a 93.3% reduction in per-token KV footprint while maintaining the expressiveness of 128 attention heads.\n\nGlobal prefix caching and RadixAttention. Formalized in SGLang and productionized across frontier API gateways — such as Anthropic's five-minute prompt caching TTL — representing KV caches as dynamic radix trees where shared system prompts, codebase trees and few-shot examples are cached, reused and managed via least-recently-used eviction.\n\nCross-layer KV cache sharing (KVShare). Exploiting high cosine similarity and functional redundancy across intermediate layers in 60+ layer transformer topologies, reducing KV memory by a further 50% to 75%.\n\nDynamic attention sparsification and sink eviction. Leveraging StreamingLLM attention sinks, Heavy Hitter Oracle, and SnapKV observation clusters to maintain stable, bounded KV cache memory pools during infinite-horizon generation.\n\nThe chapter then works through the mathematical anatomy of MHA, MQA and GQA; the RoPE incompatibility problem and the decoupled RoPE solution; trie versus radix tree mechanics; anchor and follower layers for cross-layer sharing; the initial attention sink phenomenon; a runnable Python benchmarking suite; and production failure modes including radix tree fragmentation under high-frequency chat churn and numerical overflow in FP8/FP4 low-rank dequantization.\n\n[The remainder of the chapter — full derivations, CUDA kernels and sizing templates — is behind the publication's paywall.]"
+      },
+      {
+        id: "b4",
+        source: "Nate's Newsletter",
+        date: "6 Sep",
+        title: "Executive Briefing: How to Check Work You Didn't Watch Get Made",
+        why: "Directly on the problem you are living: judging finished work that embeds hundreds of decisions you never saw made. This is the review half of the harness question your repository exists to ask.",
+        url: "https://natesnewsletter.substack.com/p/gpt-6-astra-self-directed-agents",
+        thread: "1a0777eda8717d55",
+        text: "The machine used to wait for you. You decided what it would do and when, it did that, and it stopped. That was true for as long as there have been computers.\n\nAgents started to change that in 2025, when they could take a goal and work toward it, and for the past year I've been setting goals for Sol, Opus 5, GLM 5.3, and others and judging what came back. Setting the goal and judging the result has been my job for a while. What changed this week, when OpenAI shipped GPT-6 Astra, is everything in between. Computing is now self-directed: you can state a goal briefly and imprecisely, the machine runs for days without you and without derailing, and what you get back is finished work that embeds hundreds of decisions you never saw it make.\n\nWhich leaves you answerable for decisions you never made. Your job is catching the ones that went the wrong way before anyone else does.\n\nThis briefing covers:\n\nThe middle of your job disappears. What's left is a short specification at the front and a judgment call at the back.\n\nBig companies lose their middle too. The layer that existed to hold loose ends stops being necessary, and small firms get far more capable without it.\n\nYou are liable for what your agent agrees to. There is already a body of law covering people who act on your behalf, and it applies now to machines that do.\n\nThe last two percent of trust is worth trillions. Reliability decides what people actually hand over, and the distance between 98 and 100 percent is where the enterprise value sits.\n\n[The remaining three takeaways are behind the publication's paywall.]"
+      },
+      {
+        id: "b5",
+        source: "Beyond Euclid",
+        date: "7 Sep",
+        title: "Beyond Euclid #233 — fair elections are impossible, and a ten-year film of the sky",
+        why: "The one thing here that is not work. A proof that locality, proportionality and a fixed-size parliament cannot all hold at once — which is an impossibility result with the same shape as the ones you meet in evaluation design.",
+        url: "https://beyondeuclid.substack.com/p/beyond-euclid-233",
+        thread: "1a07d496120e8d64",
+        text: "Two mathematicians proved that a perfectly fair election is impossible, and that Germany's growing parliament is what that looks like in real life. A telescope in Chile started a movie that takes ten years to shoot and will photograph every point in the sky eight hundred times. In October, the people who look after the world's clocks will meet to decide whether to delete a second from time. Sea turtles are now born almost entirely female, because the sand decides. Cups sold as good for the planet drop twelve times more plastic into your coffee than the plastic ones. And a man in Taiwan proved his wife was cheating, won the case, and went to prison for it.\n\nThe Vera C. Rubin Observatory in Chile has begun shooting a ten-year movie of the sky. Using the world's largest digital camera, they take one frame every 40 seconds, and by the end of ten years they aim to have photographed every point in the sky 800 times. With this they plan to catch exploding stars, galaxies slowly changing shape, and comets shifting position from night to night. In the test runs, more than 11,000 asteroids nobody had ever seen were found in a month and a half. Ten terabytes of data comes down every night and all of it is open to everyone.\n\nThe name of this white marble cube sitting in a park in Madrid is the Monument to the 1978 Constitution, but what you are looking at is actually the shadow of a four-dimensional object. What do we do when we draw a cube on paper? We draw the front square and the back square and join the corners. Repeat the same trick one dimension up and bring a four-dimensional cube down to three dimensions, and what you get is a small cube inside a big cube with slanted faces joining the two. This is called a Schlegel diagram and the geometry of the monument is exactly that. The nice part is that all eight cubes of a tesseract are equal in size; the inner cube looking smaller is an illusion of the eye, just like the back square looking smaller when you draw a cube.\n\nTwo mathematicians from Cambridge and Copenhagen have proved that a perfectly fair electoral system is mathematically impossible. There are three things we expect from a fair system. Locality, meaning whoever wins a local seat keeps it. Proportionality, meaning the national distribution of seats matches the distribution of votes. And a parliament that stays a fixed size. Sebastian Tim Holdum and Frederik Ravn Klausen showed that once you go past a certain number of parties these three cannot hold at the same time; one of them has to be given up. Germany's parliament swelling year after year and Denmark's 2022 election coming down to a single seat despite a proportional system are what this theorem looks like in practice. Klausen's added note matters: achieving all three exactly is impossible, but achieving them approximately is possible, and plenty of systems do not even do that.\n\nA very interesting meeting will take place in the middle of October. The world's time authorities will gather to consider whether or not to add one second to the world's time this year. Because there is a 0.9 second gap between astronomical time, which follows the Earth's irregular rotation, and the standard time set by atomic clocks and used by telecom networks, power distribution and servers, a second gets squeezed in every year. The Earth has been speeding up since 2015 and by 2035, instead of adding a second, it may need to be removed.\n\n[The free portion ends here; twenty more items are behind the publication's paywall.]"
+      }
+    ]
   },
   {
-    id: "a2",
-    source: "The Batch · DeepLearning.AI",
-    date: "4 Sep",
-    title: "Using Coding Agents, The Most Rapidly-Evolving Core AI Engineering Skill",
-    why: "Your stated quality anchor, and this week's issue lands directly on the skill you are building. Arrived twice, once to each of two addresses; collapsed here.",
-    thread: "1a06dd7fe21cb3a2"
-  },
-  {
-    id: "a3",
-    source: "LinkedIn · metadata & ontology",
-    date: "5 Sep",
-    title: "The Context Game — Knowledge Management and the Great Unbundling",
-    why: "The <b>enterprise data management</b> side, from the stream that nearly got dropped from your source list altogether. Knowledge management set against context engineering.",
-    thread: "1a06efa01d64310d"
-  },
-  {
-    id: "a4",
-    source: "Understanding AI",
-    date: "2 Sep",
-    title: "How Google taught LLMs to control robots and started a robotics boom",
-    why: "Vision-language-action models explained with a minimum of math and jargon. The one item here written to <b>teach</b> rather than report &mdash; the likeliest shelf candidate.",
-    thread: "1a062f1e14e5a967"
-  },
-  {
-    id: "a5",
-    source: "Latent Space · swyx",
-    date: "1 Sep",
-    title: "PRs NOT Welcome: How Top AI Open Source Projects Are Managing Thousands of Contributors",
-    why: "Vercel's AI SDK, Astro and tldraw replacing drive-by contributions with teams of agents applying fixes. Practice rather than prediction.",
-    thread: "1a05dc2ec085478e"
+    issue: "001",
+    surfaced: "2026-09-06",
+    span: "31 Aug – 6 Sep",
+    drawnFrom: 202,
+    items: [
+      {
+        id: "a1",
+        source: "Ken Huang",
+        date: "2 Sep",
+        title: "The Harness Advantage in Autonomous Red Teaming: Why Frontier LLMs Alone Fail Offensive Security",
+        why: "An empirical eight-model benchmark on <b>agent harness architecture</b>, model over-refusal and token efficiency. This is the exact question your own repository was set up to ask &mdash; model versus harness &mdash; answered with somebody else's numbers.",
+        thread: "1a0620c7b081a9fe"
+      },
+      {
+        id: "a2",
+        source: "The Batch · DeepLearning.AI",
+        date: "4 Sep",
+        title: "Using Coding Agents, The Most Rapidly-Evolving Core AI Engineering Skill",
+        why: "Your stated quality anchor, and this week's issue lands directly on the skill you are building. Arrived twice, once to each of two addresses; collapsed here.",
+        thread: "1a06dd7fe21cb3a2"
+      },
+      {
+        id: "a3",
+        source: "LinkedIn · metadata & ontology",
+        date: "5 Sep",
+        title: "The Context Game — Knowledge Management and the Great Unbundling",
+        why: "The <b>enterprise data management</b> side, from the stream that nearly got dropped from your source list altogether. Knowledge management set against context engineering.",
+        thread: "1a06efa01d64310d"
+      },
+      {
+        id: "a4",
+        source: "Understanding AI",
+        date: "2 Sep",
+        title: "How Google taught LLMs to control robots and started a robotics boom",
+        why: "Vision-language-action models explained with a minimum of math and jargon. The one item here written to <b>teach</b> rather than report &mdash; the likeliest shelf candidate.",
+        thread: "1a062f1e14e5a967"
+      },
+      {
+        id: "a5",
+        source: "Latent Space · swyx",
+        date: "1 Sep",
+        title: "PRs NOT Welcome: How Top AI Open Source Projects Are Managing Thousands of Contributors",
+        why: "Vercel's AI SDK, Astro and tldraw replacing drive-by contributions with teams of agents applying fixes. Practice rather than prediction.",
+        thread: "1a05dc2ec085478e"
+      }
+    ]
   }
 ];
 
-var ISSUE = "001";
-var SURFACED = "2026-09-06";
+// Flatten, tagging every item with the delivery it arrived in so expiry can be
+// computed per item rather than per page.
+var ITEMS = [];
+DELIVERIES.forEach(function (d) {
+  d.items.forEach(function (it) {
+    it.issue = d.issue;
+    it.surfaced = d.surfaced;
+    ITEMS.push(it);
+  });
+});
+
+var LATEST = DELIVERIES[0];
 var WINDOW_DAYS = 10;
-var DRAWN_FROM = 202;
 var CAP = 7;
 var DAY = 86400000;
 
@@ -656,38 +750,42 @@ function localDay(ymd) {
   return new Date(+p[0], +p[1] - 1, +p[2]);
 }
 
-function expiryTime() {
-  return localDay(SURFACED).getTime() + WINDOW_DAYS * DAY;
+function expiryOf(it) {
+  return localDay(it.surfaced).getTime() + WINDOW_DAYS * DAY;
 }
 
-function pastWindow() { return Date.now() >= expiryTime(); }
+function expired(it) { return Date.now() >= expiryOf(it); }
+
+function clearsOn(surfaced) {
+  return new Date(localDay(surfaced).getTime() + WINDOW_DAYS * DAY)
+    .toLocaleDateString(undefined, { day: "numeric", month: "long" });
+}
 
 // D-02: expiry is the default removal mechanism, and it has to actually remove.
 // Stamped with the window's end rather than the moment she happened to open the
 // page, so the record stays truthful about when the item cleared. No gesture of
 // hers is involved, which is what D-16 requires.
 function sweepExpired() {
-  if (!pastWindow()) return false;
   var changed = false;
-  var at = new Date(expiryTime()).toISOString();
   ITEMS.forEach(function (it) {
+    if (!expired(it)) return;
     var rec = state.laneA[it.id];
     if (!rec || !rec.status) {
-      state.laneA[it.id] = { status: "expired", at: at };
+      state.laneA[it.id] = { status: "expired", at: new Date(expiryOf(it)).toISOString() };
       changed = true;
     }
   });
   return changed;
 }
 
-function statusOf(id) {
-  var rec = state.laneA[id];
+function statusOf(it) {
+  var rec = state.laneA[it.id];
   if (rec && rec.status) return rec.status;
-  return pastWindow() ? "expired" : "live";
+  return expired(it) ? "expired" : "live";
 }
 
 function countBy(status) {
-  return ITEMS.filter(function (it) { return statusOf(it.id) === status; }).length;
+  return ITEMS.filter(function (it) { return statusOf(it) === status; }).length;
 }
 
 function median(ns) {
@@ -700,69 +798,50 @@ function median(ns) {
 /* ---------- masthead ---------- */
 
 function renderDateline() {
-  var when = new Date(expiryTime()).toLocaleDateString(undefined, { day: "numeric", month: "long" });
-
   $("dateline").innerHTML =
-    "DELIVERY <b>" + ISSUE + "</b><br>" +
-    "<b>" + localDay(SURFACED).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) + "</b><br>" +
-    "drawn from <b>~" + DRAWN_FROM + "</b> candidates";
+    "DELIVERY <b>" + LATEST.issue + "</b><br>" +
+    "<b>" + localDay(LATEST.surfaced).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" }) + "</b><br>" +
+    "drawn from <b>" + LATEST.drawnFrom + "</b> candidates";
 
   // The window is stated once, as a fact about the page. Not a countdown on
   // every item: D-17 rules out deadlines, and a per-item clock is a deadline.
-  $("noteA").textContent = pastWindow()
-    ? "This delivery cleared itself on " + when + ". There was nothing to archive."
-    : "Everything here clears itself on " + when + ", whether or not you touch it. Nothing to mark read, nothing to file.";
+  $("noteA").textContent = countBy("live")
+    ? "Everything here clears itself ten days after it arrives, whether or not you touch it. Nothing to mark read, nothing to file."
+    : "Nothing is live. Everything cleared itself, which is the system working.";
 }
 
 /* ---------- the five ---------- */
 
-function renderLaneA() {
-  var host = $("laneA");
-  host.innerHTML = "";
-
-  ITEMS.forEach(function (it) {
-    var st = statusOf(it.id);
-
-    // Expired items leave no residue on the surface (D-02). They survive in the
-    // record only. If the page kept showing them she could never notice missing
-    // one, and noticing is the whole evidence base for A-01.
-    if (st === "expired") return;
-
+function renderReading(host, it) {
     var el = document.createElement("article");
-    el.className = "reading" + (st === "live" ? "" : " settled");
-
-    var flag = "";
-    if (st === "kept") flag = '<span class="sep">·</span><span class="flag">on the shelf</span>';
-    if (st === "hidden") flag = '<span class="sep">·</span><span>less like this</span>';
+    el.className = "reading";
 
     el.innerHTML =
-      '<div class="byline">' + esc(it.source) + '<span class="sep">·</span>' + esc(it.date) + flag + '</div>' +
+      '<div class="byline">' + esc(it.source) + '<span class="sep">·</span>' + esc(it.date) + '</div>' +
       '<h3><a href="' + esc(href(it)) + '" target="_blank" rel="noopener noreferrer">' + esc(it.title) + '</a></h3>' +
       '<p class="why">' + it.why + '</p>';
 
     var actions = document.createElement("div");
     actions.className = "actions";
 
-    if (st === "live") {
-      var keep = document.createElement("button");
-      keep.className = "primary";
-      keep.textContent = "Keep";
-      keep.onclick = function () { doKeep(it); };
+    var keep = document.createElement("button");
+    keep.className = "primary";
+    keep.textContent = "Keep";
+    keep.onclick = function () { doKeep(it); };
 
-      var less = document.createElement("button");
-      less.className = "plain";
-      less.textContent = "Less like this";
-      less.onclick = function () { doHide(it); };
+    var less = document.createElement("button");
+    less.className = "plain";
+    less.textContent = "Less like this";
+    less.onclick = function () { doHide(it); };
 
-      if (state.laneB.length >= CAP) {
-        keep.disabled = true;
-        keep.title = "The shelf is full — finish or remove something first";
-      }
-      if (mode === "pending") { keep.disabled = true; less.disabled = true; }
-
-      actions.appendChild(keep);
-      actions.appendChild(less);
+    if (state.laneB.length >= CAP) {
+      keep.disabled = true;
+      keep.title = "The shelf is full — finish or remove something first";
     }
+    if (mode === "pending") { keep.disabled = true; less.disabled = true; }
+
+    actions.appendChild(keep);
+    actions.appendChild(less);
 
     var a = document.createElement("a");
     a.className = "source-link";
@@ -774,6 +853,32 @@ function renderLaneA() {
 
     el.appendChild(actions);
     host.appendChild(el);
+}
+
+function renderLaneA() {
+  var host = $("laneA");
+  host.innerHTML = "";
+
+  DELIVERIES.forEach(function (d) {
+    // Only live items appear. Expired ones leave no residue (D-02) — if the page
+    // kept showing them she could never notice missing one, and noticing is the
+    // evidence base for A-01. Kept ones have been promoted to the shelf (D-07)
+    // and hidden ones were explicitly taken off the surface (D-14); the shelf
+    // gaining an item is the feedback, so a struck-through copy here is residue
+    // too.
+    var showing = d.items.filter(function (it) { return statusOf(it) === "live"; });
+    if (!showing.length) return;
+
+    var head = document.createElement("div");
+    head.className = "arrival";
+    head.innerHTML =
+      '<span class="arrival-issue">Delivery ' + esc(d.issue) + '</span>' +
+      '<span class="arrival-when">arrived ' +
+      localDay(d.surfaced).toLocaleDateString(undefined, { day: "numeric", month: "short" }) +
+      ' · clears ' + clearsOn(d.surfaced) + '</span>';
+    host.appendChild(head);
+
+    showing.forEach(function (it) { renderReading(host, it); });
   });
 
   var live = countBy("live");
@@ -783,14 +888,14 @@ function renderLaneA() {
     var note = document.createElement("p");
     note.className = "cleared";
     note.textContent = cleared === ITEMS.length
-      ? "This delivery has cleared. Nothing is waiting for you."
+      ? "Everything has cleared. Nothing is waiting for you."
       : cleared + (cleared === 1 ? " item" : " items") + " cleared unkept.";
     host.appendChild(note);
   }
 
   $("tallyA").textContent = cleared
     ? live + " live · " + cleared + " cleared"
-    : live + " of " + ITEMS.length;
+    : live + " live";
 }
 
 /* ---------- the shelf ---------- */
@@ -916,11 +1021,44 @@ function renderMeasures() {
   $("measures").innerHTML = bits.join("");
 }
 
-function renderLinkNote() {
-  var anyGmail = ITEMS.some(function (it) { return !it.url; });
-  $("linkNote").innerHTML = anyGmail
-    ? "<strong>About the links.</strong> This delivery was built before the rule that the weekly list should point at each article's public page, so its links still open the original in Gmail and assume <code>dagny099@gmail.com</code> is your first signed-in account. From Delivery 002 onward they point at the article itself, and keeping one brings its text onto the shelf."
-    : "<strong>About the links.</strong> Titles open the article's public page. Keeping one brings its text onto the shelf, so the reading is there when you have the hour.";
+function renderDropped() {
+  if (!LATEST.dropped) { $("droppedSummary").parentNode.hidden = true; return; }
+
+  var total = LATEST.dropped.reduce(function (n, row) {
+    return n + (parseInt(row[0], 10) || 0);
+  }, 0);
+
+  $("droppedSummary").textContent =
+    "What Delivery " + LATEST.issue + " left out (" + total + ")";
+
+  $("droppedBody").innerHTML =
+    "<p>" + LATEST.drawnFrom + " field-adjacent items arrived in " + esc(LATEST.span) +
+    ". Five were surfaced; the rest are listed here rather than hidden, so the picking can be argued with. " +
+    "The wider inbox beyond your subscribed sources was not counted this time.</p>" +
+    "<dl>" + LATEST.dropped.map(function (row) {
+      return "<dt>" + esc(row[0]) + "</dt><dd>" + row[1] + "</dd>";
+    }).join("") + "</dl>";
+}
+
+function renderNotes() {
+  $("chosenNote").innerHTML =
+    "<strong>How these were chosen.</strong> Picked by Claude from subject lines and preview text across your subscribed sources for " +
+    esc(LATEST.span) + ", not from full article text. One item per source, balanced across your three fields, " +
+    "so a prolific week cannot take two slots and the month's dominant story cannot take every slot.";
+
+  var withText = ITEMS.filter(function (it) { return it.text; }).length;
+  var noUrl = ITEMS.filter(function (it) { return statusOf(it) !== "expired" && !it.url; }).length;
+
+  var s = "<strong>About the links.</strong> Titles open the article's public page, and keeping one brings its text onto the shelf, " +
+          "so the reading is there when you have the hour. " + withText + " of the items here carry text.";
+
+  if (noUrl) {
+    s += " " + noUrl + (noUrl === 1 ? " item does" : " items do") +
+         " not: Delivery 001 predates this rule, and HackerNoon's digest publishes no canonical link for its stories — only tracking redirects — so those fall back to Gmail.";
+  }
+  s += " Paid publications give the opening section only; the shelf says so where that happens.";
+
+  $("linkNote").innerHTML = s;
 }
 
 function render() {
@@ -930,7 +1068,8 @@ function render() {
   renderLaneB();
   renderRecord();
   renderMeasures();
-  renderLinkNote();
+  renderDropped();
+  renderNotes();
   if (swept && mode !== "pending") save();
 }
 

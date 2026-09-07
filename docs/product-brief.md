@@ -1,6 +1,6 @@
 # Reading Digest — Product Brief
 
-**Version** 1.6 · 6 Sep 2026
+**Version** 1.7 · 6 Sep 2026
 **Owner** Barbara (single user; this is a personal system, not a product)
 **Status** Pre-architecture, but no longer nothing-built: Delivery 001 is running at `prototype/current-depth.html`. Every decision in the ledger is Confirmed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation.
 
@@ -171,7 +171,7 @@ The Actions row changed in v1.2. Lane A previously had one action; it now has tw
 
 Current working behavior:
 
-- Arrives on a weekly cadence. Barbara does not fetch it. A destination she must remember to visit is a destination she will stop visiting.
+- Arrives on a weekly cadence. Barbara does not fetch it. A destination she must remember to visit is a destination she will stop visiting. The arrival mechanism is a recurring calendar event she creates by hand, carrying a stable link (D-20).
 - Items expire approximately ten days after arrival, silently, with no action from her. The ten days give roughly one week of overlap so nothing vanishes between one delivery and the next.
 - Size is hard-capped at 5 items per delivery (D-18). This replaces the original "whatever arrived, arrived," which was written before arrival volume was known and which F-04 falsified: at 180–280 candidate items per week, an uncontrolled Lane A is a wall, and a wall is the disease this system exists to treat.
 - What is not surfaced is recorded (D-19), because a cap of 5 discards most of what arrives.
@@ -222,6 +222,8 @@ This table is authoritative for whether a decision is settled.
 | D-17 | Encouragement is a retrospective, additive record of completed Lane B items. Never a streak, counter, badge, or deadline, and never on Lane A. | **Confirmed** |
 | D-18 | One Lane A delivery is hard-capped at **5 items**, a fixed size rather than a relevance threshold or a per-source quota. | **Confirmed** 6 Sep 2026 |
 | D-19 | What is never surfaced is recorded, alongside what expires unkept. Both are evidence, not features. | **Confirmed** 6 Sep 2026 |
+| D-20 | Lane A arrives as a **recurring calendar event** carrying a link. Barbara creates that event by hand, once. Nothing automated writes to her calendar. | **Confirmed** 6 Sep 2026 |
+| D-21 | The calendar event is a pointer, not a carrier: the delivery itself is a page reached by link, not content inside the message. | **Proposed** — Barbara said "probably a page"; not yet ratified |
 
 D-11 exists because a ranked list always looks intelligent, and Barbara works in evaluation design. The deletability of the prioritization layer is a product decision, not a technical one, and it should survive into whatever gets built.
 
@@ -232,6 +234,12 @@ D-16 is the durable guard. It is what should stop a later session from helpfully
 D-18's number is derived, not chosen by taste. D-15 requires a median keep-to-done of 14 days or less into a shelf of 7 (D-08). To finish roughly two items inside 14 days, Barbara can afford to keep one or two per delivery. A delivery of 5 at a realistic keep rate of 20–40% produces exactly that; a delivery of 20 produces four to eight keeps, overflows the shelf, and makes D-15 unreachable by construction. The cap is what makes the ratified success criterion achievable.
 
 Fixed size, rather than a relevance threshold, is also what keeps D-11 testable: "did the ranker pick the right 5?" can be hand-labelled against a chronological top 5, whereas a variable-size threshold compares sets of different sizes. And a constant size is what keeps absence free under D-02 — a heavy week must not produce a pile.
+
+D-20 was decided against Barbara's own measured data rather than by preference. D-09 requires that Lane A *arrive*, which needs a channel she already opens without deciding to, and that is not poisoned by backlog. Every mailbox she owns fails both tests: `dagny099@gmail.com` is 90.6% unread, `B@B` is 66% unread, `barbs@geocue.me` is 88% unread (F-02, F-07). A calendar passes both — it is opened daily as a matter of course, and a past event that went unopened recedes rather than accumulating as debt. That second property is D-02's "absence is free" enforced by the medium instead of by discipline.
+
+The event is created **by Barbara, by hand, once**, and nothing automated touches her calendar. That is possible only because the event carries a stable link rather than the week's content, so it never needs updating. Any future automation of her calendar is a separate decision to be taken deliberately, not a convenience to drift into.
+
+The falsifier, fixed in advance: run three deliveries and count opens. **Fewer than two of three means the channel is wrong, not the content.**
 
 D-19 exists because D-18 discards roughly 97% of arriving items unseen. That makes the prioritisation layer load-bearing from the first delivery, which is precisely the "prioritisation is theater" risk in Section 9. Recording what was dropped is what lets D-11 be tested against the discarded material rather than only against what was shown.
 
@@ -288,7 +296,7 @@ Ordered by how much they block.
 1. **What is actually arriving?** **Resolved 6 Sep 2026 — see F-04 through F-07.** Question text kept so the record survives.
 2. **What outcome would she notice?** **Resolved in v1.2 — see D-15, D-16, D-17.** Question text kept so the record of what was open survives. The answer landed on a latency criterion (median keep to done, 14 days) rather than a count, because a count of promotions rises in the failure mode; on a rule governing which gestures may be measured at all; and on encouragement being a growing record of finished items rather than a streak.
 3. **Does enterprise data management belong in scope?** **Resolved 6 Sep 2026: yes.** Barbara confirmed it after the corrected source list showed she is in fact subscribed — DATAVERSITY, ODSC, the Knowledge Graph Conference, and the LinkedIn metadata/ontology stream. The original sub-question, job-driven or interest-driven, was not asked and remains open, but it no longer blocks: the sources exist either way. What A-05 adds is that this field needs different handling from the ML sources, because its editorial content is buried inside promotional mail.
-4. **How does Lane A arrive?** D-09 says it arrives rather than being fetched. The mechanism was not settled. Candidates discussed: a message to herself, a bookmarked destination, or a message linking to a destination. The argument for a message is that it borrows a habit she already has instead of asking her to form one.
+4. **How does Lane A arrive?** **Resolved 6 Sep 2026 — a recurring calendar event, see D-20.** All three candidates originally listed here turned out to be broken: a bookmark is fetched rather than arrived, which contradicts D-09; and a message to herself lands in the very container Section 1.1 identifies as the defect, in a mailbox that is 90.6% unread. The candidate list was incomplete, not merely undecided.
 5. **What is the Lane B cap, exactly?** **Resolved 6 Sep 2026: seven.** Ratified together with D-08, on the strength of the D-18 arithmetic, which uses 7.
 6. **Does expiry survive contact with her habits?** A-01 is argued from category history rather than from her behavior. If she has a counterexample from her own life, that outranks anything cited here.
 7. **What is the gesture called?** "Favorite" and "keep" were both used for the same action.
@@ -297,9 +305,14 @@ Ordered by how much they block.
 Added in v1.3, from the discovery pass:
 
 9. **How big is one Lane A delivery?** **Resolved 6 Sep 2026: five, hard-capped — see D-18 and D-19.** The answer turned out to be both of the options this question offered: a hard size limit *and* a load-bearing prioritisation layer, because a cap of 5 against 180–280 arriving items cannot avoid making the ranker load-bearing. Cadence remains open under A-02; the cap is per delivery whatever the cadence turns out to be.
-10. **Which addresses count as sources?** F-05 found at least three delivery addresses in one mailbox, with the same publication arriving twice. Deduplication is required. Whether all three addresses are in scope is Barbara's call.
+10. **Which addresses count as sources?** F-05 found **six** delivery addresses in one mailbox, with the same publication arriving twice. Deduplication is required. Which of the six are in scope is Barbara's call.
 11. **Is "field-adjacent" defined by her subscriptions or by her intent?** **Narrowed in v1.4.** With F-06 retracted, her subscriptions and Section 1's three named fields agree far better than v1.3 claimed — all three fields are represented. What remains is the non-field stream sharing the same labels (military analysis, cooking, games, fiction, public health) and the promotional share of the vendor sources. D-12 already treats beginner content as noise; this asks the prior question of what counts as signal. Barbara has named DeepLearning.AI as a high-quality reference point, which is a usable anchor for that judgment.
 12. **What is a Source, when the sender address is not the publication?** All LinkedIn newsletters — the metadata/ontology stream, The AI Agent Report, The AI Table Review, MIT CSAIL — arrive from the single address `newsletters-noreply@linkedin.com`. Sender-based source identity fails here. Raised by the v1.4 pass; not yet discussed.
+
+Added in v1.7, from the delivery-mechanism decision:
+
+13. **Where does the page live?** The link in D-20's calendar event has to point somewhere stable. Currently an Anthropic-hosted Artifact, which costs nothing and gives cross-device state for free. Barbara owns `balex.com` and asked about her own infrastructure. The trade-off is specific and worth stating before choosing: **self-hosting a static page is easy; re-solving synced state is not.** The prototype persists through the Artifact runtime when published and falls back to browser-local storage otherwise, so a self-hosted copy would be per-device until something replaces that. Choosing a host is tool selection, which Section 0 still places outside scope until Barbara opens the architecture phase.
+14. **Does the delivery carry the reading, or only point at it?** Barbara asked whether Gmail can be bypassed entirely. Two mechanisms exist and they differ in kind. The smaller one: link to each item's public web version instead of the Gmail message — nearly every source publishes one, and the canonical URL is extractable from the message body. The larger one: carry the article text inside the delivery, so there is nothing to click through to at all. The second would change Lane A from a list of pointers into five readable pieces, which is a **new product idea and not a gap to be filled silently** — it needs Barbara's explicit decision, and it would restructure the page.
 
 ---
 
@@ -314,15 +327,16 @@ Some concepts below depend on `Proposed` decisions or assumptions. Their appeara
 | **Source** | A publication Barbara may choose to follow. | Observed candidate set now recorded in Section 1.5. Which of them are in scope depends on question 11. A Source may deliver to more than one address (F-05). |
 | **Item** | One piece of content from a Source. | Conceptually useful. |
 | **Lane A Placement** | An Item present in the current-awareness surface. | Lane A expiry itself is confirmed by D-02; exact cadence / timing remain assumption-dependent (A-02, A-03). |
-| **Keep / Favorite gesture** | The single gesture discussed for signaling that an Item matters. | Name unresolved. Promotion into Lane B depends on proposed D-07. |
-| **Lane B Entry** | An Item in the deliberate-study surface, with notes and done state. | Done is now load-bearing rather than merely available: D-15 measures the interval between keep and done. Cap still depends on proposed D-08. |
+| **Keep gesture** | The gesture signalling that an Item matters. | Promotes into Lane B per D-07, Confirmed. Name still unresolved (question 7); the brief writes **keep**. |
+| **Lane B Entry** | An Item in the deliberate-study surface, with notes and done state. | Done is load-bearing rather than merely available: D-15 measures the interval between keep and done. Capped at 7 by D-08, Confirmed. |
 | **Completion** | A Lane B Entry marked done, carrying both the keep time and the done time. | The interval is what D-15 measures. Depends on A-08 holding. |
 | **Completion Record** | The retrospective, additive list of Completions. | The encouragement artifact under D-17. Additive only; never a streak or counter. |
 | **Negative Signal** | A "less like this" event against an Item's Source. | Depends on D-14. Feeds the Interest Profile under D-10. |
-| **Interest Profile** | A readable / editable statement of what Barbara cares about. | Depends on proposed D-10 and may be unnecessary if A-07 fails. |
-| **Relevance Judgment** | A relevance result plus a human-readable reason. | Depends on proposed D-10 / D-11 and on enough volume existing to justify prioritisation (A-07). |
-| **Expiry Record** | A record of what left Lane A without being kept. | Candidate evidence mechanism for testing A-01; not independently confirmed as a requirement. |
-| **Related Suggestion** | Additional material associated with an item selected for deeper study. | Related content is confirmed in scope by D-05; confinement to Lane B depends on proposed D-06. |
+| **Interest Profile** | A readable / editable statement of what Barbara cares about. | Required by D-10, Confirmed. A-07 holds, so it is warranted. |
+| **Relevance Judgment** | A relevance result plus a human-readable reason. | Required by D-10; must survive D-11's delete-or-keep test, both Confirmed. |
+| **Expiry Record** | A record of what left Lane A without being kept, and of what was never surfaced. | Required by D-19, Confirmed. Evidence for A-01. |
+| **Related Suggestion** | Additional material associated with an item selected for deeper study. | In scope by D-05, confined to Lane B by D-06, both Confirmed. Breadth still open (question 8). |
+| **Arrival** | The recurring calendar event carrying the link to a delivery. | D-20, Confirmed. Created by Barbara by hand; carries no content, so it never goes stale. Whether the link's destination is a page rather than the content itself depends on D-21, still Proposed. |
 
 Two relationships are currently part of the working design but remain conditional:
 
@@ -345,7 +359,7 @@ Carried forward because they should inform product decisions, not just engineeri
 
 Not architecture. In order:
 
-**As of v1.5 every decision in the ledger is Confirmed. Nineteen of nineteen.** Questions 1, 2, 3, 5 and 9 are closed. The decision ledger is no longer the bottleneck.
+**As of v1.7, twenty of twenty-one decisions are Confirmed; only D-21 is Proposed.** Questions 1, 2, 3, 4, 5 and 9 are closed. Delivery 001 is live. The decision ledger is no longer the bottleneck.
 
 The sequenced plan lives in `docs/plans/2026-09-06-product-clarification-plan.md`. In outline:
 

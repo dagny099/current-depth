@@ -32,9 +32,21 @@ The longer-term aim is to learn when to use particular models, harnesses, skills
 
 ## Current stage
 
-**Pre-architecture. Nothing is implemented.**
+**Pre-architecture, but no longer nothing-built.**
 
-The immediate work is still product clarification and evidence gathering. As of brief v1.3 the two questions that were blocking are closed — what is actually arriving, and what outcome would count as success — and the largest open question is how big one delivery should be. Section 10 of the brief carries the current order of work.
+Delivery 001 is live: five items picked from real subscriptions, a seven-slot shelf, and a keep-to-done clock. It lives at [`prototype/current-depth.html`](prototype/current-depth.html) — open it as a file and it saves to that browser; published as an Artifact it syncs across devices.
+
+As of brief v1.7, twenty of twenty-one decisions are `Confirmed` and six of the original unresolved questions are closed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation. Section 10 of the brief carries the current order of work.
+
+**What is settled that changes the shape of the thing:**
+
+- Lane A is capped at five items per delivery — a number derived from the success criterion, not chosen by taste (`D-18`).
+- Success is a latency measure, median keep-to-done of 14 days or less, not a count of things read (`D-15`).
+- Metrics may only come from gestures Barbara would make anyway. No gesture exists in order to feed a measurement (`D-16`).
+- Delivery arrives as a recurring calendar event she creates by hand, because every mailbox she owns runs between 66% and 91% unread (`D-20`).
+- Any ranking must beat reverse-chronological on a hand-labelled set or be deleted — and deleting it counts as a good outcome (`D-11`).
+
+**Still architecture, still not authorised:** storage, hosting, ranker implementation, ingestion.
 
 Some items in the product brief are:
 
@@ -94,12 +106,17 @@ current-depth/
 ├── AGENTS.md
 ├── CLAUDE.md
 │
+├── prototype/
+│   └── current-depth.html    # Delivery 001 — the working deliverable
+│
 └── docs/
     ├── product-brief.md
-    ├── plans/          # created/populated when a durable plan exists
+    ├── plans/          # 2026-09-06-product-clarification-plan.md
     ├── reviews/        # created/populated when a durable review exists
-    └── evals/          # evaluation definitions and results
+    └── evals/          # held-out-2026-08-24.md — the D-11 labelling set
 ```
+
+`prototype/` holds a hand-made deliverable, not an architecture. Nothing there implies a storage design, a pipeline, or a vendor.
 
 Implementation directories should be added only when an accepted architecture justifies them.
 

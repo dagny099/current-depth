@@ -1,8 +1,10 @@
 # Reading Digest — Product Brief
 
-**Version** 1.8 · 6 Sep 2026
+**Version** 1.9 · 6 Sep 2026
 **Owner** Barbara (single user; this is a personal system, not a product)
 **Status** Pre-architecture, but no longer nothing-built: Delivery 001 is running at `prototype/current-depth.html`. Twenty-one of twenty-two decisions are Confirmed; only D-21 is Proposed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation.
+
+**v1.9 is the post-review revision.** v1.8 was reviewed independently by Codex (`docs/reviews/v1-8-codex-review.md`) and adjudicated (`docs/reviews/v1-8-codex-review-adjudication.md`). No decision changed status as a result. What changed: A-10 was added, question 15 was opened, three claims were scoped to what they actually test, and Section 10 was rewritten because every item in it had gone stale.
 
 ---
 
@@ -26,9 +28,15 @@ Two conventions matter:
 >
 > Two restrictions still bind: **no architecture**, which remains a separate and unauthorised phase, and **no inventing answers** to unresolved questions.
 
+> **Superseded again, 7 Sep 2026 — the working model changed.** Barbara: *"We need to change the mindset to Design as soon as Requirements are Understood and Approved by me, then Build and Test and Fail Fast and Iterate."* She named the cause: agents on this project have repeatedly produced plans gated on collecting clean evidence first, and that sequencing stalled the work.
+>
+> **The architecture restriction is lifted.** Design and build once a requirement is agreed. The operating cycle now lives in `AGENTS.md` section 3 and governs.
+>
+> **What still binds:** do not invent answers to unresolved questions, and do not build more than was asked for. `D-11` and `D-15` still decide what survives; they no longer gate when work may start.
+
 Originally requested by Barbara, retained for the record:
 
-- Do not design the technical architecture. No storage design, no pipeline topology, no tool or vendor selection. **Still binding.**
+- ~~Do not design the technical architecture.~~ **Retired 7 Sep 2026.** No storage design, pipeline topology, or vendor was ever chosen under it. What it actually prevented was shipping.
 - ~~Do not implement anything.~~ **Retired 6 Sep 2026.**
 - **Propose freely; decide nothing.** Surfacing a new product idea is welcome — label it a proposal and put it to Barbara. What is forbidden is moving a question from unresolved to resolved without her saying so, or writing an invented answer into the brief as though it were decided. *(Reworded in v1.8. The earlier phrasing, "do not fill gaps with new product ideas", was read too literally in session and suppressed a good proposal. The rule protects the record, not the silence.)* **Still binding.**
 
@@ -133,7 +141,7 @@ All LinkedIn newsletters share one sender address, so a Source cannot be identif
 
 ## 2. The experience we're aiming for
 
-**Working experience sketch — not a decision ledger.** As of v1.7 nearly everything described here is Confirmed. The exception is D-21, still `Proposed`: whether the delivery is a page reached by link rather than content carried in the message. Several behaviours remain assumption-dependent — A-01, A-02, A-08, A-09. Section 4 and Section 6 remain authoritative for status.
+**Working experience sketch — not a decision ledger.** As of v1.9 nearly everything described here is Confirmed. The exception is D-21, still `Proposed`: whether the delivery is a page reached by link rather than content carried in the message. Several behaviours remain assumption-dependent — A-01, A-02, A-08, A-09. Section 4 and Section 6 remain authoritative for status.
 
 Written from Barbara's side of the screen.
 
@@ -149,7 +157,7 @@ Nothing in this experience involves archiving, marking read, or clearing a list.
 
 ## 3. Lane A and Lane B
 
-**Working model.** As of v1.7 the lane structure, both caps, both Lane A actions and the arrival mechanism are Confirmed. This section keeps the design in one place; where a detail is assumed or unresolved elsewhere, that status still governs.
+**Working model.** As of v1.9 the lane structure, both caps, both Lane A actions and the arrival mechanism are Confirmed. This section keeps the design in one place; where a detail is assumed or unresolved elsewhere, that status still governs.
 
 ### 3.1 The table
 
@@ -228,6 +236,10 @@ This table is authoritative for whether a decision is settled.
 
 D-11 exists because a ranked list always looks intelligent, and Barbara works in evaluation design. The deletability of the prioritization layer is a product decision, not a technical one, and it should survive into whatever gets built.
 
+**What D-11 tests, stated narrowly (v1.9).** The held-out set covers everything field-adjacent in its window, promotional and automated mail included — Barbara set that inclusion rule on 6 Sep 2026. So D-11 asks whether a ranking beats reverse-chronological *at ordering field-adjacent candidates, promotional filtering included*. It does not test where the field boundary belongs (question 11), how a Source is identified when the sender is not the publication (question 12), or which delivery addresses count (question 10).
+
+Note which way the inclusion rule cuts. Including promotional mail makes the chronological baseline **weaker**, not stronger: two of its top five are now a webinar promotion and an automated paper recommendation. Clearing that bar is a lower bar, and a ranker that merely declines to surface marketing will pass without demonstrating any judgment about relevance. The threshold under D-11 has to be set with that in mind, or the test will certify a ranker that has not earned its place — which is exactly the "prioritisation is theater" risk in Section 9.
+
 D-15 is a latency measure rather than a count because promotion is the *save* gesture: under the failure mode described in F-03, a promotion count rises as the system stops working. Latency degrades in the correct direction, cannot be inflated by keeping more or keeping less, is readable after two or three items rather than after a month, and creates no recurring deadline — which matters because D-02 makes absence free, and a weekly pass/fail would quietly take that back.
 
 D-16 is the durable guard. It is what should stop a later session from helpfully adding a "mark as read" control in order to make some number easier to compute. The test it encodes: a metric derived from a gesture Barbara would make anyway is safe; a metric requiring a gesture she would only make to feed the metric is the disease.
@@ -246,7 +258,11 @@ D-22 answers question 14 without re-creating the disease. Embedding five full ar
 
 Two costs are accepted knowingly. Text extraction keeps prose and loses figures, so items whose substance is a diagram or benchmark table degrade on the shelf and must keep a link alongside. And embedded text is a snapshot that cannot show a later correction.
 
+**Delivery 001 predates D-22 and does not satisfy it.** It was built earlier the same day this decision was ratified, and it addresses every item by Gmail thread id — so the reading still happens inside the container Section 1.1 identifies as the defect, and the shelf holds a pointer rather than text. That is a limitation of the first delivery, not a revision of D-22. Delivery 002 onward carries canonical public URLs and embeds extracted text at build time.
+
 D-19 exists because D-18 discards roughly 97% of arriving items unseen. That makes the prioritisation layer load-bearing from the first delivery, which is precisely the "prioritisation is theater" risk in Section 9. Recording what was dropped is what lets D-11 be tested against the discarded material rather than only against what was shown.
+
+D-19 does not say at what granularity, and Delivery 001 read it as aggregate disclosure. Whether "recorded" means item-level evidence is now question 15. The decision stands either way; only its granularity is open.
 
 Three secondary diagnostics accompany D-15. They are **not** success criteria and must not be promoted into them:
 
@@ -287,6 +303,7 @@ Each is a place where the design rests on inference. None has been validated aga
 | A-07 | There is enough arriving to justify a prioritization layer. **Confirmed 6 Sep 2026** by the discovery pass: 40–50 field-adjacent messages per week, 150–250 candidate items. | F-04, now closed. | Already tested. Holds. |
 | A-08 | She will mark `done` on Lane B reliably enough for D-15's latency to mean anything. | Inference, not observation. Plenty of people finish the article and never tap the button. | After one month, compare the done count against her own recollection of what she actually finished. A large gap invalidates D-15 rather than her reading. |
 | A-09 | Taking items off Lane A via "less like this" will not turn Lane A into a surface she clears. | Judgment. She chose hiding over signal-only in v1.2 with the clearing risk stated. | Hide-to-keep ratio per delivery cycle. If hides run well ahead of keeps, Lane A has become a list to clear, and the correct response is a narrower digest, not a better hide control. |
+| A-10 | A calendar is a channel Barbara actually opens, and a past unopened event recedes rather than accumulating as debt. **Added v1.9.** | Inference about her behaviour, not measurement. It sits inside D-20's rationale, where it was easy to mistake for something that had been checked. Naming it does not weaken D-20: that decision was taken against measured mailbox data, and this assumption is the part of the reasoning that was *not* measured. | Already falsifiable, and the falsifier was fixed in advance under D-20: run three deliveries and count opens. Fewer than two of three means the channel is wrong, not the content. Counting opens creates no new gesture — a page load is something she does for her own reasons, so D-16 is satisfied. |
 
 A-07 was the one that could have collapsed a large part of this design. It did not: volume is high, so chronological order is not sufficient and the prioritisation layer is justified. D-11's deletability test still applies — the layer must earn its place — but it is now worth building and testing rather than skipping.
 
@@ -319,13 +336,17 @@ Added in v1.7, from the delivery-mechanism decision:
 13. **Where does the page live?** The link in D-20's calendar event has to point somewhere stable. Currently an Anthropic-hosted Artifact, which costs nothing and gives cross-device state for free. Barbara owns `balex.com` and asked about her own infrastructure. The trade-off is specific and worth stating before choosing: **self-hosting a static page is easy; re-solving synced state is not.** The prototype persists through the Artifact runtime when published and falls back to browser-local storage otherwise, so a self-hosted copy would be per-device until something replaces that. Choosing a host is tool selection, which Section 0 still places outside scope until Barbara opens the architecture phase.
 14. **Does the delivery carry the reading, or only point at it?** **Resolved 6 Sep 2026 — see D-22.** Neither extreme. Lane A links out, and Gmail is bypassed by pointing at each item's public web version rather than the message; the canonical URL is extractable from the message body, and nearly every source publishes one. Full text is pulled only when an item is kept.
 
+Added in v1.9, from the Codex review adjudication:
+
+15. **What granularity does D-19 require — the record, or the disclosure?** D-19 says what is never surfaced is *recorded*. Delivery 001 *discloses* it as five aggregate buckets. Those are arguably two different obligations, and the brief does not distinguish them. The proposal, which needs Barbara's nod rather than an agent's: the **record** is item-level and lives in the repo, where it can be argued with and reused (`docs/evals/held-out-2026-08-24.md` is already exactly this shape); the **disclosure** is the aggregate summary on the delivery page, and stays aggregate, because a list of 197 rejected items on the page would rebuild the wall D-18 exists to prevent. If that split is right, scope the record to field-adjacent candidates — roughly 30–40 a week — rather than all ~200, since the general-inbox remainder is not what D-11 will ever be tested against. **Unresolved.** Until it is settled, do not claim Delivery 001 either satisfies or violates D-19.
+
 ---
 
 ## 8. Candidate concepts and entities
 
 This is a **vocabulary sketch, not a settled domain model**. It exists to make product discussion concrete without choosing storage, schema, field types, or architecture.
 
-As of v1.7 only D-21 remains `Proposed`. Several concepts below still rest on assumptions, chiefly A-07 and A-08. Their appearance here does **not** upgrade any status.
+As of v1.9 only D-21 remains `Proposed`. Several concepts below still rest on assumptions, chiefly A-07 and A-08. Their appearance here does **not** upgrade any status.
 
 | Concept | What it represents | Status / dependency |
 |---|---|---|
@@ -365,13 +386,15 @@ Carried forward because they should inform product decisions, not just engineeri
 
 Not architecture. In order:
 
-**As of v1.8, twenty-one of twenty-two decisions are Confirmed; only D-21 is Proposed.** Questions 1, 2, 3, 4, 5, 9 and 14 are closed. Delivery 001 is live. The decision ledger is no longer the bottleneck.
+**As of v1.9, twenty-one of twenty-two decisions are Confirmed; only D-21 is Proposed.** Questions 1, 2, 3, 4, 5, 9 and 14 are closed; 15 is newly open. Delivery 001 is live and the first cross-harness review is done. The decision ledger is not the bottleneck, and has not been for two revisions.
 
-The sequenced plan lives in `docs/plans/2026-09-06-product-clarification-plan.md`. In outline:
+This section was rewritten in v1.9 because every item in the v1.8 version had gone stale: the pilot had stopped being manual, the corpus had been captured, and the review it pointed forward to had already happened. Read that as a warning about this section in particular — it dates faster than the rest of the brief.
 
-1. **Run a manual pilot before building anything.** It tests A-01, A-02, A-08, A-09 and D-15 at zero build cost, and it is the only direct mitigation for the sharpest risk in Section 9 — that building the system replaces reading.
-2. Close the remaining cheap product questions: 4, 7, 8, 10, 11, 12, and A-02 with A-03.
-3. Build the D-11 evaluation set. Now ratified, D-11 requires a hand-labelled corpus and a written-in-advance threshold *before* any ranker exists. This is the critical path, and it needs mailbox access, so capture the corpus while the connector is still switched.
-4. Then the cross-harness review the README describes, from a frozen brief.
+The sequenced plan lives in `docs/plans/2026-09-06-product-clarification-plan.md`. In outline, what is actually next:
+
+1. **Make the page good and use it.** Design pass on `prototype/current-depth.html`, then Delivery 002 with real links and article text on the shelf, published to the artifact she already has open. This is the critical path — the product is a thing she reads, and it does not yet exist in a form she trusts.
+2. **Close the cheap product questions as they come up in the building** — 7, 8, 10, 11, 12, 15, and A-02 with A-03. Propose an answer, get her nod, move on. Do not run a separate question-closing exercise, and do not let an open question stop work that does not depend on it.
+3. **Label the D-11 held-out set when she has the appetite.** The corpus is complete and ready (`docs/evals/held-out-2026-08-24.md`): 62 units across 24–30 Aug. It decides whether a ranking layer survives. **It is not a prerequisite for building one, or for anything else.** Nothing waits on it.
+4. **Work the adjudicated review findings.** The Codex review of v1.8 and its adjudication both live in `docs/reviews/`. Open items are tracked there rather than duplicated here.
 
 Only then does architecture become a sensible next step, and only on Barbara's explicit say-so.

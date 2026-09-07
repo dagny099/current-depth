@@ -71,17 +71,31 @@ Additional detail can follow when it materially helps.
 
 ---
 
-## 3. Respect the task boundary
+## 3. Build in loops, not phases
 
-If asked to inspect or summarize, do not plan.
+**Set 7 Sep 2026 by Barbara. This overrides any earlier sequencing language anywhere in this repo.**
 
-If asked to plan, do not implement.
+The working cycle is:
 
-If asked to review, evaluate independently before proposing rewrites.
+> understand the requirement → get her approval on the requirement → design → build the smallest usable version → put it in front of her → learn → iterate.
 
-If asked to implement, follow the accepted artifacts and surface material deviations.
+Rules that follow from it:
 
-Do not make technical choices merely to make the repository look initialized.
+- **Approval is needed on requirements, not on permission to work.** Once she has agreed what a thing should do, design and build it. Do not wait for a separate authorisation to begin.
+- **Do not gate building on evidence collection.** Evidence accrues from her using the thing. A rough version she can use this week beats a clean version she can use next month.
+- **Never propose a plan whose first milestone is weeks of data collection.** If a plan's critical path is "wait and observe", the plan is wrong.
+- **Fail fast in public.** Ship it, watch it break, fix it. A wrong version in her hands is more informative than a correct document.
+- **Clean experimental design is a nice-to-have, not a blocker.** Prefer a usable result with a caveat over a pristine result that arrives too late to matter.
+
+Still true, and not softened by the above:
+
+- If asked to review, evaluate independently before proposing rewrites.
+- If asked a question, answer it — do not convert it into a project.
+- Do not make technical choices merely to make the repository look initialized.
+
+### Evaluation rules decide what ships. They do not gate work.
+
+`D-11` (a ranking must beat newest-first or be deleted) and `D-15` (median keep-to-done of 14 days or less) are **decision rules about what survives**, not permission gates on building. Build the thing; let the rule decide later whether it stays. Nothing in this repo may be described as "blocked" on an evaluation that has not run yet.
 
 ---
 

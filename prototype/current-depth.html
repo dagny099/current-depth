@@ -247,6 +247,15 @@ body {
 .item.gone { opacity: .42; }
 .item.gone h3 { text-decoration: line-through; text-decoration-thickness: 1px; }
 
+.cleared-note {
+  margin: 18px 0 0;
+  font-family: Newsreader, Georgia, serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--ink-faint);
+  line-height: 1.5;
+}
+
 .expiry {
   font-family: "IBM Plex Mono", ui-monospace, monospace;
   font-size: 11px;
@@ -630,13 +639,42 @@ function esc(s) {
 }
 function days(a, b) { return Math.round((new Date(b) - new Date(a)) / DAY); }
 
+function expiryTime() {
+  return new Date(SURFACED).getTime() + WINDOW_DAYS * DAY;
+}
+
+function pastWindow() { return Date.now() >= expiryTime(); }
+
 function daysLeft() {
-  var end = new Date(SURFACED).getTime() + WINDOW_DAYS * DAY;
-  return Math.max(0, Math.ceil((end - Date.now()) / DAY));
+  return Math.max(0, Math.ceil((expiryTime() - Date.now()) / DAY));
 }
 
 function statusOf(id) {
-  return (state.laneA[id] && state.laneA[id].status) || "live";
+  var rec = state.laneA[id];
+  if (rec && rec.status) return rec.status;
+  return pastWindow() ? "expired" : "live";
+}
+
+// D-02: expiry is the default removal mechanism, and it has to actually remove.
+// Stamped with the window's end rather than the moment she happened to open the
+// page, so the expiry record stays truthful about when the item cleared. No
+// gesture of hers is involved, which is what D-16 requires.
+function sweepExpired() {
+  if (!pastWindow()) return false;
+  var changed = false;
+  var at = new Date(expiryTime()).toISOString();
+  ITEMS.forEach(function (it) {
+    var rec = state.laneA[it.id];
+    if (!rec || !rec.status) {
+      state.laneA[it.id] = { status: "expired", at: at };
+      changed = true;
+    }
+  });
+  return changed;
+}
+
+function expiredCount() {
+  return ITEMS.filter(function (it) { return statusOf(it.id) === "expired"; }).length;
 }
 
 function fmt(iso) {
@@ -658,6 +696,11 @@ function renderLaneA() {
   ITEMS.forEach(function (it, i) {
     var st = statusOf(it.id);
     if (st === "live") live++;
+
+    // Expired items leave no residue on the surface (D-02, Section 3.2). They
+    // survive only in the record, which is where A-01's evidence belongs — if
+    // the page kept showing them, she could never notice missing one.
+    if (st === "expired") return;
 
     var el = document.createElement("article");
     el.className = "item" + (st === "live" ? "" : " gone");
@@ -722,7 +765,19 @@ function renderLaneA() {
     host.appendChild(el);
   });
 
-  $("laneACount").textContent = live + " of " + ITEMS.length + " live";
+  var cleared = expiredCount();
+  if (cleared) {
+    var note = document.createElement("p");
+    note.className = "cleared-note";
+    note.textContent = cleared === ITEMS.length
+      ? "This delivery has cleared. Nothing is waiting for you."
+      : cleared + (cleared === 1 ? " item" : " items") + " cleared unkept.";
+    host.appendChild(note);
+  }
+
+  $("laneACount").textContent = cleared
+    ? live + " live · " + cleared + " cleared"
+    : live + " of " + ITEMS.length + " live";
 }
 
 function renderLaneB() {
@@ -822,10 +877,12 @@ function renderGauges() {
 }
 
 function render() {
+  var swept = sweepExpired();
   renderLaneA();
   renderLaneB();
   renderRecord();
   renderGauges();
+  if (swept && mode !== "pending") save();
 }
 
 function banner(msg) {

@@ -1,15 +1,17 @@
 # Product clarification plan
 
 **Created** 6 Sep 2026
-**Input** `docs/product-brief.md` v1.8
-**Status** Revised 6 Sep 2026 after Barbara realigned the session's goal. Delivery 001 shipped; Phase 0 running. Not reviewed. Not adjudicated.
+**Input** `docs/product-brief.md` v1.9 (reviewed at v1.8)
+**Status** Revised 6 Sep 2026 after Barbara realigned the session's goal, then corrected 6 Sep 2026 after independent review. Delivery 001 shipped; Phase 0 running. **Reviewed** by Codex against brief v1.8 (`docs/reviews/v1-8-codex-review.md`) and **adjudicated** (`docs/reviews/v1-8-codex-review-adjudication.md`).
 **Scope** Get a usable deliverable into her hands, settle the logic and the design behind it, and leave it in a state another session or harness can make pretty. Architecture stays out of scope — no storage design, no pipeline, no vendor selection.
 
 ---
 
 ## Where the project actually stands
 
-Every decision in the ledger is now `Confirmed` — nineteen of nineteen. That is unusual and worth naming plainly: **the decision ledger has stopped being the bottleneck.** What is left is not more deciding. It is evidence.
+Twenty-one of the ledger's twenty-two decisions are `Confirmed`; **D-21 remains `Proposed`** — whether the delivery is a page reached by link rather than content carried in the message. Barbara said "probably a page" and never ratified it, and D-21 is exactly the kind of detail that could drift into architecture unnoticed, so the count matters. *(Corrected 6 Sep 2026: this line previously read "nineteen of nineteen", which both undercounted the ledger and erased D-21's status. The brief's Section 4 is authoritative for firmness, not this plan.)*
+
+Either way, the point stands: **the decision ledger has stopped being the bottleneck.** What is left is not more deciding. It is evidence.
 
 Five of the eight original unresolved questions are closed. The remaining open items are cheap, with one exception: D-11 is now ratified, which means a hand-labelled evaluation set has to exist before a prioritisation layer does. That is the longest lead-time item in the project and nothing else depends on it, so it should start early and run in parallel.
 
@@ -25,7 +27,9 @@ The sharpest risk in the brief is Section 9's *"building it replaces reading."* 
 >
 > It also dissolves the phase. There is no separate manual pilot: the deliverable *is* the pilot, and the measurement is built into it. `prototype/current-depth.html` records keep and done timestamps, so D-15 accrues from ordinary use.
 
-Each week Claude produces a delivery: five items chosen from her subscribed sources under D-18, with the dropped material disclosed under D-19. Barbara reads it, keeps what matters, finishes what she keeps. Nothing else is asked of her.
+Claude produces a delivery each week: five items chosen from her subscribed sources under D-18, with the dropped material disclosed under D-19. Barbara reads it, keeps what matters, finishes what she keeps. Nothing else is asked of her.
+
+**Weekly is the test parameter, not a settled product behaviour.** Cadence is A-02 and the ten-day window is A-03, both still assumptions — a pilot cannot run without picking values, but picking them is not ratifying them. If the rhythm turns out wrong, the cap of five stays and the cadence moves.
 
 Why this comes first:
 
@@ -38,7 +42,9 @@ The page records this by itself: surfaced, kept, done, and each "less like this"
 
 **Exit condition:** three delivery cycles completed, or Barbara stops opening them — which is itself the most valuable finding this project could produce and must be recorded rather than quietly retried.
 
-**Open question for delivery 002 onward:** how the delivery reaches her. Right now it is a page she opens. D-09 says Lane A should arrive rather than wait to be visited, which is unresolved question 4. Until that is settled the deliveries do not truly arrive, and the mitigation D-09 exists to provide is not in force.
+**Open for delivery 002 onward:** how the delivery reaches her. Right now it is a page she opens, so D-09's "arrives, not fetched" is **decided but not yet in force** — the mechanism is settled (a recurring calendar event she creates by hand, D-20, closing question 4), and what is missing is that she has not created the event yet. *(Corrected 6 Sep 2026: this paragraph previously called question 4 unresolved, contradicting the Phase 1 table below, which correctly marks it closed.)*
+
+What remains open here is not the mechanism but whether it works: A-10 assumes a calendar is a channel she actually opens. The falsifier is already fixed — three deliveries, fewer than two opens means the channel is wrong rather than the content.
 
 ---
 
@@ -66,9 +72,9 @@ D-11 is ratified, and it is exacting: any prioritisation layer must beat a chron
 
 Steps:
 
-1. ~~Capture a corpus.~~ **Done 6 Sep 2026** — `docs/evals/held-out-2026-08-24.md`, 32 field-adjacent candidates from the week of 24–31 Aug, deliberately a week Delivery 001 was *not* built from.
+1. ~~Capture a corpus.~~ **Done 6 Sep 2026, completed the same day** — `docs/evals/held-out-2026-08-24.md`, now **62 labelling units** from 24–30 Aug, a week Delivery 001 was deliberately *not* built from. The first capture held 34 and was found to be an unexplained sample of its own window; Barbara then set the inclusion rule — everything field-adjacent in the window, promotional and automated mail included — and it was rebuilt to that rule. 62 units sits inside F-04's independent 55–70 per week estimate.
 2. **Label it by hand.** For each item: would this have been worth surfacing? Barbara labels; nobody else can.
-3. **Define the chronological baseline.** The most recent 5 items at delivery time. Trivial to compute, and it is the thing to beat.
+3. **Define the chronological baseline.** The most recent 5 items at delivery time — the thing to beat. **Not trivial to compute, as first assumed.** The review found the captured table carried dates rather than timestamps, no anchor for "delivery time", ties on almost every date, and one row bundling three DATAVERSITY items together. Two labellers could compute different top fives, which would void the comparison. Repaired in the corpus file; re-verify before comparing anything.
 4. **Write the threshold down before looking at any ranker output.** For example: the ranked 5 must contain at least N of the labelled keep-worthy items, versus the baseline's M. The number is Barbara's call; the discipline of fixing it in advance is D-11's whole point.
 5. **Record results in `docs/evals/`.** The corpus and protocol are already there; the labels and the comparison go alongside them.
 
@@ -80,7 +86,9 @@ Removing the prioritisation layer counts as a good outcome. The eval is not ther
 
 ## Phase 3 — Cross-harness review (the experiment the README sets up)
 
-Only meaningful once Phases 0–2 have produced something worth reviewing. Sequence, per `README.md` and `AGENTS.md` section 5:
+**First cycle complete, 6 Sep 2026.** Codex reviewed brief v1.8 from commit `0fc7dfe` on the remote; the review is in `docs/reviews/v1-8-codex-review.md` and the adjudication alongside it. Steps 1–5 below all ran. Step 6's accounting: **both model and harness changed at once**, so this is an operational benchmark and carries no claim about model quality.
+
+The sequence, retained because it repeats each cycle, per `README.md` and `AGENTS.md` section 5:
 
 1. Freeze the brief at its then-current version as the shared input.
 2. This plan, revised by what Phases 0–2 found, becomes the durable artifact.
@@ -95,9 +103,17 @@ Only meaningful once Phases 0–2 have produced something worth reviewing. Seque
 
 ## Phase 4 — Architecture
 
-**Not authorised.** `CLAUDE.md` and Section 0 of the brief both forbid it until Barbara explicitly moves the project into that phase.
+**Authorised 7 Sep 2026.** The restriction is retired; see Section 0 of the brief and `AGENTS.md` section 3.
 
-Listed here only so the boundary is visible: storage, delivery mechanism, ranker implementation, and source ingestion are all Phase 4 concerns, and every one of them is better decided after Phases 0–2 return evidence.
+The phrasing this section used to carry — "every one of them is better decided after Phases 0–2 return evidence" — is exactly the sequencing Barbara rejected. Storage, delivery mechanism, ranker implementation and source ingestion get designed when they are needed to make something work, at the smallest scale that works, and revised from use.
+
+---
+
+## Note on this plan, 7 Sep 2026
+
+**Superseded in structure, kept for the record.** Its phases imply a sequence — pilot, then questions, then eval, then review, then architecture — and that sequence is what stalled the project. The current order of work lives in Section 10 of the brief; the operating cycle lives in `AGENTS.md` section 3.
+
+Still worth reading here: the Phase 0 reasoning about why a working delivery came first, the Phase 2 detail on how the D-11 comparison is actually run, and "What would make this plan wrong" below.
 
 ---
 
@@ -105,7 +121,7 @@ Listed here only so the boundary is visible: storage, delivery mechanism, ranker
 
 - **Git remote** — configured 6 Sep 2026, `github.com/dagny099/current-depth`. Phase 3 unblocked.
 - **Gmail connector** — currently switched to `dagny099@gmail.com`. Capture the Phase 2 corpus before reverting, or accept switching twice.
-- **`docs/evals/README.md`** — tracked and empty. Phase 2 fills it.
+- **`docs/evals/README.md`** — written 6 Sep 2026. Keeps the two evaluations apart: D-11 (does the ranker deserve to exist) and D-15 (does the system produce reading).
 - **A-04, A-06** — carried, not blocking. A-04 is high confidence. A-06 is weakened by F-07 and probably not worth testing.
 - **Question 6** — whether expiry survives contact with her habits. Answerable only by Phase 0.
 

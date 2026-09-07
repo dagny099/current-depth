@@ -36,7 +36,7 @@ The longer-term aim is to learn when to use particular models, harnesses, skills
 
 Delivery 001 is live: five items picked from real subscriptions, a seven-slot shelf, and a keep-to-done clock. It lives at [`prototype/current-depth.html`](prototype/current-depth.html) — open it as a file and it saves to that browser; published as an Artifact it syncs across devices.
 
-As of brief v1.8, twenty-one of twenty-two decisions are `Confirmed` and seven of the original unresolved questions are closed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation. Section 10 of the brief carries the current order of work.
+As of brief v1.9, twenty-one of twenty-two decisions are `Confirmed` and seven of the original unresolved questions are closed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation. Section 10 of the brief carries the current order of work.
 
 **What is settled that changes the shape of the thing:**
 
@@ -80,7 +80,9 @@ flowchart TD
     style D fill:#dcebe7,stroke:#2f7d6e,color:#12312b
 ```
 
-**Where this stands:** C is done and D is running. Nothing has gone to Codex yet.
+**Where this stands:** one full loop is closed. C is done, D is running, and E through G have each happened once — Codex reviewed brief v1.8 from a named commit, the review landed in `docs/reviews/`, and the adjudication sits beside it. H is the next work.
+
+The accounting that matters for the experiment: **both model and harness changed at once**, so this first cycle is an operational benchmark and says nothing about model quality by itself.
 
 The revision to this workflow worth noting: the original sequence put implementation last, after the brief was "ready". That was wrong for this project — the brief's own sharpest risk is that building replaces reading, and the cheapest defence against it was to ship something usable early and let the evidence accrue from ordinary use. Clarification and the deliverable now run together.
 
@@ -122,8 +124,8 @@ current-depth/
 └── docs/
     ├── product-brief.md
     ├── plans/          # 2026-09-06-product-clarification-plan.md
-    ├── reviews/        # created/populated when a durable review exists
-    └── evals/          # held-out-2026-08-24.md — the D-11 labelling set
+    ├── reviews/        # v1-8-codex-review.md + its adjudication
+    └── evals/          # README.md, held-out-2026-08-24.md — the D-11 labelling set
 ```
 
 `prototype/` holds a hand-made deliverable, not an architecture. Nothing there implies a storage design, a pipeline, or a vendor.

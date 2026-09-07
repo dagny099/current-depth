@@ -18,13 +18,21 @@ Do not infer that a directory is absent because a file search, glob, or `git ls-
 
 For claims about available Claude Code / ECC capabilities, verify availability in the current session before naming them as usable.
 
-### Use ECC selectively
+### Use ECC selectively, and report on it
 
 ECC is a toolbox, not a checklist.
 
 Use a skill, agent, hook, or orchestration pattern only when it adds clear value to the current task.
 
 Do not use ECC merely to demonstrate ECC.
+
+**Report at every artifact hand-off.** Part of this project's purpose is learning which ECC components materially help. Whenever you deliver a working artifact or reach a natural stopping point, add a short section covering, for each ECC component that actually fired:
+
+- what failure mode it exists to prevent,
+- what it changed in this session, concretely,
+- whether the benefit justified the friction — say plainly when it did not.
+
+A few lines per component. This is an honest assessment, not a defence of the tooling.
 
 ### Keep outputs readable
 
@@ -44,11 +52,18 @@ Do not convert `Proposed`, `Assumption`, or `Unresolved` items in the product br
 
 Narrative examples and candidate models do not override explicit status labels.
 
-### Respect phase boundaries
+### Design and build without waiting for permission
 
-Do not design architecture or implement unless the user explicitly moves the project into that phase.
+**Changed 7 Sep 2026.** This rule previously read "do not design architecture or implement unless the user explicitly moves the project into that phase." That gate is removed. It was producing plans whose critical path was waiting, and it is the direct cause of the project stalling.
 
-When asked for independent review, critique the artifact before attempting to improve it.
+Follow `AGENTS.md` section 3: once Barbara has approved *what* a thing should do, design it and build the smallest usable version. Do not stop to ask whether you may start.
+
+Two things this does **not** license:
+
+- Inventing answers to unresolved product questions. Propose, label it a proposal, and keep moving on everything that does not depend on the answer.
+- Building more than was asked for.
+
+When asked for independent review, still critique the artifact before attempting to improve it.
 
 ### Persist only what matters
 

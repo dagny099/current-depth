@@ -1,8 +1,8 @@
 # Reading Digest — Product Brief
 
-**Version** 1.7 · 6 Sep 2026
+**Version** 1.8 · 6 Sep 2026
 **Owner** Barbara (single user; this is a personal system, not a product)
-**Status** Pre-architecture, but no longer nothing-built: Delivery 001 is running at `prototype/current-depth.html`. Every decision in the ledger is Confirmed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation.
+**Status** Pre-architecture, but no longer nothing-built: Delivery 001 is running at `prototype/current-depth.html`. Twenty-one of twenty-two decisions are Confirmed; only D-21 is Proposed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation.
 
 ---
 
@@ -30,7 +30,7 @@ Originally requested by Barbara, retained for the record:
 
 - Do not design the technical architecture. No storage design, no pipeline topology, no tool or vendor selection. **Still binding.**
 - ~~Do not implement anything.~~ **Retired 6 Sep 2026.**
-- Do not fill gaps with new product ideas. Where this brief says a question is unresolved, it is unresolved, and inventing an answer destroys the record of what was actually decided. **Still binding.**
+- **Propose freely; decide nothing.** Surfacing a new product idea is welcome — label it a proposal and put it to Barbara. What is forbidden is moving a question from unresolved to resolved without her saying so, or writing an invented answer into the brief as though it were decided. *(Reworded in v1.8. The earlier phrasing, "do not fill gaps with new product ideas", was read too literally in session and suppressed a good proposal. The rule protects the record, not the silence.)* **Still binding.**
 
 Earlier working documents exist outside this repository, but they are **not required** for this handoff. Do not treat their absence as missing project state. This brief contains the product information needed for the next work; if an external document is later added to the repo, treat it as supplemental unless explicitly designated authoritative.
 
@@ -133,7 +133,7 @@ All LinkedIn newsletters share one sender address, so a Source cannot be identif
 
 ## 2. The experience we're aiming for
 
-**Working experience sketch — not a decision ledger.** This section intentionally includes behaviors that are still `Proposed` or assumption-dependent. Use Section 4 and Section 6 to determine what is actually settled.
+**Working experience sketch — not a decision ledger.** As of v1.7 nearly everything described here is Confirmed. The exception is D-21, still `Proposed`: whether the delivery is a page reached by link rather than content carried in the message. Several behaviours remain assumption-dependent — A-01, A-02, A-08, A-09. Section 4 and Section 6 remain authoritative for status.
 
 Written from Barbara's side of the screen.
 
@@ -149,7 +149,7 @@ Nothing in this experience involves archiving, marking read, or clearing a list.
 
 ## 3. Lane A and Lane B
 
-**Working model — not all details are confirmed.** This section preserves the current design concept in one place. If a detail here is `Proposed`, assumed, or unresolved elsewhere, that status still governs.
+**Working model.** As of v1.7 the lane structure, both caps, both Lane A actions and the arrival mechanism are Confirmed. This section keeps the design in one place; where a detail is assumed or unresolved elsewhere, that status still governs.
 
 ### 3.1 The table
 
@@ -193,7 +193,7 @@ Current working behavior:
 
 ### 3.4 The relationship between lanes
 
-**Working design; depends on D-07.** Lane A feeds Lane B through the single gesture. Nothing flows back. Lane A's job is to be forgettable; Lane B's job is to be persistent; and the gesture is the only bridge.
+**Confirmed by D-07.** Lane A feeds Lane B through the keep gesture. Nothing flows back. Lane A's job is to be forgettable; Lane B's job is to be persistent; and the gesture is the only bridge.
 
 ---
 
@@ -224,6 +224,7 @@ This table is authoritative for whether a decision is settled.
 | D-19 | What is never surfaced is recorded, alongside what expires unkept. Both are evidence, not features. | **Confirmed** 6 Sep 2026 |
 | D-20 | Lane A arrives as a **recurring calendar event** carrying a link. Barbara creates that event by hand, once. Nothing automated writes to her calendar. | **Confirmed** 6 Sep 2026 |
 | D-21 | The calendar event is a pointer, not a carrier: the delivery itself is a page reached by link, not content inside the message. | **Proposed** — Barbara said "probably a page"; not yet ratified |
+| D-22 | Lane A carries pointers only. A kept item pulls its full text onto the Lane B shelf, so the reading arrives where the commitment is. | **Confirmed** 6 Sep 2026 |
 
 D-11 exists because a ranked list always looks intelligent, and Barbara works in evaluation design. The deletability of the prioritization layer is a product decision, not a technical one, and it should survive into whatever gets built.
 
@@ -240,6 +241,10 @@ D-20 was decided against Barbara's own measured data rather than by preference. 
 The event is created **by Barbara, by hand, once**, and nothing automated touches her calendar. That is possible only because the event carries a stable link rather than the week's content, so it never needs updating. Any future automation of her calendar is a separate decision to be taken deliberately, not a convenience to drift into.
 
 The falsifier, fixed in advance: run three deliveries and count opens. **Fewer than two of three means the channel is wrong, not the content.**
+
+D-22 answers question 14 without re-creating the disease. Embedding five full articles in Lane A would put perhaps 15,000–20,000 words on one page: D-18's cap controls how many things arrive, not how long they are, so a wall would return in a different dimension. Confining full text to Lane B also avoids reproducing paywalled work in bulk — Pragmatic Engineer and Lenny's are paid — and keeps the click landing with the writer for anything merely skimmed. It falls out of the lane split rather than being bolted on: Lane A is the skim, Lane B is the hour.
+
+Two costs are accepted knowingly. Text extraction keeps prose and loses figures, so items whose substance is a diagram or benchmark table degrade on the shelf and must keep a link alongside. And embedded text is a snapshot that cannot show a later correction.
 
 D-19 exists because D-18 discards roughly 97% of arriving items unseen. That makes the prioritisation layer load-bearing from the first delivery, which is precisely the "prioritisation is theater" risk in Section 9. Recording what was dropped is what lets D-11 be tested against the discarded material rather than only against what was shown.
 
@@ -312,7 +317,7 @@ Added in v1.3, from the discovery pass:
 Added in v1.7, from the delivery-mechanism decision:
 
 13. **Where does the page live?** The link in D-20's calendar event has to point somewhere stable. Currently an Anthropic-hosted Artifact, which costs nothing and gives cross-device state for free. Barbara owns `balex.com` and asked about her own infrastructure. The trade-off is specific and worth stating before choosing: **self-hosting a static page is easy; re-solving synced state is not.** The prototype persists through the Artifact runtime when published and falls back to browser-local storage otherwise, so a self-hosted copy would be per-device until something replaces that. Choosing a host is tool selection, which Section 0 still places outside scope until Barbara opens the architecture phase.
-14. **Does the delivery carry the reading, or only point at it?** Barbara asked whether Gmail can be bypassed entirely. Two mechanisms exist and they differ in kind. The smaller one: link to each item's public web version instead of the Gmail message — nearly every source publishes one, and the canonical URL is extractable from the message body. The larger one: carry the article text inside the delivery, so there is nothing to click through to at all. The second would change Lane A from a list of pointers into five readable pieces, which is a **new product idea and not a gap to be filled silently** — it needs Barbara's explicit decision, and it would restructure the page.
+14. **Does the delivery carry the reading, or only point at it?** **Resolved 6 Sep 2026 — see D-22.** Neither extreme. Lane A links out, and Gmail is bypassed by pointing at each item's public web version rather than the message; the canonical URL is extractable from the message body, and nearly every source publishes one. Full text is pulled only when an item is kept.
 
 ---
 
@@ -320,7 +325,7 @@ Added in v1.7, from the delivery-mechanism decision:
 
 This is a **vocabulary sketch, not a settled domain model**. It exists to make product discussion concrete without choosing storage, schema, field types, or architecture.
 
-Some concepts below depend on `Proposed` decisions or assumptions. Their appearance here does **not** make those decisions confirmed.
+As of v1.7 only D-21 remains `Proposed`. Several concepts below still rest on assumptions, chiefly A-07 and A-08. Their appearance here does **not** upgrade any status.
 
 | Concept | What it represents | Status / dependency |
 |---|---|---|
@@ -336,12 +341,13 @@ Some concepts below depend on `Proposed` decisions or assumptions. Their appeara
 | **Relevance Judgment** | A relevance result plus a human-readable reason. | Required by D-10; must survive D-11's delete-or-keep test, both Confirmed. |
 | **Expiry Record** | A record of what left Lane A without being kept, and of what was never surfaced. | Required by D-19, Confirmed. Evidence for A-01. |
 | **Related Suggestion** | Additional material associated with an item selected for deeper study. | In scope by D-05, confined to Lane B by D-06, both Confirmed. Breadth still open (question 8). |
+| **Reading Text** | The extracted article text of a kept item, held on the Lane B shelf. | D-22, Confirmed. Absent from Lane A. Figures are lost in extraction, so a link is kept alongside. |
 | **Arrival** | The recurring calendar event carrying the link to a delivery. | D-20, Confirmed. Created by Barbara by hand; carries no content, so it never goes stale. Whether the link's destination is a page rather than the content itself depends on D-21, still Proposed. |
 
-Two relationships are currently part of the working design but remain conditional:
+Two relationships that were conditional in earlier versions are now settled:
 
-- **Lane A → Lane B promotion** depends on D-07 being confirmed.
-- **Related suggestions only in Lane B** depends on D-06 being confirmed.
+- **Lane A → Lane B promotion** — Confirmed by D-07.
+- **Related suggestions only in Lane B** — Confirmed by D-06. How far "related" extends is still open (question 8).
 
 ---
 
@@ -359,7 +365,7 @@ Carried forward because they should inform product decisions, not just engineeri
 
 Not architecture. In order:
 
-**As of v1.7, twenty of twenty-one decisions are Confirmed; only D-21 is Proposed.** Questions 1, 2, 3, 4, 5 and 9 are closed. Delivery 001 is live. The decision ledger is no longer the bottleneck.
+**As of v1.8, twenty-one of twenty-two decisions are Confirmed; only D-21 is Proposed.** Questions 1, 2, 3, 4, 5, 9 and 14 are closed. Delivery 001 is live. The decision ledger is no longer the bottleneck.
 
 The sequenced plan lives in `docs/plans/2026-09-06-product-clarification-plan.md`. In outline:
 

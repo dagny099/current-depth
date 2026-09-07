@@ -1,8 +1,8 @@
 # Product clarification plan
 
 **Created** 6 Sep 2026
-**Input** `docs/product-brief.md` v1.6
-**Status** Revised 6 Sep 2026 after Barbara realigned the session's goal. Not reviewed. Not adjudicated.
+**Input** `docs/product-brief.md` v1.8
+**Status** Revised 6 Sep 2026 after Barbara realigned the session's goal. Delivery 001 shipped; Phase 0 running. Not reviewed. Not adjudicated.
 **Scope** Get a usable deliverable into her hands, settle the logic and the design behind it, and leave it in a state another session or harness can make pretty. Architecture stays out of scope — no storage design, no pipeline, no vendor selection.
 
 ---
@@ -49,12 +49,14 @@ All are cheap. None blocks Phase 0. Several will be answered better *after* a we
 | Question | What has to be decided | Note |
 |---|---|---|
 | A-02, A-03 | Cadence, and the expiry window that follows from it | Best answered from Phase 0 experience. Options at a fixed cap of 5: 5 weekly, or 3 twice-weekly — same throughput, different rhythm. Barbara's rejection of a month-long evaluation window suggests a preference for the faster one |
-| 4 | How Lane A arrives — message to self, bookmarked destination, or message linking to a destination | D-09 says it arrives rather than being fetched; the mechanism was never settled. The argument for a message is that it borrows a habit she already has |
+| ~~4~~ | ~~How Lane A arrives~~ | **Closed** — a recurring calendar event she creates by hand (D-20). All three original candidates were broken |
 | 7 | The gesture name | The brief writes **keep** throughout for consistency; this needs a nod, not a debate |
 | 8 | How far related content extends beyond TED talks | Papers? Conference talks? Confined to Lane B by D-06 either way |
 | 10 | Which of the six delivery addresses are in scope, and how duplicates are collapsed | F-05. The same issue arrives twice today |
 | 11 | What counts as signal | Narrower than it was. The fields and the subscriptions now agree; what remains is the non-field stream sharing the same labels, and the promotional share of the vendor sources. DeepLearning.AI is a usable quality anchor — Barbara named it |
 | 12 | What a Source is when the sender address is not the publication | Four LinkedIn publications share one sender address. Sender-based identity fails |
+| 13 | Where the page lives — Artifact or her own infrastructure | Self-hosting a static page is easy; re-solving synced state is not. Choosing a host is tool selection, so it belongs to the architecture phase |
+| ~~14~~ | ~~Does the delivery carry the reading or point at it~~ | **Closed** — pointers in Lane A, full text pulled on keep (D-22) |
 
 ---
 
@@ -87,7 +89,7 @@ Only meaningful once Phases 0–2 have produced something worth reviewing. Seque
 5. Claude Code adjudicates the findings; the revised plan supersedes this one.
 6. Record which variables changed. A Claude Code / Codex comparison changes both model and harness at once, so it is an operational benchmark and not a model-quality result. Say so.
 
-**Dependency:** this needs a git remote. Without one, no other machine or harness can obtain the frozen input, and the independence claim is unverifiable.
+**Frozen input — now available.** The remote is up at `github.com/dagny099/current-depth`. Freeze by tag or commit SHA and hand Codex *that reference*, not a copy pasted into a prompt: a pasted copy cannot be verified as identical afterwards, which would quietly undo the independence the whole experiment rests on.
 
 ---
 
@@ -101,7 +103,7 @@ Listed here only so the boundary is visible: storage, delivery mechanism, ranker
 
 ## Open dependencies and housekeeping
 
-- **Git remote** — not yet configured. Blocks Phase 3 entirely.
+- **Git remote** — configured 6 Sep 2026, `github.com/dagny099/current-depth`. Phase 3 unblocked.
 - **Gmail connector** — currently switched to `dagny099@gmail.com`. Capture the Phase 2 corpus before reverting, or accept switching twice.
 - **`docs/evals/README.md`** — tracked and empty. Phase 2 fills it.
 - **A-04, A-06** — carried, not blocking. A-04 is high confidence. A-06 is weakened by F-07 and probably not worth testing.

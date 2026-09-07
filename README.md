@@ -36,7 +36,7 @@ The longer-term aim is to learn when to use particular models, harnesses, skills
 
 Delivery 001 is live: five items picked from real subscriptions, a seven-slot shelf, and a keep-to-done clock. It lives at [`prototype/current-depth.html`](prototype/current-depth.html) — open it as a file and it saves to that browser; published as an Artifact it syncs across devices.
 
-As of brief v1.7, twenty of twenty-one decisions are `Confirmed` and six of the original unresolved questions are closed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation. Section 10 of the brief carries the current order of work.
+As of brief v1.8, twenty-one of twenty-two decisions are `Confirmed` and seven of the original unresolved questions are closed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation. Section 10 of the brief carries the current order of work.
 
 **What is settled that changes the shape of the thing:**
 
@@ -45,6 +45,7 @@ As of brief v1.7, twenty of twenty-one decisions are `Confirmed` and six of the 
 - Metrics may only come from gestures Barbara would make anyway. No gesture exists in order to feed a measurement (`D-16`).
 - Delivery arrives as a recurring calendar event she creates by hand, because every mailbox she owns runs between 66% and 91% unread (`D-20`).
 - Any ranking must beat reverse-chronological on a hand-labelled set or be deleted — and deleting it counts as a good outcome (`D-11`).
+- Lane A carries pointers; full article text is pulled only when an item is kept, so depth arrives where the commitment is (`D-22`).
 
 **Still architecture, still not authorised:** storage, hosting, ranker implementation, ingestion.
 
@@ -67,14 +68,23 @@ The first workflow under test is intentionally simple:
 
 ```mermaid
 flowchart TD
-    A[Product brief<br/>shared source of truth] --> B[Claude Code<br/>product clarification / plan]
-    B --> C[Durable plan artifact]
-    C --> D[Codex<br/>independent adversarial review]
-    D --> E[Durable review artifact]
-    E --> F[Claude Code<br/>adjudicate findings]
-    F --> G[Revised plan]
-    G --> H[Implementation + evaluation<br/>when the brief is ready]
+    A[Product brief<br/>shared source of truth] --> B[Claude Code<br/>clarification + working deliverable]
+    B --> C[Delivery 001<br/>prototype/current-depth.html]
+    C --> D[Evidence<br/>keep-to-done latency · D-11 labelling]
+    D --> E[Codex<br/>independent adversarial review]
+    E --> F[Durable review artifact]
+    F --> G[Claude Code<br/>adjudicate findings]
+    G --> H[Revised plan and design]
+
+    style C fill:#dcebe7,stroke:#2f7d6e,color:#12312b
+    style D fill:#dcebe7,stroke:#2f7d6e,color:#12312b
 ```
+
+**Where this stands:** C is done and D is running. Nothing has gone to Codex yet.
+
+The revision to this workflow worth noting: the original sequence put implementation last, after the brief was "ready". That was wrong for this project — the brief's own sharpest risk is that building replaces reading, and the cheapest defence against it was to ship something usable early and let the evidence accrue from ordinary use. Clarification and the deliverable now run together.
+
+Codex reviews from a **named commit on the remote**, not from a pasted copy — a pasted copy cannot be verified as identical afterwards, which would undo the independence the experiment depends on.
 
 Cursor will be introduced later as a third challenger, after the first Claude Code ↔ Codex workflow is interpretable.
 

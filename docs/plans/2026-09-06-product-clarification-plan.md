@@ -42,9 +42,11 @@ The page records this by itself: surfaced, kept, done, and each "less like this"
 
 **Exit condition:** three delivery cycles completed, or Barbara stops opening them — which is itself the most valuable finding this project could produce and must be recorded rather than quietly retried.
 
-**Open for delivery 002 onward:** how the delivery reaches her. Right now it is a page she opens, so D-09's "arrives, not fetched" is **decided but not yet in force** — the mechanism is settled (a recurring calendar event she creates by hand, D-20, closing question 4), and what is missing is that she has not created the event yet. *(Corrected 6 Sep 2026: this paragraph previously called question 4 unresolved, contradicting the Phase 1 table below, which correctly marks it closed.)*
+**Closed 7 Sep 2026.** D-09's "arrives, not fetched" is now in force: Barbara created the recurring calendar event by hand — *Current-Depth Review Time!*, 8pm CT, weekly on Monday and again on Wednesday, carrying the stable artifact link. *(Corrected 6 Sep 2026: this paragraph previously called question 4 unresolved, contradicting the Phase 1 table below, which correctly marks it closed.)*
 
-What remains open here is not the mechanism but whether it works: A-10 assumes a calendar is a channel she actually opens. The falsifier is already fixed — three deliveries, fewer than two opens means the channel is wrong rather than the content.
+What remains open is not the mechanism but whether it works: A-10 assumes a calendar is a channel she actually opens. The falsifier is fixed — three deliveries, fewer than two opened means the channel is wrong rather than the content. Counting is per delivery cycle, not per event.
+
+**Status, 7 Sep 2026:** two deliveries shipped, 002 the first under D-22. Shelf full at 7 of 7. Keep rate ~70% against D-18's assumed 20–40%. Nothing marked done yet, so D-15 is not measurable. Observations live in `docs/evals/pilot-log.md`.
 
 ---
 

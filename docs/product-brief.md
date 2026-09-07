@@ -1,10 +1,12 @@
 # Reading Digest — Product Brief
 
-**Version** 1.9 · 6 Sep 2026
+**Version** 1.10 · 7 Sep 2026
 **Owner** Barbara (single user; this is a personal system, not a product)
-**Status** Pre-architecture, but no longer nothing-built: Delivery 001 is running at `prototype/current-depth.html`. Twenty-one of twenty-two decisions are Confirmed; only D-21 is Proposed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation.
+**Status** In use. Two deliveries are running at `prototype/current-depth.html`, arriving through a recurring calendar event. Twenty-one of twenty-two decisions are Confirmed; only D-21 is Proposed. Architecture was authorised 7 Sep 2026 and the working model is now design → build → test → iterate (`AGENTS.md` section 3). What remains is evidence, a handful of cheap questions, and the D-11 evaluation — none of which gate the work.
 
-**v1.9 is the post-review revision.** v1.8 was reviewed independently by Codex (`docs/reviews/v1-8-codex-review.md`) and adjudicated (`docs/reviews/v1-8-codex-review-adjudication.md`). No decision changed status as a result. What changed: A-10 was added, question 15 was opened, three claims were scoped to what they actually test, and Section 10 was rewritten because every item in it had gone stale.
+**v1.10 records the first real evidence.** Delivery 002 shipped 7 Sep under D-22, the calendar event exists, and the pilot has produced its first numbers — including a keep rate around 70% against D-18's assumed 20–40%, and a shelf that filled on day one. Observations live in `docs/evals/pilot-log.md`, not here: this document holds decisions and assumptions, and the log holds what use is revealing about them.
+
+**v1.9 was the post-review revision.** v1.8 was reviewed independently by Codex (`docs/reviews/v1-8-codex-review.md`) and adjudicated (`docs/reviews/v1-8-codex-review-adjudication.md`). No decision changed status as a result. What changed: A-10 was added, question 15 was opened, three claims were scoped to what they actually test, and Section 10 was rewritten because every item in it had gone stale.
 
 ---
 
@@ -141,7 +143,7 @@ All LinkedIn newsletters share one sender address, so a Source cannot be identif
 
 ## 2. The experience we're aiming for
 
-**Working experience sketch — not a decision ledger.** As of v1.9 nearly everything described here is Confirmed. The exception is D-21, still `Proposed`: whether the delivery is a page reached by link rather than content carried in the message. Several behaviours remain assumption-dependent — A-01, A-02, A-08, A-09. Section 4 and Section 6 remain authoritative for status.
+**Working experience sketch — not a decision ledger.** As of v1.10 nearly everything described here is Confirmed. The exception is D-21, still `Proposed`: whether the delivery is a page reached by link rather than content carried in the message. Several behaviours remain assumption-dependent — A-01, A-02, A-08, A-09. Section 4 and Section 6 remain authoritative for status.
 
 Written from Barbara's side of the screen.
 
@@ -157,7 +159,7 @@ Nothing in this experience involves archiving, marking read, or clearing a list.
 
 ## 3. Lane A and Lane B
 
-**Working model.** As of v1.9 the lane structure, both caps, both Lane A actions and the arrival mechanism are Confirmed. This section keeps the design in one place; where a detail is assumed or unresolved elsewhere, that status still governs.
+**Working model.** As of v1.10 the lane structure, both caps, both Lane A actions and the arrival mechanism are Confirmed. This section keeps the design in one place; where a detail is assumed or unresolved elsewhere, that status still governs.
 
 ### 3.1 The table
 
@@ -254,11 +256,19 @@ The event is created **by Barbara, by hand, once**, and nothing automated touche
 
 The falsifier, fixed in advance: run three deliveries and count opens. **Fewer than two of three means the channel is wrong, not the content.**
 
+**Done, 7 Sep 2026.** Barbara created the event by hand: *Current-Depth Review Time!*, 8:00pm CT, recurring weekly on **Monday** and again on **Wednesday**, carrying the stable artifact link in its description. D-09 is now in force — the delivery arrives rather than waiting to be remembered — and A-10's three-delivery count can begin.
+
+The two-event split was hers and is better than a single event would have been, because the two jobs are different lengths. **Monday is Lane A**, the five-minute skim of a new delivery. **Wednesday is Lane B**, the hour where something gets finished. That gives the *done* gesture a recurring moment of its own, which is precisely what A-08 doubts will happen unprompted — and it does so without the system imposing anything, because she scheduled it. D-17's ban on deadlines is not touched: a reminder she wrote herself is not a deadline the product created.
+
 D-22 answers question 14 without re-creating the disease. Embedding five full articles in Lane A would put perhaps 15,000–20,000 words on one page: D-18's cap controls how many things arrive, not how long they are, so a wall would return in a different dimension. Confining full text to Lane B also avoids reproducing paywalled work in bulk — Pragmatic Engineer and Lenny's are paid — and keeps the click landing with the writer for anything merely skimmed. It falls out of the lane split rather than being bolted on: Lane A is the skim, Lane B is the hour.
 
 Two costs are accepted knowingly. Text extraction keeps prose and loses figures, so items whose substance is a diagram or benchmark table degrade on the shelf and must keep a link alongside. And embedded text is a snapshot that cannot show a later correction.
 
-**Delivery 001 predates D-22 and does not satisfy it.** It was built earlier the same day this decision was ratified, and it addresses every item by Gmail thread id — so the reading still happens inside the container Section 1.1 identifies as the defect, and the shelf holds a pointer rather than text. That is a limitation of the first delivery, not a revision of D-22. Delivery 002 onward carries canonical public URLs and embeds extracted text at build time.
+**Delivery 001 predates D-22 and does not satisfy it.** It was built earlier the same day this decision was ratified, and it addresses every item by Gmail thread id — so the reading still happens inside the container Section 1.1 identifies as the defect, and the shelf holds a pointer rather than text. That is a limitation of the first delivery, not a revision of D-22. Delivery 002, 7 Sep 2026, is the first to carry canonical public URLs with text embedded at build time.
+
+**D-22 is partly satisfiable, and the ceiling is set by the publishers.** Measured across Delivery 002's five items: one carried the whole article (Juan Sequeda, a free publication); three carried the opening section only before a paywall (Ken Huang, Beyond Euclid, Nate's Newsletter); one carried nothing at all. That last case is HackerNoon, whose digest publishes no canonical article link — only per-subscriber tracking redirects, so embedding one would place a token identifying Barbara inside the page. It falls back to Gmail, and the page says so.
+
+So "the reading arrives where the commitment is" holds for roughly one item in five, partially for most, and not at all for some. This is a real constraint rather than an implementation gap, and it is the input to any later question about paid subscriptions or full-text fetching. It does not weaken the decision: an opening section on the shelf is still better than a link into a 90%-unread mailbox.
 
 D-19 exists because D-18 discards roughly 97% of arriving items unseen. That makes the prioritisation layer load-bearing from the first delivery, which is precisely the "prioritisation is theater" risk in Section 9. Recording what was dropped is what lets D-11 be tested against the discarded material rather than only against what was shown.
 
@@ -269,6 +279,10 @@ Three secondary diagnostics accompany D-15. They are **not** success criteria an
 - **Keep-to-done conversion.** Keeping eight and finishing one means the digest is too broad or the shelf too large. This is the evidence base the open D-08 cap question currently lacks.
 - **Expiry Record** (Section 3.2), testing A-01.
 - **Hide-to-keep ratio**, the tripwire for A-09.
+
+**First evidence, 7 Sep 2026 — D-18's keep-rate assumption looks wrong.** Across the first ten surfaced items Barbara kept seven, a rate near **70%** against the 20–40% D-18's arithmetic assumed, and the shelf reached its cap of 7 on day one. At 70% a delivery of five produces about 3.5 keeps per cycle, which saturates a 7-slot shelf within a fortnight and holds it there unless roughly 3.5 items are finished per week.
+
+Both caps were held fixed on 7 Sep rather than adjusted, deliberately: at n=10, moving two numbers at once would make any subsequent change unattributable. Three readings remain open — the picks are good and the delivery should be *smaller*; or the bar for keeping is too low because Delivery 001 gave no way to judge an item without opening Gmail, making "keep" mean *deal with this later*, which is the F-03 failure mode; or both. The next cycle discriminates, because Delivery 002 is the first where an item's text can be skimmed before committing. Full numbers and caveats in `docs/evals/pilot-log.md`.
 
 ---
 
@@ -295,15 +309,15 @@ Each is a place where the design rests on inference. None has been validated aga
 | # | Assumption | Basis | How it could be tested |
 |---|---|---|---|
 | A-01 | Expiry suits her. Queues she keeps would rot. | Category history (F-03), not her data. | Record what expires unkept for a month. If she repeatedly wishes she still had something, the assumption is wrong. |
-| A-02 | Weekly is the right Lane A cadence . | Never discussed. PLEASE HELP ME THINK THROUGH THIS. | Ask. Cheap to change before anything exists. |
+| A-02 | Weekly is the right Lane A cadence. **Still an assumption; deliveries land Mondays.** | Never affirmatively chosen — it was inherited and then used. The first evidence pushes against it: at the observed keep rate, five items a week saturate the shelf (see the D-18 note in Section 4). The live alternative is three items twice weekly — same throughput, faster rhythm, and it fits Barbara's stated impatience with week-long waits. | Living with it. **Do not confuse delivery cadence with review cadence:** deliveries are weekly, while Barbara's own calendar prompts are twice weekly, Monday and Wednesday. Two events per week is not evidence of two deliveries per week. |
 | A-03 | Ten days is the right expiry window. | Derived from A-02, to give one week of overlap. | Falls with A-02. |
 | A-04 | She is past introductory material in retrieval, evaluation and knowledge graphs. | Her stated background. | High confidence. |
 | A-05 | Enterprise data management sources are vendor-dominated with a low signal rate and need different handling from the ML sources. **Confirmed 6 Sep 2026.** *(Briefly and wrongly retired in v1.3 on the strength of the retracted F-06; reinstated in v1.4.)* | Now checked against her actual subscriptions. DATAVERSITY sends roughly 5 messages per week, overwhelmingly webinar, conference and CDMP-certification promotion — "Join Us", "Register now", "Early Bird" — with editorial appearing mainly inside The DATAVERSITY Download and occasional white papers. ODSC follows the same shape: a genuine weekly article roundup wrapped in conference marketing. | Already tested. Holds, and it is the clearest case in the source list for treating a source's editorial content differently from its promotional content. |
 | A-06 | The measured clutter in the other mailbox represents the deterrent effect she described. | Corroboration only. Causation not established. **Weakened 6 Sep 2026:** F-07 shows the real mailbox is heavily organised and filtered, and its newsletters still go 98% unread. Clutter cannot be the whole mechanism. | Would require observing her behavior, not her mailbox. Probably not worth testing. |
 | A-07 | There is enough arriving to justify a prioritization layer. **Confirmed 6 Sep 2026** by the discovery pass: 40–50 field-adjacent messages per week, 150–250 candidate items. | F-04, now closed. | Already tested. Holds. |
 | A-08 | She will mark `done` on Lane B reliably enough for D-15's latency to mean anything. | Inference, not observation. Plenty of people finish the article and never tap the button. | After one month, compare the done count against her own recollection of what she actually finished. A large gap invalidates D-15 rather than her reading. |
-| A-09 | Taking items off Lane A via "less like this" will not turn Lane A into a surface she clears. | Judgment. She chose hiding over signal-only in v1.2 with the clearing risk stated. | Hide-to-keep ratio per delivery cycle. If hides run well ahead of keeps, Lane A has become a list to clear, and the correct response is a narrower digest, not a better hide control. |
-| A-10 | A calendar is a channel Barbara actually opens, and a past unopened event recedes rather than accumulating as debt. **Added v1.9.** | Inference about her behaviour, not measurement. It sits inside D-20's rationale, where it was easy to mistake for something that had been checked. Naming it does not weaken D-20: that decision was taken against measured mailbox data, and this assumption is the part of the reasoning that was *not* measured. | Already falsifiable, and the falsifier was fixed in advance under D-20: run three deliveries and count opens. Fewer than two of three means the channel is wrong, not the content. Counting opens creates no new gesture — a page load is something she does for her own reasons, so D-16 is satisfied. |
+| A-09 | Taking items off Lane A via "less like this" will not turn Lane A into a surface she clears. | Judgment. She chose hiding over signal-only in v1.2 with the clearing risk stated. **Early reading 7 Sep 2026: hide-to-keep is 0 : 7.** The tripwire is not firing, but it is firing *in reverse* — she keeps nearly everything and hides nothing, which is a different problem and the one D-18's keep-rate note addresses. | Hide-to-keep ratio per delivery cycle. If hides run well ahead of keeps, Lane A has become a list to clear, and the correct response is a narrower digest, not a better hide control. A ratio near zero in the other direction means the digest is not discriminating, or that keeping is standing in for judging. |
+| A-10 | A calendar is a channel Barbara actually opens, and a past unopened event recedes rather than accumulating as debt. **Added v1.9. Now under live test — the event exists as of 7 Sep 2026.** | Inference about her behaviour, not measurement. It sits inside D-20's rationale, where it was easy to mistake for something that had been checked. Naming it does not weaken D-20: that decision was taken against measured mailbox data, and this assumption is the part of the reasoning that was *not* measured. | Falsifier fixed in advance under D-20: run three deliveries and count opens. Fewer than two of three means the channel is wrong, not the content. **Opens are counted per delivery cycle, not per event** — there are two events a week and one delivery, so an open on either counts once. Counting creates no new gesture; a page load is something she does for her own reasons, so D-16 is satisfied. |
 
 A-07 was the one that could have collapsed a large part of this design. It did not: volume is high, so chronological order is not sufficient and the prioritisation layer is justified. D-11's deletability test still applies — the layer must earn its place — but it is now worth building and testing rather than skipping.
 
@@ -319,7 +333,7 @@ Ordered by how much they block.
 2. **What outcome would she notice?** **Resolved in v1.2 — see D-15, D-16, D-17.** Question text kept so the record of what was open survives. The answer landed on a latency criterion (median keep to done, 14 days) rather than a count, because a count of promotions rises in the failure mode; on a rule governing which gestures may be measured at all; and on encouragement being a growing record of finished items rather than a streak.
 3. **Does enterprise data management belong in scope?** **Resolved 6 Sep 2026: yes.** Barbara confirmed it after the corrected source list showed she is in fact subscribed — DATAVERSITY, ODSC, the Knowledge Graph Conference, and the LinkedIn metadata/ontology stream. The original sub-question, job-driven or interest-driven, was not asked and remains open, but it no longer blocks: the sources exist either way. What A-05 adds is that this field needs different handling from the ML sources, because its editorial content is buried inside promotional mail.
 4. **How does Lane A arrive?** **Resolved 6 Sep 2026 — a recurring calendar event, see D-20.** All three candidates originally listed here turned out to be broken: a bookmark is fetched rather than arrived, which contradicts D-09; and a message to herself lands in the very container Section 1.1 identifies as the defect, in a mailbox that is 90.6% unread. The candidate list was incomplete, not merely undecided.
-5. **What is the Lane B cap, exactly?** **Resolved 6 Sep 2026: seven.** Ratified together with D-08, on the strength of the D-18 arithmetic, which uses 7.
+5. **What is the Lane B cap, exactly?** **Resolved 6 Sep 2026: seven.** Ratified together with D-08, on the strength of the D-18 arithmetic, which uses 7. *(Note the circularity: D-18's arithmetic was derived from a shelf of 7, so it cannot independently justify 7.)* **Reopened as an observation, not a decision, 7 Sep 2026:** the shelf filled on day one and Keep is now disabled on every live item. Barbara considered making the cap configurable and decided against it — the cap is the mechanism, and a cap that can be raised when it binds is a suggestion. Both caps stay fixed while a second cycle of evidence accrues. See `docs/evals/pilot-log.md`.
 6. **Does expiry survive contact with her habits?** A-01 is argued from category history rather than from her behavior. If she has a counterexample from her own life, that outranks anything cited here.
 7. **What is the gesture called?** "Favorite" and "keep" were both used for the same action.
 8. **How far does related content extend?** TED talks were the stated example. Whether it covers papers, conference talks, or other media was never scoped.
@@ -346,7 +360,7 @@ Added in v1.9, from the Codex review adjudication:
 
 This is a **vocabulary sketch, not a settled domain model**. It exists to make product discussion concrete without choosing storage, schema, field types, or architecture.
 
-As of v1.9 only D-21 remains `Proposed`. Several concepts below still rest on assumptions, chiefly A-07 and A-08. Their appearance here does **not** upgrade any status.
+As of v1.10 only D-21 remains `Proposed`. Several concepts below still rest on assumptions, chiefly A-07 and A-08. Their appearance here does **not** upgrade any status.
 
 | Concept | What it represents | Status / dependency |
 |---|---|---|
@@ -386,13 +400,13 @@ Carried forward because they should inform product decisions, not just engineeri
 
 Not architecture. In order:
 
-**As of v1.9, twenty-one of twenty-two decisions are Confirmed; only D-21 is Proposed.** Questions 1, 2, 3, 4, 5, 9 and 14 are closed; 15 is newly open. Delivery 001 is live and the first cross-harness review is done. The decision ledger is not the bottleneck, and has not been for two revisions.
+**As of v1.10, twenty-one of twenty-two decisions are Confirmed; only D-21 is Proposed.** Questions 1, 2, 3, 4, 5, 9 and 14 are closed; 15 is open. Two deliveries are live, they arrive through a calendar event, and the first cross-harness review is done. The decision ledger is not the bottleneck, and has not been for three revisions — evidence is.
 
 This section was rewritten in v1.9 because every item in the v1.8 version had gone stale: the pilot had stopped being manual, the corpus had been captured, and the review it pointed forward to had already happened. Read that as a warning about this section in particular — it dates faster than the rest of the brief.
 
 The sequenced plan lives in `docs/plans/2026-09-06-product-clarification-plan.md`. In outline, what is actually next:
 
-1. **Make the page good and use it.** Design pass on `prototype/current-depth.html`, then Delivery 002 with real links and article text on the shelf, published to the artifact she already has open. This is the critical path — the product is a thing she reads, and it does not yet exist in a form she trusts.
+1. **Keep delivering, and watch the keep rate.** Deliveries 001 and 002 are live; the design pass is done; the calendar event exists. **Delivery 003 lands Monday 14 Sep.** The open question the next cycle answers is whether the ~70% keep rate is real or an artifact of Delivery 001's poor affordances — that determines whether the delivery should shrink to three twice-weekly. Nothing else should be changed until it does. Record everything in `docs/evals/pilot-log.md`.
 2. **Close the cheap product questions as they come up in the building** — 7, 8, 10, 11, 12, 15, and A-02 with A-03. Propose an answer, get her nod, move on. Do not run a separate question-closing exercise, and do not let an open question stop work that does not depend on it.
 3. **Label the D-11 held-out set when she has the appetite.** The corpus is complete and ready (`docs/evals/held-out-2026-08-24.md`): 62 units across 24–30 Aug. It decides whether a ranking layer survives. **It is not a prerequisite for building one, or for anything else.** Nothing waits on it.
 4. **Work the adjudicated review findings.** The Codex review of v1.8 and its adjudication both live in `docs/reviews/`. Open items are tracked there rather than duplicated here.

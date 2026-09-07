@@ -6,6 +6,7 @@ Evaluation definitions and results. Two different things get evaluated here, and
 
 | File | What it is |
 |---|---|
+| `pilot-log.md` | Running observations from real use — one entry per delivery, plus a standing tally. Where `A-01`, `A-02`, `A-08`, `A-09`, `A-10` and the `D-15` clock accrue evidence. |
 | `held-out-2026-08-24.md` | The hand-labelled set D-11 requires. 62 labelling units from 24–30 Aug 2026 — everything field-adjacent in the window, promotional and automated mail included. Unlabelled; threshold not yet fixed. |
 
 ## The two evaluations, kept apart

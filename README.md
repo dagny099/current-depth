@@ -34,9 +34,11 @@ The longer-term aim is to learn when to use particular models, harnesses, skills
 
 **Pre-architecture, but no longer nothing-built.**
 
-Delivery 001 is live: five items picked from real subscriptions, a seven-slot shelf, and a keep-to-done clock. It lives at [`prototype/current-depth.html`](prototype/current-depth.html) — open it as a file and it saves to that browser; published as an Artifact it syncs across devices.
+Two deliveries are live and in real use, at [`prototype/current-depth.html`](prototype/current-depth.html) — open it as a file and it saves to that browser; published as an Artifact it syncs across devices. Delivery 002 is the first to carry canonical article links with the text embedded on the shelf. The delivery now **arrives**: a recurring calendar event, created by hand, carries the link.
 
-As of brief v1.9, twenty-one of twenty-two decisions are `Confirmed` and seven of the original unresolved questions are closed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation. Section 10 of the brief carries the current order of work.
+**The first evidence is already interesting.** The shelf filled on day one and the keep rate is running near 70% against the 20–40% the cap arithmetic assumed. Both caps were held fixed rather than raised — the cap is the mechanism, and one that can be raised when it binds is a suggestion. Observations accrue in [`docs/evals/pilot-log.md`](docs/evals/pilot-log.md).
+
+As of brief v1.10, twenty-one of twenty-two decisions are `Confirmed` and seven of the original unresolved questions are closed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation. Section 10 of the brief carries the current order of work.
 
 **What is settled that changes the shape of the thing:**
 
@@ -47,7 +49,7 @@ As of brief v1.9, twenty-one of twenty-two decisions are `Confirmed` and seven o
 - Any ranking must beat reverse-chronological on a hand-labelled set or be deleted — and deleting it counts as a good outcome (`D-11`).
 - Lane A carries pointers; full article text is pulled only when an item is kept, so depth arrives where the commitment is (`D-22`).
 
-**Still architecture, still not authorised:** storage, hosting, ranker implementation, ingestion.
+**Architecture was authorised 7 Sep 2026**, along with a change of working model: design as soon as a requirement is agreed, then build, test, fail fast, iterate. No plan here may put weeks of data collection on its critical path. Storage, hosting, ranker implementation and ingestion get designed when they are needed to make something work, at the smallest scale that works. See `AGENTS.md` section 3.
 
 Some items in the product brief are:
 
@@ -119,13 +121,15 @@ current-depth/
 ├── CLAUDE.md
 │
 ├── prototype/
-│   └── current-depth.html    # Delivery 001 — the working deliverable
+│   └── current-depth.html    # the live deliverable — all current deliveries
 │
 └── docs/
     ├── product-brief.md
     ├── plans/          # 2026-09-06-product-clarification-plan.md
     ├── reviews/        # v1-8-codex-review.md + its adjudication
-    └── evals/          # README.md, held-out-2026-08-24.md — the D-11 labelling set
+    └── evals/          # README.md
+                        # held-out-2026-08-24.md — the D-11 labelling set
+                        # pilot-log.md — observations from real use
 ```
 
 `prototype/` holds a hand-made deliverable, not an architecture. Nothing there implies a storage design, a pipeline, or a vendor.

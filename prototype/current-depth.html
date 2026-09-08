@@ -1157,24 +1157,56 @@ function goLocal() {
   render();
 }
 
+// The runtime injects window.claude, and it may not exist yet when this script
+// first runs. The earlier version called claude.use() once and fell back to
+// browser-local storage the moment that threw — which silently turned a synced
+// page into a single-device one, with the banner claiming otherwise. Wait for
+// the runtime, then decide.
 (function () {
-  var p;
-  try {
-    p = claude.use("db");
-  } catch (e) {
-    goLocal();
-    return;
+  var waited = 0;
+
+  function attempt() {
+    var ready = typeof claude !== "undefined" && claude && typeof claude.use === "function";
+
+    if (!ready) {
+      if (waited >= 10000) { goLocal(); return; }
+      waited += 250;
+      setTimeout(attempt, 250);
+      return;
+    }
+
+    var p;
+    try { p = claude.use("db"); }
+    catch (e) { goLocal(); return; }
+
+    Promise.resolve(p).then(function (handle) {
+      db = handle;
+      if (!db) { goLocal(); return; }
+      mode = "db";
+      db.doc("digest/state").onSnapshot(function (snap) {
+        if (snap.exists) {
+          adopt(snap.data() || {});
+        } else {
+          // Nothing stored yet. If this browser holds state from a session that
+          // fell back to local storage, lift it up rather than losing it.
+          var local = null;
+          try { local = JSON.parse(localStorage.getItem(LS_KEY) || "null"); }
+          catch (e) { /* blocked storage: nothing to recover */ }
+          if (local && (Object.keys(local.laneA || {}).length ||
+                        (local.laneB || []).length ||
+                        (local.completed || []).length)) {
+            adopt(local);
+            banner("Recovered what you had kept in this browser and saved it to your account, so it now follows you across devices.");
+            save();
+          }
+        }
+        render();
+      }, function (err) {
+        banner("Live updates stopped (" + err.code + "). Reload to reconnect.");
+      });
+    }, function () { goLocal(); });
   }
-  Promise.resolve(p).then(function (handle) {
-    db = handle;
-    if (!db) { goLocal(); return; }
-    mode = "db";
-    db.doc("digest/state").onSnapshot(function (snap) {
-      if (snap.exists) adopt(snap.data() || {});
-      render();
-    }, function (err) {
-      banner("Live updates stopped (" + err.code + "). Reload to reconnect.");
-    });
-  }, function () { goLocal(); });
+
+  attempt();
 })();
 </script>

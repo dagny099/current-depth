@@ -38,6 +38,22 @@ Two deliveries are live and in real use, at [`prototype/current-depth.html`](pro
 
 **The first evidence is already interesting.** The shelf filled on day one and the keep rate is running near 70% against the 20–40% the cap arithmetic assumed. Both caps were held fixed rather than raised — the cap is the mechanism, and one that can be raised when it binds is a suggestion. Observations accrue in [`docs/evals/pilot-log.md`](docs/evals/pilot-log.md).
 
+### How a delivery actually happens
+
+Written down because it is easy to assume more automation exists than does. **Nothing here runs on a schedule. There is no server, no pipeline, no job.**
+
+| When | What | Who |
+|---|---|---|
+| Monday 8pm CT | Calendar event fires, carrying the artifact link | the calendar |
+| — | Open the page, skim, keep one or two | Barbara |
+| Wednesday 8pm CT | Second event — the hour. Finish something, mark it done | Barbara |
+| Ten days after an item arrives | It clears itself, and the clearing is recorded | the page, **when next opened** |
+| Before a Monday | A new delivery is picked, written and published | **a Claude Code session, on request** |
+
+The last row is the one that surprises. A delivery exists because someone asked for one in a session: read the mailbox for the week, pick five under the caps, pull canonical links and article text, publish to the same artifact URL. If nobody asks, Monday's event still fires and the page still opens — it just shows the previous delivery's items until they expire.
+
+Expiry is computed in the page, not by a server. Items are stamped as cleared **at the moment the window closed**, not when the page was next opened, so the record stays truthful either way — but the write only lands once the page is opened.
+
 As of brief v1.10, twenty-one of twenty-two decisions are `Confirmed` and seven of the original unresolved questions are closed. What remains is evidence, a handful of cheap questions, and the D-11 evaluation. Section 10 of the brief carries the current order of work.
 
 **What is settled that changes the shape of the thing:**

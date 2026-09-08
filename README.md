@@ -32,9 +32,11 @@ The longer-term aim is to learn when to use particular models, harnesses, skills
 
 ## Current stage
 
-**Pre-architecture, but no longer nothing-built.**
+**In use, and now building.**
 
-Two deliveries are live and in real use, at [`prototype/current-depth.html`](prototype/current-depth.html) — open it as a file and it saves to that browser; published as an Artifact it syncs across devices. Delivery 002 is the first to carry canonical article links with the text embedded on the shelf. The delivery now **arrives**: a recurring calendar event, created by hand, carries the link.
+Two deliveries are live and in real use, at [`prototype/current-depth.html`](prototype/current-depth.html). Delivery 002 is the first to carry canonical article links with the text embedded on the shelf. The delivery now **arrives**: a recurring calendar event, created by hand, carries the link.
+
+**On where state lives — verified and unverified, stated separately.** Opened as a local file, the page saves to that browser only. Published as an Artifact it writes to a server-side store: *verified 7 Sep 2026 by reading the store directly and finding the kept item there.* Whether that state then rehydrates on a **second device** has **not** been observed, and an earlier version of this README asserted it did. The page now states which mode it is in, at the foot of every view, so the question is answered by looking rather than by inference.
 
 **The first evidence is already interesting.** The shelf filled on day one and the keep rate is running near 70% against the 20–40% the cap arithmetic assumed. Both caps were held fixed rather than raised — the cap is the mechanism, and one that can be raised when it binds is a suggestion. Observations accrue in [`docs/evals/pilot-log.md`](docs/evals/pilot-log.md).
 
@@ -58,12 +60,12 @@ As of brief v1.10, twenty-one of twenty-two decisions are `Confirmed` and seven 
 
 **What is settled that changes the shape of the thing:**
 
-- Lane A is capped at five items per delivery — a number derived from the success criterion, not chosen by taste (`D-18`).
+- Lane A is capped at five items per delivery — a number derived from the success criterion, not chosen by taste (`D-18`). **Its derivation assumed a 20–40% keep rate; the first ten items ran near 70%, so the arithmetic is under pressure.** The cap is held fixed while a second cycle accrues, not because it is proven.
 - Success is a latency measure, median keep-to-done of 14 days or less, not a count of things read (`D-15`).
 - Metrics may only come from gestures Barbara would make anyway. No gesture exists in order to feed a measurement (`D-16`).
 - Delivery arrives as a recurring calendar event she creates by hand, because every mailbox she owns runs between 66% and 91% unread (`D-20`).
 - Any ranking must beat reverse-chronological on a hand-labelled set or be deleted — and deleting it counts as a good outcome (`D-11`).
-- Lane A carries pointers; full article text is pulled only when an item is kept, so depth arrives where the commitment is (`D-22`).
+- Lane A carries pointers; article text is pulled onto the shelf when an item is kept, so depth arrives where the commitment is (`D-22`). **Only partly achievable, and the limit is the publishers':** of Delivery 002's five items, one carried the whole article, three carried an opening before a paywall, and one carried none because its publisher emits no canonical link.
 
 **Architecture was authorised 7 Sep 2026**, along with a change of working model: design as soon as a requirement is agreed, then build, test, fail fast, iterate. No plan here may put weeks of data collection on its critical path. Storage, hosting, ranker implementation and ingestion get designed when they are needed to make something work, at the smallest scale that works. See `AGENTS.md` section 3.
 
@@ -87,7 +89,7 @@ The first workflow under test is intentionally simple:
 ```mermaid
 flowchart TD
     A[Product brief<br/>shared source of truth] --> B[Claude Code<br/>clarification + working deliverable]
-    B --> C[Delivery 001<br/>prototype/current-depth.html]
+    B --> C[Deliveries 001, 002<br/>prototype/current-depth.html]
     C --> D[Evidence<br/>keep-to-done latency · D-11 labelling]
     D --> E[Codex<br/>independent adversarial review]
     E --> F[Durable review artifact]

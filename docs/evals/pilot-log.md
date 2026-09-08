@@ -89,6 +89,20 @@ So `D-22` is **partly satisfiable, not fully**, and the ceiling is set by the pu
 
 ---
 
+## Where state lives — settled 7 Sep 2026
+
+The page's shelf and completion record persist to a **server-side store on Barbara's account**, not to browser storage. Two independent confirmations the same day: the store was read directly from a session and held the kept item, and Barbara opened the page on a second device and found her state there.
+
+This matters beyond housekeeping, because `D-15`'s clock only means anything if keep and done timestamps survive. They do.
+
+**How it was got wrong first, kept because the failure is instructive.** The page had claimed cross-device sync in its own copy since it was written, untested. Seven kept items were then found never to have reached the store — the document had never been written at all. Two defects were behind it: writes made while another write was in flight were silently dropped with no retry, and the page gave no positive indication of syncing, so a page discarding everything looked identical to a page working. Both are fixed, and the page now always states which mode it is in.
+
+The general lesson, now written into `AGENTS.md` section 1: reading the code that should produce a behaviour is not observing the behaviour.
+
+**Still being watched.** Barbara is testing the arrangement over the following days; a single successful second-device load is not yet evidence about durability over weeks.
+
+---
+
 ## Arrival channel
 
 **Calendar event created by hand, 7 Sep 2026** — `D-20` satisfied, and `A-10` can now start being tested.

@@ -34,9 +34,23 @@ The longer-term aim is to learn when to use particular models, harnesses, skills
 
 **In use, and now building.**
 
-Two deliveries are live and in real use, at [`prototype/current-depth.html`](prototype/current-depth.html). Delivery 002 is the first to carry canonical article links with the text embedded on the shelf. The delivery now **arrives**: a recurring calendar event, created by hand, carries the link.
+### The live page
 
-**On where state lives — verified and unverified, stated separately.** Opened as a local file, the page saves to that browser only. Published as an Artifact it writes to a server-side store: *verified 7 Sep 2026 by reading the store directly and finding the kept item there.* Whether that state then rehydrates on a **second device** has **not** been observed, and an earlier version of this README asserted it did. The page now states which mode it is in, at the foot of every view, so the question is answered by looking rather than by inference.
+> **https://claude.ai/code/artifact/961d6ea5-b875-4c9c-96f5-59a32a2577c9**
+
+That is the product. It is where the reading actually happens, and it is the link carried by the recurring calendar event that makes the delivery *arrive* rather than wait to be remembered (`D-20`). **The URL is stable and never changes** — new deliveries are published to this same address, which is the property that lets the calendar event be created once, by hand, and never touched again.
+
+Private to Barbara's account: opening it requires being signed in as her, so the link is safe to record here.
+
+Source for the page lives at [`prototype/current-depth.html`](prototype/current-depth.html); publishing that file to the URL above is how a delivery ships.
+
+---
+
+Two deliveries are live and in real use. Delivery 002 is the first to carry canonical article links with the text embedded on the shelf.
+
+**On where state lives.** Opened as a local file, the page saves to that browser only. Published at the URL above it writes to a server-side store — confirmed 7 Sep 2026 by reading the store directly and finding the kept item in it, and **confirmed on a second device the same day by Barbara**. So the shelf does follow her between machines.
+
+That took three attempts to establish, and the history is worth keeping: the claim was asserted before it was ever tested, then contradicted when seven kept items turned out never to have reached the store, then confirmed. The page now states which mode it is in at the foot of every view — *saved to your account* / *this browser only* / *not saving* — so the question is settled by looking rather than by inference. Longer-run behaviour is still being watched.
 
 **The first evidence is already interesting.** The shelf filled on day one and the keep rate is running near 70% against the 20–40% the cap arithmetic assumed. Both caps were held fixed rather than raised — the cap is the mechanism, and one that can be raised when it binds is a suggestion. Observations accrue in [`docs/evals/pilot-log.md`](docs/evals/pilot-log.md).
 

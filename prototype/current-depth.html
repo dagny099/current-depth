@@ -500,6 +500,11 @@ details.dropped > summary:focus-visible { outline: 2px solid var(--accent); outl
 .colophon strong { color: var(--ink-soft); font-weight: 600; }
 .colophon p { margin: 0; }
 
+.sync { margin: 0; font-size: 12.5px; line-height: 1.6; }
+.sync.synced { color: var(--accent-ink); }
+.sync.local, .sync.pending, .sync.saving { color: var(--ink-faint); }
+.sync.failed { color: var(--amber); font-weight: 500; }
+
 .measures {
   display: flex;
   flex-wrap: wrap;
@@ -576,6 +581,7 @@ code {
   <footer class="colophon">
     <p id="chosenNote"></p>
     <p id="linkNote"></p>
+    <p class="sync pending" id="syncNote">Connecting to your account&hellip;</p>
     <div class="measures" id="measures"></div>
   </footer>
 
@@ -718,6 +724,7 @@ var DAY = 86400000;
 var state = { laneA: {}, laneB: [], completed: [], signals: [] };
 var db = null;
 var saving = false;
+var dirty = false;
 var mode = "pending";
 var LS_KEY = "current-depth-v1";
 
@@ -1079,17 +1086,57 @@ function banner(msg) {
   b.hidden = false;
 }
 
+// Where the state stands, stated always — not only when something breaks.
+// The previous version showed a banner for local mode and for errors but said
+// nothing at all when syncing worked, so a page that was silently discarding
+// every write looked exactly like a page that was fine.
+function setSync(kind, detail) {
+  var el = $("syncNote");
+  if (!el) return;
+  var msg = {
+    pending: "Connecting to your account…",
+    saving: "Saving…",
+    synced: "Saved to your account. This shelf follows you to any device you are signed in on.",
+    local: "Saved in this browser only — it will not follow you to another device.",
+    failed: "Not saving. " + (detail || "") + " Anything you do now will be lost on reload."
+  }[kind];
+  el.textContent = msg || "";
+  el.className = "sync " + kind;
+}
+
 function save() {
   if (mode === "local") {
-    try { localStorage.setItem(LS_KEY, JSON.stringify(state)); }
-    catch (e) { banner("Could not write to this browser's storage, so this change will be lost on reload."); }
+    try {
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+      setSync("local");
+    } catch (e) {
+      setSync("failed", "This browser is blocking storage.");
+      banner("Could not write to this browser's storage, so this change will be lost on reload.");
+    }
     return;
   }
-  if (!db || saving) return;
+
+  if (mode !== "db" || !db) { dirty = true; return; }
+
+  // Coalesce rather than drop. The previous version returned early while a
+  // write was in flight, so filling the shelf quickly discarded every gesture
+  // after the first — silently, with no retry.
+  if (saving) { dirty = true; return; }
+
   saving = true;
-  db.doc("digest/state").set(JSON.parse(JSON.stringify(state))).catch(function (e) {
-    banner("That change could not be saved (" + (e && e.code ? e.code : "unknown") + "). Reload and try again.");
-  }).then(function () { saving = false; }, function () { saving = false; });
+  dirty = false;
+  setSync("saving");
+
+  db.doc("digest/state").set(JSON.parse(JSON.stringify(state))).then(function () {
+    saving = false;
+    setSync("synced");
+    if (dirty) save();
+  }, function (e) {
+    saving = false;
+    var code = e && e.code ? e.code : "unknown";
+    setSync("failed", "The store rejected the write (" + code + ").");
+    banner("That change could not be saved (" + code + "). Reload and try again.");
+  });
 }
 
 /* ---------- gestures ---------- */
@@ -1149,6 +1196,7 @@ render();
 
 function goLocal() {
   mode = "local";
+  setSync("local");
   try {
     var raw = localStorage.getItem(LS_KEY);
     if (raw) adopt(JSON.parse(raw));
@@ -1183,6 +1231,7 @@ function goLocal() {
       db = handle;
       if (!db) { goLocal(); return; }
       mode = "db";
+      setSync("synced");
       db.doc("digest/state").onSnapshot(function (snap) {
         if (snap.exists) {
           adopt(snap.data() || {});

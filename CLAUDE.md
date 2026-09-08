@@ -12,6 +12,8 @@ This file is intentionally small. Shared project knowledge belongs in the repo, 
 
 ### Verify before asserting
 
+**`AGENTS.md` section 1 is the full rule set** — your own prior output is a hypothesis, effort estimates are claims about code, re-read before advising on what you just wrote, and never claim behaviour you have not observed. Those are cross-harness and are not repeated here. What follows is only the Claude-specific part.
+
 For claims about the repository, use filesystem / Git tools appropriate to the claim.
 
 Do not infer that a directory is absent because a file search, glob, or `git ls-files` did not show it. Empty directories are not tracked by Git and may be invisible to file-oriented searches.
